@@ -1,0 +1,80 @@
+import rclpy
+from rclpy.action import ActionServer
+from rclpy.node import Node
+from std_msgs.msg import String
+
+from whack_a_mole_interfaces.action import ActuateServo
+
+import serial
+import time
+
+ser_comm = serial.Serial()
+
+class CommunicationNode(Node):
+    def __init__(self):
+        super().__init__('comm_node')
+
+        self.hammer_action_server = ActionServer(
+            self, 
+            ActuateServo,
+            'swing_hammer',
+            self.swing_callback
+        )
+
+        # self.servo_pub = self.create_publisher(String, 'test_writing', 1)
+
+        # self.test_sub = self.create_subscription(String, 'test_writing', self.write_serial_data, 1)
+
+        self.connect_serial_port(serial_port="/dev/ttyACM0", baud_rate=9600)
+
+    async def swing_callback(self, goal_handle):
+        if not isinstance(goal_handle.request.position, String):
+            self.get_logger().error(f"Expected string for position, got: {type(goal_handle.request.position)}")
+            result = ActuateServo.Result()
+            result.res = False  # Signal an error in the result
+            goal_handle.abort()  # Abort the goal
+            return result
+
+        if(goal_handle.request.position.data == 'raise'):
+            msg = String()
+            msg.data = 'raise'
+            self.write_serial_data(msg)
+            self.get_logger().info('Raising the hammer')
+        elif(goal_handle.request.position.data == 'hit'):
+            msg = String()
+            msg.data = 'hit'
+            self.write_serial_data(msg)
+            self.get_logger().info('Hitting the hammer')
+        else:
+            self.get_logger().info("Something is going wrong!")
+
+        result = ActuateServo.Result()
+        result.res = True
+        goal_handle.succeed()
+
+        return result
+        
+
+
+    def write_serial_data(self, msg: String):
+        try:
+            msg = str(msg.data)
+            ser_comm.write(msg.encode("utf-8"))
+        except Exception as e:
+            self.get_logger().warn('Serial Communication error!')
+
+    def connect_serial_port(self, serial_port, baud_rate):
+        ser_comm.port = serial_port
+        ser_comm.baudrate = baud_rate
+        ser_comm.timeout = 1
+        ser_comm.open()
+
+def node_main(args=None):
+    rclpy.init(args=args)
+    node = CommunicationNode()
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+if __name__ == "__main__":
+    import sys
+    node_main(args=sys.argv)

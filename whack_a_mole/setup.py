@@ -9,6 +9,10 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name, ['launch/camera.launch.py']),
+        ('share/' + package_name, ['config/tags.yaml']),
+        ('share/' + package_name, ['config/tags_tf.rviz']),
         ('share/' + package_name, ['package.xml', 
                                    'launch/planner_swing.launch.xml']),
     ],

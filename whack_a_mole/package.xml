@@ -7,6 +7,7 @@
   <maintainer email="pushkar@u.northwestern.edu">PushkarDave</maintainer>
   <license>MIT</license>
 
+  <depend>std_msgs</depend>
   <exec_depend>object_mover</exec_depend>
   <exec_depend>object_mover_interfaces</exec_depend>
   <test_depend>ament_copyright</test_depend>

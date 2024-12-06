@@ -17,6 +17,7 @@ void loop() {
     command.trim();
     if (command.equals("r")) {
       myservo.write(50);
+      Serial.println("d");
     }
 
     else if (command.equals("h")) {

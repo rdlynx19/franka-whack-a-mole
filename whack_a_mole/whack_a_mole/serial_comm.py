@@ -40,16 +40,21 @@ class CommunicationNode(Node):
             msg.data = 'r'
             self.write_serial_data(msg)
             self.get_logger().info('Raising the hammer')
+            # val = await self.read_serial_data()
         elif(goal_handle.request.position.data == 'hit'):
             msg = String()
             msg.data = 'h'
             self.write_serial_data(msg)
             self.get_logger().info('Hitting the hammer')
-            val = await self.read_serial_data()
+            # val = await self.read_serial_data()
+            
         else:
             self.get_logger().info("Something is going wrong!")
 
-        # val = await self.read_serial_data()
+        val = await self.read_serial_data()
+        self.get_logger().info('Awaited for d')
+        
+        # wait_for_result = await goal_handle.get_result_async()
 
         result = ActuateServo.Result()
         result.res = True
@@ -70,12 +75,13 @@ class CommunicationNode(Node):
         try:
             msg = String()
             msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
-            if(msg.data =='d'):
-                self.get_logger().warn(f'D was parsed here!')
-                return True
+            while msg.data != 'd':
+                msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
+                self.get_logger().info(f'{msg.data}')
+            return True 
         except Exception as e:
             self.get_logger().error("Can't read serial data!")
-            # return False
+            return False
 
 
     def connect_serial_port(self, serial_port, baud_rate):

@@ -31,19 +31,20 @@ class Game(Node):
             'swing_hammer'
         )
         self.static = StaticTransformBroadcaster(self)
-        self.base_to_tag0 = TransformStamped()
-        self.base_to_tag0.header.stamp = self.get_clock().now().to_msg()
-        self.base_to_tag0.header.frame_id = 'base_tag'
-        self.base_to_tag0.child_frame_id = 'base'
+        self.tag0_to_base = TransformStamped()
+        self.tag0_to_base.header.stamp = self.get_clock().now().to_msg()
+        self.tag0_to_base.header.frame_id = 'base_tag'
+        self.tag0_to_base.child_frame_id = 'base'
         self.get_logger().info('Setting up the tag0 transform')
-        self.base_to_tag0.transform.translation.x = 0.1
-        self.base_to_tag0.transform.translation.y = -0.1
-        self.base_to_tag0.transform.translation.z = 0.0
-        self.base_to_tag0.transform.rotation.x = -0.5
-        self.base_to_tag0.transform.rotation.y = -0.5
-        self.base_to_tag0.transform.rotation.z = 0.5
-        self.base_to_tag0.transform.rotation.w = 0.5
-        self.static.sendTransform(self.base_to_tag0)
+        self.tag0_to_base.transform.translation.x = 0.155
+        self.tag0_to_base.transform.translation.y = -0.085
+        self.tag0_to_base.transform.translation.z = 0.0
+        q = [ -0.5, -0.5, -0.5, 0.5 ]
+        self.tag0_to_base.transform.rotation.x = q[0]
+        self.tag0_to_base.transform.rotation.y = q[1]
+        self.tag0_to_base.transform.rotation.z = q[2]
+        self.tag0_to_base.transform.rotation.w = q[3]
+        self.static.sendTransform(self.tag0_to_base)
         self.buffer = Buffer()
         self.listener = TransformListener(self.buffer, self)
 
@@ -54,7 +55,7 @@ class Game(Node):
             goal_pose = Pose()
             goal_pose.position.x = self.base_to_tag1.transform.translation.x
             goal_pose.position.y = self.base_to_tag1.transform.translation.y
-            goal_pose.position.z = 0.1
+            goal_pose.position.z = 0.2
             goal_pose.orientation.x = 1.0
             goal_pose.orientation.y = 0.0
             goal_pose.orientation.z = 0.0

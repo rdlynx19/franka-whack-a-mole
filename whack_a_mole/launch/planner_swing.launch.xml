@@ -1,8 +1,25 @@
 <launch>
+    <arg name="tags_yaml" default="$(find-pkg-share whack_a_mole)/tags.yaml" />
     <include file="$(find-pkg-share object_mover)/launch/object_mover.launch.py">
     </include>
 
-    <node pkg="whack_a_mole" exec="swing" />
+    <!--<node pkg="whack_a_mole" exec="swing" />
 
-    <node pkg="whack_a_mole" exec="comm_node"/>
+    <node pkg="whack_a_mole" exec="comm_node"/>_-->
+    <include file="$(find-pkg-share whack_a_mole)/camera.launch.py"/>
+    <node pkg="whack_a_mole" exec="game_node" />
+    <node
+        pkg="apriltag_ros"
+        exec="apriltag_node"
+        name="apriltag_node"
+        output="screen">
+
+        <!-- Path to the parameter file -->
+        <param from="$(find-pkg-share whack_a_mole)/tags.yaml"/>
+
+        <!-- Remap image and camera info topics -->
+        <remap from="image_rect" to="/camera/camera/color/image_raw"/>
+        <remap from="camera_info" to="/camera/camera/color/camera_info"/>
+
+    </node>
 </launch>

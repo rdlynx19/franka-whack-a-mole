@@ -80,7 +80,7 @@ class Swing(Node):
         actuate_msg = ActuateServo.Goal()
         actuate_msg.position = msg
         self.get_logger().info(f'{actuate_msg}')
-        _ = await self.hammer_client.send_goal_async(actuate_msg)
+        # _ = await self.hammer_client.send_goal_async(actuate_msg)
         self.get_logger().info(f'Actuating hammer to {msg.data}!')
 
 

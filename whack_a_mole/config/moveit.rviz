@@ -6,10 +6,9 @@ Panels:
       Expanded:
         - /MotionPlanning1
         - /TF1
-        - /TF1/Status1
         - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 658
+    Tree Height: 191
   - Class: rviz_common/Help
     Name: Help
   - Class: rviz_common/Views
@@ -263,6 +262,10 @@ Visualization Manager:
         All Enabled: true
         base:
           Value: true
+        base_tag:
+          Value: true
+        board:
+          Value: true
         camera_color_frame:
           Value: true
         camera_color_optical_frame:
@@ -309,25 +312,57 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base:
-          fer_link0:
-            fer_link1:
-              fer_link2:
-                fer_link3:
-                  fer_link4:
-                    fer_link5:
-                      fer_link6:
-                        fer_link7:
-                          fer_link8:
-                            fer_hand:
-                              fer_hand_tcp:
-                                {}
-                              fer_leftfinger:
-                                {}
-                              fer_rightfinger:
-                                {}
+        base_tag:
+          base:
+            fer_link0:
+              fer_link1:
+                fer_link2:
+                  fer_link3:
+                    fer_link4:
+                      fer_link5:
+                        fer_link6:
+                          fer_link7:
+                            fer_link8:
+                              fer_hand:
+                                fer_hand_tcp:
+                                  {}
+                                fer_leftfinger:
+                                  {}
+                                fer_rightfinger:
+                                  {}
+        camera_link:
+          camera_color_frame:
+            camera_color_optical_frame:
+              board:
+                {}
+              tag36h11:0:
+                {}
+              tag36h11:1:
+                {}
+          camera_depth_frame:
+            camera_depth_optical_frame:
+              {}
       Update Interval: 0
       Value: true
+    - Class: rviz_default_plugins/Camera
+      Enabled: true
+      Far Plane Distance: 100
+      Image Rendering: background and overlay
+      Name: Camera
+      Overlay Alpha: 0.5
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /camera/camera/color/image_raw
+      Value: true
+      Visibility:
+        Grid: true
+        MotionPlanning: true
+        TF: true
+        Value: true
+      Zoom Factor: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -361,12 +396,14 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5
+      Pitch: 0.4699999988079071
       Target Frame: base
       Value: Orbit (rviz_default_plugins)
-      Yaw: -0.6230000257492065
+      Yaw: 0.03699507564306259
     Saved: ~
 Window Geometry:
+  Camera:
+    collapsed: false
   Displays:
     collapsed: false
   Height: 1403
@@ -378,7 +415,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002b40000051dfc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb000000100044006900730070006c006100790073010000003f000002d2000000cc00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000317000001960000019600fffffffb0000000800480065006c0070000000029a0000006e0000006f00fffffffb0000000a0056006900650077007301000004b3000000a9000000a900ffffff000007460000051d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002b40000051dfc0200000006fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb000000100044006900730070006c006100790073010000003f000000ff000000cc00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000144000001a10000019600fffffffb0000000800480065006c0070000000029a0000006e0000006f00fffffffb0000000a0056006900650077007301000002eb000000a9000000a900fffffffb0000000c00430061006d006500720061010000039a000001c20000001700ffffff000007460000051d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 2560

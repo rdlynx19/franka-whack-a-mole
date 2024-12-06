@@ -36,11 +36,13 @@ class Game(Node):
         self.base_to_tag0.header.frame_id = 'base_tag'
         self.base_to_tag0.child_frame_id = 'base'
         self.get_logger().info('Setting up the tag0 transform')
-        self.base_to_tag0.transform.translation.x = 0.0
-        self.base_to_tag0.transform.translation.y = 0.159
-        self.base_to_tag0.transform.translation.z = -0.00194
-        self.base_to_tag0.transform.rotation.z = -math.pi/3
-
+        self.base_to_tag0.transform.translation.x = 0.1
+        self.base_to_tag0.transform.translation.y = -0.1
+        self.base_to_tag0.transform.translation.z = 0.0
+        self.base_to_tag0.transform.rotation.x = -0.5
+        self.base_to_tag0.transform.rotation.y = -0.5
+        self.base_to_tag0.transform.rotation.z = 0.5
+        self.base_to_tag0.transform.rotation.w = 0.5
         self.static.sendTransform(self.base_to_tag0)
         self.buffer = Buffer()
         self.listener = TransformListener(self.buffer, self)

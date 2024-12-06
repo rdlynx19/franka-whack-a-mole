@@ -25,7 +25,7 @@ class CommunicationNode(Node):
 
         # self.test_sub = self.create_subscription(String, 'test_writing', self.write_serial_data, 1)
 
-        self.connect_serial_port(serial_port="/dev/ttyACM0", baud_rate=9600)
+        self.connect_serial_port(serial_port="/dev/ttyACM0", baud_rate=115200)
 
     async def swing_callback(self, goal_handle):
         if not isinstance(goal_handle.request.position, String):
@@ -37,16 +37,24 @@ class CommunicationNode(Node):
 
         if(goal_handle.request.position.data == 'raise'):
             msg = String()
-            msg.data = 'raise'
+            msg.data = 'r'
             self.write_serial_data(msg)
             self.get_logger().info('Raising the hammer')
+            # val = await self.read_serial_data()
         elif(goal_handle.request.position.data == 'hit'):
             msg = String()
-            msg.data = 'hit'
+            msg.data = 'h'
             self.write_serial_data(msg)
             self.get_logger().info('Hitting the hammer')
+            # val = await self.read_serial_data()
+            
         else:
             self.get_logger().info("Something is going wrong!")
+
+        val = await self.read_serial_data()
+        self.get_logger().info('Awaited for d')
+        
+        # wait_for_result = await goal_handle.get_result_async()
 
         result = ActuateServo.Result()
         result.res = True
@@ -62,6 +70,19 @@ class CommunicationNode(Node):
             ser_comm.write(msg.encode("utf-8"))
         except Exception as e:
             self.get_logger().warn('Serial Communication error!')
+
+    async def read_serial_data(self):
+        try:
+            msg = String()
+            msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
+            while msg.data != 'd':
+                msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
+                self.get_logger().info(f'{msg.data}')
+            return True 
+        except Exception as e:
+            self.get_logger().error("Can't read serial data!")
+            return False
+
 
     def connect_serial_port(self, serial_port, baud_rate):
         ser_comm.port = serial_port

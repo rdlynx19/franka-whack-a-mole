@@ -65,9 +65,14 @@ def generate_launch_description():
                 )
             ),
             launch_arguments={
-                "depth_module.profile": "1280x720x30",
-                "rgb_camera.profile": "1280x720x30",
+                # "depth_module.profile": "1280x720x30",
+                # "rgb_camera.profile": "1280x720x30",
                 "enable_sync": "true",
+                'enable_rgbd': "true",
+                'align_depth.enable': "true",
+                'enable_color': "true",
+                'enable_depth': "true"
+               
             }.items()
         ),
 
@@ -79,15 +84,21 @@ def generate_launch_description():
             ],
             output="screen",
         ),
+        # Node(
+        #     package='apriltag_ros',
+        #     executable='apriltag_node',
+        #     name='apriltag_node',
+        #     output='screen',
+        #     remappings=[
+        #         ('image_rect', '/camera/camera/color/image_raw'),
+        #         ('camera_info', '/camera/camera/color/camera_info')
+        #     ],
+        #     parameters=[tags_yaml]
+        # ),
         Node(
-            package='apriltag_ros',
-            executable='apriltag_node',
-            name='apriltag_node',
-            output='screen',
-            remappings=[
-                ('image_rect', '/camera/camera/color/image_raw'),
-                ('camera_info', '/camera/camera/color/camera_info')
-            ],
-            parameters=[tags_yaml]
-        ),
+            package='whack_a_mole',
+            executable="camera",
+            name = "color_camera",
+            output = "screen"
+        )
     ])

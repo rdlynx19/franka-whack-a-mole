@@ -26,7 +26,8 @@ setup(
     entry_points={
         'console_scripts': [
             'swing = whack_a_mole.swing:main',
-            'comm_node = whack_a_mole.serial_comm:node_main'
+            'comm_node = whack_a_mole.serial_comm:node_main',
+            'camera = whack_a_mole.camera:entry'
         ],
     },
 )

@@ -12,9 +12,20 @@ from sensor_msgs.msg import Image , CameraInfo
 from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import TransformStamped
 
-global COLORS
+global COLORS , COLORS_HSV, CROP
 
-COLORS = {"ORANGE" : 0, "PURPLE": 1}
+COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2}
+
+COLORS_HSV = {
+    "GREEN":
+    [np.array([35, 40, 40]), np.array([85, 255, 255])],
+    "YELLOW":
+    [np.array([20, 100, 101]),np.array([24, 201, 125])],
+    "BLUE":
+    [np.array((103, 104, 83)),np.array((130, 255, 179))]
+              }
+
+CROP = [(0,350),(1280,720)]
 
 
 
@@ -70,23 +81,17 @@ class Camera(Node):
 
         self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq*0.5),2)) # 2 is the number of sec of buffer
 
+        self.clipping_distance = 1999
+
 
     def timer_callback(self):
 
         if (self.color_image.shape[0] == 0 or self.depth_image.shape[0] == 0): self.log("Waiting for image data...") ;return
 
 
-        ### DEFINE LOWER AND HIGHER HSV , needs to be done for each color
-        lower_HSV = np.array((115, 103, 83))
-        higher_HSV = np.array((130, 255, 179) )
+        for color in COLORS_HSV.keys():
 
-        green = np.array((6,82,65))
-        lower_orange = np.array([5, 100, 100])  # Lower bound of orange (Hue, Saturation, Value)
-        upper_orange = np.array([22, 255, 255])  # Upper bound of orange
-
-
-        self.broadcast_color(lower_HSV,higher_HSV,"PURPLE")
-        self.broadcast_color(lower_orange,upper_orange,"ORANGE")
+            self.broadcast_color(lower_HSV=COLORS_HSV[color][0],higher_HSV=COLORS_HSV[color][1],color=color)
 
     def broadcast_color(self,lower_HSV,higher_HSV, color : str):
 
@@ -128,19 +133,15 @@ class Camera(Node):
         Returns the pixel indecies of the centroid of a color defined in lower_HSV , higher_HSV range
         """
 
-        # self.image_pub.publish(CvBridge().cv2_to_imgmsg(self.color_image,encoding="rgb8"))
+        depth_image_3d = np.dstack((self.depth_image,self.depth_image,self.depth_image)) #depth image is 1 channel, color is 3 channels
+        bg_removed = np.where((depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0), 0, self.color_image)
 
-        mask = cv2.inRange(cv2.cvtColor(self.color_image, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
-
-        masked_image = cv2.bitwise_and(self.color_image,self.color_image, mask = mask)
-
-        img_copy = np.copy(self.color_image)
-
+        mask = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
 
         if(not np.any(mask)): return np.array([-1,-1])
 
         #Find Centroid
-        x_c , y_c = self.find_centroid(mask)
+        x_c , y_c = self.find_centroid_cropped(mask,(*CROP[0],*CROP[1]))
 
         x_c = int(x_c)
         y_c = int(y_c)
@@ -151,10 +152,13 @@ class Camera(Node):
             avg_centroid = np.mean(self.running_avg[color_index], axis=0)
             avg_centroid = np.array(avg_centroid, dtype=int)
 
-            cv2.circle(img_copy,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
+            cv2.circle(bg_removed,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
+            
+            cv2.putText(bg_removed, f'{color}', (avg_centroid[0],avg_centroid[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
+        cv2.rectangle(bg_removed, CROP[0], CROP[1], (255, 0, 0), thickness =1)
 
-        msg = CvBridge().cv2_to_imgmsg(img_copy,encoding="bgr8")
+        msg = CvBridge().cv2_to_imgmsg(bg_removed,encoding="bgr8")
 
         self.image_pub.publish(msg)
 
@@ -200,9 +204,66 @@ class Camera(Node):
 
                 return x_c,y_c
 
+
+    def find_centroid_cropped(self, masked_image, crop_indices):
+        """
+        Find the centroid of the largest contour within a specified crop region.
+        
+        Args:
+        - masked_image (np.array): The masked image to process.
+        - crop_indices (tuple): A tuple (x1, y1, x2, y2) specifying the crop region.
+        
+        Returns:
+        - (int, int): The (x, y) coordinates of the centroid in the original image.
+        """
+        
+        # Unpack the crop region indices
+        x1, y1, x2, y2 = crop_indices
+        
+        # Crop the masked image based on the provided indices
+        cropped_image = masked_image[y1:y2, x1:x2]
+        
+        # Convert cropped image to numpy array (if necessary)
+        image = np.array(cropped_image, dtype=np.uint8)
+        
+        # Find all contours in the cropped region
+        contours, _ = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        
+        # Find the largest contour area
+        largest_area = -1
+        largest_index = -1
+
+        for i in range(len(contours)):
+            area = cv2.contourArea(contours[i])
+            
+            # Check if the current contour has the largest area so far
+            if area > largest_area:
+                largest_area = area
+                largest_index = i
+
+        # If no valid contour was found (largest_area remains 0)
+        if largest_area == 0:
+            return 0, 0
+        
+        # Get the centroid in the cropped region
+        moments = cv2.moments(contours[largest_index])
+        if moments["m00"] == 0:  # To avoid division by zero
+            return 0, 0
+
+        # Calculate the centroid in the cropped image
+        x_c = int(moments["m10"] / moments["m00"])
+        y_c = int(moments["m01"] / moments["m00"])
+
+        # Convert the cropped image centroid back to original image coordinates
+        original_x_c = x1 + x_c
+        original_y_c = y1 + y_c
+
+        return original_x_c, original_y_c
+
+    
     def broadcast_color_frame(self,base_frame, child_frame,x_c,y_c):
         
-        x,y,z = self.get_3d_coordinates_at_pixel(x_c,y_c)
+        x,y,z = self.get_3d_coordinates_at_pixel(x_c,y_c , frame_name=child_frame)
         if (x == -1): 
             x ,y ,z = self.prev_xyz[0],self.prev_xyz[1],self.prev_xyz[2]
         else:
@@ -230,7 +291,7 @@ class Camera(Node):
 
         
     
-    def get_3d_coordinates_at_pixel(self, x, y):
+    def get_3d_coordinates_at_pixel(self, x, y, frame_name = ""):
 
         """Convert the pixel coordinates (x, y) to 3D camera coordinates in meters."""
         
@@ -242,7 +303,7 @@ class Camera(Node):
         depth_in_meters = self.depth_image[y, x] /1000
         
         if (depth_in_meters == 0):  # No depth data at this pixel
-            self.log(f"No valid depth data at pixel ({x}, {y}).")
+            self.log(f"[{frame_name}] No valid depth data at pixel ({x}, {y}).")
             return -1,-1,-1
         
         # Extract intrinsic parameters from the camera info (in a 3x3 matrix form)

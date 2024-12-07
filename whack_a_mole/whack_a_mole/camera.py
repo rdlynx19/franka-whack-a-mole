@@ -10,6 +10,8 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image , CameraInfo
 
 from tf2_ros import TransformBroadcaster
+from geometry_msgs.msg import TransformStamped
+
 
 from time import sleep
 
@@ -54,7 +56,9 @@ class Camera(Node):
         self.depth_image = np.array([])
         self.camera_intrinsics = np.array([])
 
-        self.freq = 10.0 # Hz
+        self.prev_xyz = np.array([0,0,0],dtype=float)
+
+        self.freq = 30.0 # Hz
 
         self.create_timer(
             1/self.freq,
@@ -71,7 +75,7 @@ class Camera(Node):
         
         x_c,y_c = self.find_color_centroid(lower_HSV,higher_HSV)
 
-        self.broadcast_color_frame("","",x_c,y_c)
+        self.broadcast_color_frame("camera_depth_frame","pen",x_c,y_c)
         
 
     def log(self,*message):
@@ -162,11 +166,34 @@ class Camera(Node):
 
                 return x_c,y_c
 
-    def broadcast_color_frame(self,base_name, frame_name,x_c,y_c):
+    def broadcast_color_frame(self,base_frame, child_frame,x_c,y_c):
         
         x,y,z = self.get_3d_coordinates_at_pixel(x_c,y_c)
-
+        if (x == -1): 
+            x ,y ,z = self.prev_xyz[0],self.prev_xyz[1],self.prev_xyz[2]
+        else:
+            self.prev_xyz[0],self.prev_xyz[1],self.prev_xyz[2] = x ,y ,z
+        
         self.log(x,y,z)
+
+        transform = TransformStamped()
+
+        transform.header.stamp = self.get_clock().now().to_msg()
+        transform.header.frame_id = base_frame
+        transform.child_frame_id = child_frame
+
+
+        transform.transform.translation.x = x
+        transform.transform.translation.y = y
+        transform.transform.translation.z = -1.0*z
+
+        transform.transform.rotation.x = 0.0
+        transform.transform.rotation.y = 0.0
+        transform.transform.rotation.z = 0.0
+        transform.transform.rotation.w = 1.0
+
+        self.tf_broadcaster.sendTransform(transform)
+
         
     
     def get_3d_coordinates_at_pixel(self, x, y):

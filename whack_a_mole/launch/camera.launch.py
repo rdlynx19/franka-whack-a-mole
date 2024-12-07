@@ -68,7 +68,6 @@ def generate_launch_description():
                 # "depth_module.profile": "1280x720x30",
                 # "rgb_camera.profile": "1280x720x30",
                 "enable_sync": "true",
-                'enable_rgbd': "true",
                 'align_depth.enable': "true",
                 'enable_color': "true",
                 'enable_depth': "true"
@@ -99,6 +98,6 @@ def generate_launch_description():
             package='whack_a_mole',
             executable="camera",
             name = "color_camera",
-            output = "screen"
+            output = "screen",
         )
     ])

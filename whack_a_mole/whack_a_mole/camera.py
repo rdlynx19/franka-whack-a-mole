@@ -12,8 +12,11 @@ from sensor_msgs.msg import Image , CameraInfo
 from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import TransformStamped
 
+global COLORS
 
-from time import sleep
+COLORS = {"ORANGE" : 0, "PURPLE": 1}
+
+
 
 class Camera(Node):
 
@@ -65,18 +68,41 @@ class Camera(Node):
             self.timer_callback
         )
 
+        self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq*0.5),2)) # 2 is the number of sec of buffer
+
 
     def timer_callback(self):
 
         if (self.color_image.shape[0] == 0 or self.depth_image.shape[0] == 0): self.log("Waiting for image data...") ;return
 
+
+        ### DEFINE LOWER AND HIGHER HSV , needs to be done for each color
         lower_HSV = np.array((115, 103, 83))
         higher_HSV = np.array((130, 255, 179) )
+
+        green = np.array((6,82,65))
+        lower_orange = np.array([5, 100, 100])  # Lower bound of orange (Hue, Saturation, Value)
+        upper_orange = np.array([22, 255, 255])  # Upper bound of orange
+
+
+        self.broadcast_color(lower_HSV,higher_HSV,"PURPLE")
+        self.broadcast_color(lower_orange,upper_orange,"ORANGE")
+
+    def broadcast_color(self,lower_HSV,higher_HSV, color : str):
+
+        color_index = COLORS[color]
         
         x_c,y_c = self.find_color_centroid(lower_HSV,higher_HSV)
 
-        self.broadcast_color_frame("camera_depth_frame","pen",x_c,y_c)
-        
+        self.running_avg[color_index,:-1] = self.running_avg[color_index,1:]  # Shift all elements down by 1
+        self.running_avg[color_index,-1] = np.array([x_c,y_c])
+
+        avg_centroid = np.mean(self.running_avg[color_index], axis=0)
+        avg_centroid = np.array(avg_centroid, dtype=int)
+
+
+        self.broadcast_color_frame("camera_depth_frame",color + "_frame",avg_centroid[0],avg_centroid[1])
+
 
     def log(self,*message):
 
@@ -101,7 +127,7 @@ class Camera(Node):
         """
         Returns the pixel indecies of the centroid of a color defined in lower_HSV , higher_HSV range
         """
-        
+
         # self.image_pub.publish(CvBridge().cv2_to_imgmsg(self.color_image,encoding="rgb8"))
 
         mask = cv2.inRange(cv2.cvtColor(self.color_image, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
@@ -117,7 +143,13 @@ class Camera(Node):
         x_c = int(x_c)
         y_c = int(y_c)
 
-        cv2.circle(masked_image,(x_c,y_c),5,(0, 0, 255),thickness = 10)
+        for color in COLORS:
+            color_index = COLORS[color]
+            
+            avg_centroid = np.mean(self.running_avg[color_index], axis=0)
+            avg_centroid = np.array(avg_centroid, dtype=int)
+
+            cv2.circle(masked_image,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
 
 
         msg = CvBridge().cv2_to_imgmsg(masked_image,encoding="bgr8")

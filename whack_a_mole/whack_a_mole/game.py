@@ -30,6 +30,7 @@ class Game(Node):
             ActuateServo,
             'swing_hammer'
         )
+        self.pick_client = self.create_client(PickPose, 'pick')
         self.static = StaticTransformBroadcaster(self)
         self.tag0_to_base = TransformStamped()
         self.tag0_to_base.header.stamp = self.get_clock().now().to_msg()
@@ -60,11 +61,15 @@ class Game(Node):
             goal_pose.orientation.y = 0.0
             goal_pose.orientation.z = 0.0
             goal_pose.orientation.w = 0.0
+            self.get_logger().info('Sending goal pose to pick service') 
+            await self.pick_client.call_async(PickPose.Request(goal_pose=goal_pose))
+            self.get_logger().info('Goal pose sent to pick service')
+            return response
 
-            traj1 = await self.mpi.plan_path(
-                goal_pose=goal_pose,
-            )
-            _ = await self.mpi.exec_path(traj1)
+            #traj1 = await self.mpi.plan_path(
+            #    goal_pose=goal_pose,
+            #)
+            #_ = await self.mpi.exec_path(traj1)
 
         except tf2_ros.LookupException as e:
             self.get_logger().info(f'LookupException: {e}')

@@ -57,13 +57,6 @@ class Camera(Node):
 
         lower_HSV = np.array((115, 103, 83))
         higher_HSV = np.array((130, 255, 179) )
-
-        # lower_HSV = np.array([255, 0, 255])  # Lower bound of HSV (e.g., a certain shade of yellow)
-        # higher_HSV = np.array([255, 255, 255])  # Upper bound of HSV
-
-        # lower_HSV = np.array((15,0,0))  # Lower bound of red (from 0)
-        # higher_HSV = np.array((36, 255, 255))  # Upper bound of red (up to 10)
-
         
         self.find_color_centroid(lower_HSV,higher_HSV)
         
@@ -93,11 +86,69 @@ class Camera(Node):
 
         mask = cv2.inRange(cv2.cvtColor(self.color_image, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
 
-        image_filtered = cv2.bitwise_and(self.color_image,self.color_image, mask = mask)
+        masked_image = cv2.bitwise_and(self.color_image,self.color_image, mask = mask)
 
-        msg = CvBridge().cv2_to_imgmsg(image_filtered,encoding="bgr8")
+
+        if(not np.any(mask)): return np.array([-1,-1,-1])
+
+        #find centroid
+
+        #Find Centroid
+        x_c , y_c = self.find_centroid(mask)
+
+        x_c = int(x_c)
+        y_c = int(y_c)
+
+        cv2.circle(masked_image,(x_c,y_c),5,(0, 0, 255),thickness = 10)
+
+
+        msg = CvBridge().cv2_to_imgmsg(masked_image,encoding="bgr8")
 
         self.image_pub.publish(msg)
+
+        
+
+
+    def find_centroid(self,masked_image):
+
+                # Get all countours
+                # https://docs.opencv.org/4.6.0/d4/d73/tutorial_py_contours_begin.html
+
+                image = np.array(masked_image,dtype=np.uint8)
+                contours,_  = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+                
+                #Find the centroid
+                #https://pyimagesearch.com/2016/02/01/opencv-center-of-contour/
+                
+                # Find the largest area in the stream
+
+                largest_area = -1
+                largest_index = -1
+
+                for i in range(len(contours)):
+                    area = cv2.contourArea(contours[i])
+                    
+                    # Check if the current contour has the largest area so far
+                    if area > largest_area:
+                        largest_area = area
+                        largest_index = i
+
+                # If no valid contour was found (largest_area remains 0)
+                if largest_area == 0:
+                    return 0, 0
+                                
+                
+                #Calculate the centroid
+                
+
+                moments = cv2.moments(contours[largest_index])
+
+                
+
+                x_c = (moments["m10"])/ (largest_area)
+                y_c = (moments["m01"])/(largest_area)
+
+                return x_c,y_c
 
 
 

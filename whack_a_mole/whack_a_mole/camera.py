@@ -18,7 +18,7 @@ COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2}
 
 COLORS_HSV = {
     "GREEN":
-    [np.array([35, 40, 40]), np.array([85, 255, 255])],
+    [np.array([79, 55, 37]), np.array([84, 163, 129])],
     "YELLOW":
     [np.array([20, 100, 101]),np.array([24, 201, 125])],
     "BLUE":
@@ -196,8 +196,10 @@ class Camera(Node):
                 
                 #Calculate the centroid
                 
-
-                moments = cv2.moments(contours[largest_index])
+                try:
+                    moments = cv2.moments(contours[largest_index])
+                except:
+                    print(len(contours))
 
                 x_c = (moments["m10"])/ (largest_area)
                 y_c = (moments["m01"])/(largest_area)
@@ -242,11 +244,13 @@ class Camera(Node):
                 largest_index = i
 
         # If no valid contour was found (largest_area remains 0)
-        if largest_area == 0:
+        if (largest_area == 0) or (largest_area == -1):
             return 0, 0
         
         # Get the centroid in the cropped region
+
         moments = cv2.moments(contours[largest_index])
+            
         if moments["m00"] == 0:  # To avoid division by zero
             return 0, 0
 

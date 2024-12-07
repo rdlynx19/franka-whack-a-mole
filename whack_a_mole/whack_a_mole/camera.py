@@ -134,6 +134,8 @@ class Camera(Node):
 
         masked_image = cv2.bitwise_and(self.color_image,self.color_image, mask = mask)
 
+        img_copy = np.copy(self.color_image)
+
 
         if(not np.any(mask)): return np.array([-1,-1])
 
@@ -149,10 +151,10 @@ class Camera(Node):
             avg_centroid = np.mean(self.running_avg[color_index], axis=0)
             avg_centroid = np.array(avg_centroid, dtype=int)
 
-            cv2.circle(masked_image,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
+            cv2.circle(img_copy,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
 
 
-        msg = CvBridge().cv2_to_imgmsg(masked_image,encoding="bgr8")
+        msg = CvBridge().cv2_to_imgmsg(img_copy,encoding="bgr8")
 
         self.image_pub.publish(msg)
 
@@ -206,7 +208,7 @@ class Camera(Node):
         else:
             self.prev_xyz[0],self.prev_xyz[1],self.prev_xyz[2] = x ,y ,z
         
-        self.log(x,y,z)
+        # self.log(child_frame,x,y,z)
 
         transform = TransformStamped()
 

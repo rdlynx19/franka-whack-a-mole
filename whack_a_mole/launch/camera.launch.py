@@ -61,23 +61,6 @@ def generate_launch_description():
             description="Enable point cloud generation."
         ),
 
-        # include franka_fer_movit_config demo.launch.py with use_rviz:=false
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('franka_fer_moveit_config'),
-                        "launch",
-                        "demo.launch.py"
-                    ]
-                )
-            ),
-            launch_arguments={
-                "use_rviz": "false"
-            }.items(),
-            condition=UnlessCondition(LaunchConfiguration("camera_only"))
-        ),
-
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 PathJoinSubstitution(

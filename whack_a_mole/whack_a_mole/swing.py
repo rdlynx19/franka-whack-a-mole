@@ -43,25 +43,6 @@ class Swing(Node):
         :returns: response to service call
         :rtype: bool
         """
-        # Add box to the scene
-        box_pose = Pose()
-        box_pose.position.x = 0.59
-        box_pose.position.y = 0.13
-        box_pose.position.z = 0.1378
-        await self.mpi.planning_scene.add_collision_objects(
-            'box', box_pose, [0.05, 0.05, 0.05]
-        )
-
-        # Add wall to the scene
-        wall_pose = Pose()
-        wall_pose.position.x = 0.5
-        wall_pose.position.y = 0.3
-        wall_pose.position.z = 0.0
-        await self.mpi.planning_scene.add_collision_objects(
-            'wall', wall_pose, [0.05, 0.05, 0.5]
-        )
-
-        # Plan path to pick object
         object_pose = Pose()
         object_pose = request.pick_point
         pose1 = copy.deepcopy(object_pose)

@@ -20,12 +20,12 @@ COLORS_HSV = {
     "GREEN":
     [np.array([79, 55, 37]), np.array([84, 163, 129])],
     "YELLOW":
-    [np.array([20, 100, 101]),np.array([24, 201, 125])],
+    [np.array([24, 100, 101]),np.array([24, 184, 173])],
     "BLUE":
     [np.array((103, 104, 83)),np.array((130, 255, 179))]
               }
 
-CROP = [(0,350),(1280,720)]
+CROP = [(100,350),(1280,720)]
 
 
 
@@ -79,7 +79,7 @@ class Camera(Node):
             self.timer_callback
         )
 
-        self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq*0.5),2)) # 2 is the number of sec of buffer
+        self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq),2)) + (np.array(CROP[0]) + np.array(CROP[1]))/2
 
         self.clipping_distance = 1999
 
@@ -99,8 +99,10 @@ class Camera(Node):
         
         x_c,y_c = self.find_color_centroid(lower_HSV,higher_HSV)
 
-        self.running_avg[color_index,:-1] = self.running_avg[color_index,1:]  # Shift all elements down by 1
-        self.running_avg[color_index,-1] = np.array([x_c,y_c])
+        if (x_c !=0 and y_c != 0):
+
+            self.running_avg[color_index,:-1] = self.running_avg[color_index,1:]  # Shift all elements down by 1
+            self.running_avg[color_index,-1] = np.array([x_c,y_c])
 
         avg_centroid = np.mean(self.running_avg[color_index], axis=0)
         avg_centroid = np.array(avg_centroid, dtype=int)
@@ -156,7 +158,7 @@ class Camera(Node):
             
             cv2.putText(bg_removed, f'{color}', (avg_centroid[0],avg_centroid[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-        cv2.rectangle(bg_removed, CROP[0], CROP[1], (255, 0, 0), thickness =1)
+        cv2.rectangle(bg_removed, CROP[0], CROP[1], (0, 0, 255), thickness =5)
 
         msg = CvBridge().cv2_to_imgmsg(bg_removed,encoding="bgr8")
 

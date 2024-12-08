@@ -14,7 +14,7 @@ from geometry_msgs.msg import TransformStamped
 
 global COLORS , COLORS_HSV, CROP
 
-COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2}
+COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2 , "RED" : 3}
 
 COLORS_HSV = {
     "GREEN":
@@ -22,8 +22,10 @@ COLORS_HSV = {
     "YELLOW":
     [np.array([24, 100, 101]),np.array([24, 184, 173])],
     "BLUE":
-    [np.array((103, 104, 83)),np.array((130, 255, 179))]
-              }
+    [np.array((103, 104, 83)),np.array((130, 255, 179))],
+    "RED": [
+        np.array((2, 201, 85)),np.array((90, 255, 89))],
+}
 
 CROP = [(100,350),(1280,720)]
 
@@ -96,6 +98,10 @@ class Camera(Node):
     def broadcast_color(self,lower_HSV,higher_HSV, color : str):
 
         color_index = COLORS[color]
+
+        # if (color == "RED"):
+
+        #     self.log(COLORS_HSV["RED"][0].shape)
         
         x_c,y_c = self.find_color_centroid(lower_HSV,higher_HSV)
 
@@ -138,9 +144,16 @@ class Camera(Node):
         depth_image_3d = np.dstack((self.depth_image,self.depth_image,self.depth_image)) #depth image is 1 channel, color is 3 channels
         bg_removed = np.where((depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0), 0, self.color_image)
 
-        mask = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
+        if (lower_HSV.shape[0] == 2):
+            mask1 = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV[0],higher_HSV[0])
+            mask2 = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV[1],higher_HSV[1])
+            mask = mask1 + mask2
+        
+        else:
 
-        if(not np.any(mask)): return np.array([-1,-1])
+            mask = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
+
+        if(not np.any(mask)):  return np.array([-1,-1])
 
         #Find Centroid
         x_c , y_c = self.find_centroid_cropped(mask,(*CROP[0],*CROP[1]))

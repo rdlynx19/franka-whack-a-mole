@@ -3,9 +3,9 @@
     <include file="$(find-pkg-share object_mover)/launch/object_mover.launch.py">
     </include>
 
-    <!--<node pkg="whack_a_mole" exec="swing" />
+    <node pkg="whack_a_mole" exec="swing" />
 
-    <node pkg="whack_a_mole" exec="comm_node"/>_-->
+    <node pkg="whack_a_mole" exec="comm_node"/>_
     <include file="$(find-pkg-share whack_a_mole)/camera.launch.py"/>
     <node pkg="whack_a_mole" exec="game_node" />
     <node

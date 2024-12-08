@@ -62,7 +62,7 @@ class Game(Node):
             goal_pose.orientation.z = 0.0
             goal_pose.orientation.w = 0.0
             self.get_logger().info('Sending goal pose to pick service') 
-            await self.pick_client.call_async(PickPose.Request(goal_pose=goal_pose))
+            _ = await self.pick_client.call_async(PickPose.Request(goal_pose=goal_pose))
             self.get_logger().info('Goal pose sent to pick service')
             return response
 

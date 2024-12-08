@@ -33,14 +33,13 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, EqualsSubstitution
-from launch.conditions import UnlessCondition, IfCondition
 from launch_ros.substitutions import FindPackageShare
-
+from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
     # Get the package share directory
     pkg_share = FindPackageShare(package='whack_a_mole').find('whack_a_mole')
-    tags_yaml = os.path.join(pkg_share, 'tags.yaml')
+    tags_yaml = os.path.join(pkg_share, 'cfg', 'tags.yaml')
     tags_tf_rviz = os.path.join(pkg_share, 'tags_tf.rviz')
     move_it_rviz = os.path.join(pkg_share, 'moveit.rviz')
 
@@ -83,16 +82,6 @@ def generate_launch_description():
         ),
 
         Node(
-            condition=IfCondition(EqualsSubstitution(LaunchConfiguration("camera_only"), "false")),
-            package="rviz2",
-            executable="rviz2",
-            arguments=[
-                '-d', move_it_rviz
-            ],
-            output="screen",
-        ),
-        Node(
-            condition=IfCondition(EqualsSubstitution(LaunchConfiguration("camera_only"), "true")),
             package="rviz2",
             executable="rviz2",
             arguments=[
@@ -100,45 +89,45 @@ def generate_launch_description():
             ],
             output="screen",
         ),
+        IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [
+                 FindPackageShare('franka_fer_moveit_config'),
+                 "launch",
+                 "demo.launch.py"
+                ]
+            )
+        ),
+        launch_arguments={
+            "use_rviz": "false"
+        }.items(),
+        condition=UnlessCondition(LaunchConfiguration("camera_only"))
+        ),
+        # Node(
+            # package='apriltag_ros',
+            # executable='apriltag_node',
+            # name='apriltag_node',
+            # output='screen',
+            # remappings=[
+                # ('image_rect', '/camera/camera/color/image_raw'),
+                # ('camera_info', '/camera/camera/color/camera_info')
+            # ],
+            # parameters=[tags_yaml]
+        # ),
         Node(
             package='whack_a_mole',
             executable="camera",
             name = "color_camera",
             output = "screen",
         ),
-        
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('franka_fer_moveit_config'),
-                        "launch",
-                        "demo.launch.py"
-                    ]
-                )
-            ),
-            launch_arguments={
-                "use_rviz": "false"
-            }.items(),
-            condition=UnlessCondition(LaunchConfiguration("camera_only"))
-        ),
-        Node(
-            package='apriltag_ros',
-            executable='apriltag_node',
-            name='apriltag_node',
-            output='screen',
-            remappings=[
-                ('image_rect', '/camera/camera/color/image_raw'),
-                ('camera_info', '/camera/camera/color/camera_info')
-            ],
-            parameters=[
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('whack_a_mole'),
-                        'config', 
-                        'tags.yaml'
-                    ]
-                )
-            ]
-        ),
+         Node(
+        condition=IfCondition(EqualsSubstitution(LaunchConfiguration("camera_only"), "false")),
+        package="rviz2",
+        executable="rviz2",
+        arguments=[
+         '-d', move_it_rviz
+        ],
+        output="screen",
+    ),
     ])

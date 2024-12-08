@@ -8,18 +8,18 @@
     <node pkg="whack_a_mole" exec="comm_node"/>_
     <include file="$(find-pkg-share whack_a_mole)/camera.launch.py"/>
     <node pkg="whack_a_mole" exec="game_node" />
-    <node
-        pkg="apriltag_ros"
-        exec="apriltag_node"
-        name="apriltag_node"
-        output="screen">
+    <!-- <node -->
+        <!-- pkg="apriltag_ros" -->
+        <!-- exec="apriltag_node" -->
+        <!-- name="apriltag_node" -->
+        <!-- output="screen"> -->
 
         <!-- Path to the parameter file -->
-        <param from="$(find-pkg-share whack_a_mole)/tags.yaml"/>
+        <!-- <param from="$(find-pkg-share whack_a_mole)/tags.yaml"/> -->
 
         <!-- Remap image and camera info topics -->
-        <remap from="image_rect" to="/camera/camera/color/image_raw"/>
-        <remap from="camera_info" to="/camera/camera/color/camera_info"/>
+        <!-- <remap from="image_rect" to="/camera/camera/color/image_raw"/> -->
+        <!-- <remap from="camera_info" to="/camera/camera/color/camera_info"/> -->
 
-    </node>
+    <!-- </node> -->
 </launch>

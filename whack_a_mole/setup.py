@@ -15,7 +15,8 @@ setup(
         ('share/' + package_name, ['config/tags_tf.rviz']),
         ('share/' + package_name, ['config/moveit.rviz']),
         ('share/' + package_name, ['package.xml', 
-                                   'launch/planner_swing.launch.xml']),
+                                   'launch/planner_swing.launch.xml',
+                                   'launch/github_camera.launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -28,7 +29,7 @@ setup(
         'console_scripts': [
             'swing = whack_a_mole.swing:main',
             'comm_node = whack_a_mole.serial_comm:node_main',
-            'camera = whack_a_mole.camera:entry'
+            'camera = whack_a_mole.camera:entry',
             'game_node = whack_a_mole.game:main',
         ],
     },

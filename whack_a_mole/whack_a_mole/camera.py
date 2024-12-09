@@ -1,4 +1,3 @@
-import pyrealsense2 as rs
 import numpy as np
 
 import rclpy
@@ -8,6 +7,8 @@ import cv2
 from cv_bridge import CvBridge
 
 from sensor_msgs.msg import Image , CameraInfo
+
+from std_msgs.msg import Int32
 
 from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import TransformStamped
@@ -65,6 +66,12 @@ class Camera(Node):
             10
         )
 
+        self.illumination_pub = self.create_publisher(
+            Int32,  # Publisher for illuminated color ID
+            "illuminated_color",
+            qos_profile=QoSProfile(depth=10)
+        )
+
         self.tf_broadcaster = TransformBroadcaster(self, qos=QoSProfile(depth = 10))
         
 
@@ -84,6 +91,8 @@ class Camera(Node):
         self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq),2)) + (np.array(CROP[0]) + np.array(CROP[1]))/2
 
         self.clipping_distance = 1999
+        
+        self.illumination_threshold - 150 # Define a brightness threshold for illumination
 
 
     def timer_callback(self):
@@ -116,6 +125,27 @@ class Camera(Node):
 
         self.broadcast_color_frame("camera_depth_frame",color + "_frame",avg_centroid[0],avg_centroid[1])
 
+        # Detect illumination
+        is_illuminated = self.detect_illumination(lower_HSV, higher_HSV)
+        if is_illuminated:
+            color_id = COLORS[color]
+            self.illumination_pub.publish(Int32(data=color_id))
+
+    def detect_illumination(self, lower_HSV, higher_HSV):
+        """
+        Detects if a color is illuminated based on its average brightness.
+        """
+        hsv_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv_image, lower_HSV, higher_HSV)
+        if not np.any(mask):
+            return False
+
+        # Extract the V channel (brightness)
+        brightness = cv2.bitwise_and(hsv_image[:, :, 2], hsv_image[:, :, 2], mask=mask)
+        avg_brightness = np.mean(brightness)
+
+        self.log(f"Average brightness for {lower_HSV}-{higher_HSV}: {avg_brightness}")
+        return avg_brightness > self.illumination_threshold
 
     def log(self,*message):
 

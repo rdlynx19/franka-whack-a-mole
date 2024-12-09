@@ -19,7 +19,7 @@ COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2 , "RED" : 3}
 
 COLORS_HSV = {
     "GREEN":
-    [np.array([79, 55, 37]), np.array([84, 163, 129])],
+    [np.array([63, 79, 26]), np.array([84, 163, 129])],
     "YELLOW":
     [np.array([24, 100, 101]),np.array([24, 184, 173])],
     "BLUE":
@@ -28,7 +28,12 @@ COLORS_HSV = {
         np.array((2, 201, 85)),np.array((90, 255, 89))],
 }
 
-CROP = [(100,350),(1280,720)]
+COLORS_HSV = {
+    "GREEN":
+    [np.array([63, 79, 26]), np.array([84, 163, 129])],
+}
+
+CROP = [(400,200),(1280,720)]
 
 
 
@@ -88,12 +93,20 @@ class Camera(Node):
             self.timer_callback
         )
 
+        self.target_pos = np.zeros(3) -1.0
+
         self.running_avg = np.zeros((len(COLORS.keys()),int(self.freq),2)) + (np.array(CROP[0]) + np.array(CROP[1]))/2
+
+        self.rgb_running_avg = np.zeros((len(COLORS.keys()),int(self.freq*5),3),dtype=int) #*8 for 8 sec on on time
 
         self.clipping_distance = 1999
         
         self.illumination_threshold = 150 # Define a brightness threshold for illumination
 
+
+    def log(self,*message):
+
+        self.get_logger().info(f"[CAMERA NODE]: {",".join(str(i) for i in message)}")
 
     def timer_callback(self):
 
@@ -103,14 +116,13 @@ class Camera(Node):
         for color in COLORS_HSV.keys():
 
             self.broadcast_color(lower_HSV=COLORS_HSV[color][0],higher_HSV=COLORS_HSV[color][1],color=color)
+        
+            self.detect_illumination(color)
 
     def broadcast_color(self,lower_HSV,higher_HSV, color : str):
 
         color_index = COLORS[color]
 
-        # if (color == "RED"):
-
-        #     self.log(COLORS_HSV["RED"][0].shape)
         
         x_c,y_c = self.find_color_centroid(lower_HSV,higher_HSV)
 
@@ -125,31 +137,27 @@ class Camera(Node):
 
         self.broadcast_color_frame("camera_depth_frame",color + "_frame",avg_centroid[0],avg_centroid[1])
 
-        # Detect illumination
-        is_illuminated = self.detect_illumination(lower_HSV, higher_HSV)
-        if is_illuminated:
-            color_id = COLORS[color]
-            self.illumination_pub.publish(Int32(data=color_id))
-
-    def detect_illumination(self, lower_HSV, higher_HSV):
+    def detect_illumination(self,color):
         """
         Detects if a color is illuminated based on its average brightness.
         """
-        hsv_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv_image, lower_HSV, higher_HSV)
-        if not np.any(mask):
-            return False
+        color_index = COLORS[color]
+        #get latest location of center
+        color_pixel_yx = np.array([np.mean(self.running_avg[color_index][:, 1]),np.mean(self.running_avg[color_index][:, 0])],dtype=int)
+        rgb_value = self.color_image[*color_pixel_yx]
+        
+        curr_average = np.mean(self.rgb_running_avg[color_index][:,0]),np.mean(self.rgb_running_avg[color_index][:,1]),np.mean(self.rgb_running_avg[color_index][:,2])
+        curr_average = np.array(curr_average,dtype=int)
+        if (np.linalg.norm(rgb_value - curr_average) >= self.illumination_threshold):
+            self.log(color,"ILUMINATED!!!!")
+        # Do the running average
+        else:
+            self.rgb_running_avg[color_index,:-1] = self.rgb_running_avg[color_index,1:]  # Shift all elements down by 1
+            self.rgb_running_avg[color_index,-1] = np.array(rgb_value)
+            self.log(color,"OFF!!!!")
 
-        # Extract the V channel (brightness)
-        brightness = cv2.bitwise_and(hsv_image[:, :, 2], hsv_image[:, :, 2], mask=mask)
-        avg_brightness = np.mean(brightness)
+        
 
-        self.log(f"Average brightness for {lower_HSV}-{higher_HSV}: {avg_brightness}")
-        return avg_brightness > self.illumination_threshold
-
-    def log(self,*message):
-
-        self.get_logger().info(f"[CAMERA NODE]: {",".join(str(i) for i in message)}")
 
     def camera_info_callback(self, msg):
         # Save the camera intrinsics 
@@ -174,14 +182,8 @@ class Camera(Node):
         depth_image_3d = np.dstack((self.depth_image,self.depth_image,self.depth_image)) #depth image is 1 channel, color is 3 channels
         bg_removed = np.where((depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0), 0, self.color_image)
 
-        if (lower_HSV.shape[0] == 2):
-            mask1 = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV[0],higher_HSV[0])
-            mask2 = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV[1],higher_HSV[1])
-            mask = mask1 + mask2
-        
-        else:
 
-            mask = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
+        mask = cv2.inRange(cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV),lower_HSV,higher_HSV)
 
         if(not np.any(mask)):  return np.array([-1,-1])
 

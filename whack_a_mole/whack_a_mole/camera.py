@@ -1,4 +1,3 @@
-import pyrealsense2 as rs
 import numpy as np
 
 import rclpy
@@ -319,9 +318,9 @@ class Camera(Node):
         transform.header.frame_id = base_frame
         transform.child_frame_id = child_frame
 
-        transform.transform.translation.x = x
-        transform.transform.translation.y = y
-        transform.transform.translation.z = -1.0 * z
+        transform.transform.translation.x = z
+        transform.transform.translation.y = -x
+        transform.transform.translation.z = -y
 
         transform.transform.rotation.x = 0.0
         transform.transform.rotation.y = 0.0

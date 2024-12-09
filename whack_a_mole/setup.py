@@ -29,7 +29,7 @@ setup(
         'console_scripts': [
             'swing = whack_a_mole.swing:main',
             'comm_node = whack_a_mole.serial_comm:node_main',
-            'camera = whack_a_mole.camera:entry',
+            'camera_node = whack_a_mole.camera:entry',
             'game_node = whack_a_mole.game:main',
         ],
     },

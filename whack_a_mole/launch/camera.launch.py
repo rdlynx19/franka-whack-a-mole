@@ -72,13 +72,12 @@ def generate_launch_description():
                 )
             ),
             launch_arguments={
-                # "depth_module.profile": "1280x720x30",
-                # "rgb_camera.profile": "1280x720x30",
+                "depth_module.profile": "1280x720x30",
+                "rgb_camera.profile": "1280x720x30",
                 "enable_sync": "true",
                 'align_depth.enable': "true",
                 'enable_color': "true",
                 'enable_depth': "true"
-               
             }.items()
         ),
 
@@ -102,43 +101,8 @@ def generate_launch_description():
         ),
         Node(
             package='whack_a_mole',
-            executable="camera",
+            executable="camera_node",
             name = "color_camera",
             output = "screen",
-        ),
-        
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('franka_fer_moveit_config'),
-                        "launch",
-                        "demo.launch.py"
-                    ]
-                )
-            ),
-            launch_arguments={
-                "use_rviz": "false"
-            }.items(),
-            condition=UnlessCondition(LaunchConfiguration("camera_only"))
-        ),
-        Node(
-            package='apriltag_ros',
-            executable='apriltag_node',
-            name='apriltag_node',
-            output='screen',
-            remappings=[
-                ('image_rect', '/camera/camera/color/image_raw'),
-                ('camera_info', '/camera/camera/color/camera_info')
-            ],
-            parameters=[
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('whack_a_mole'),
-                        'config', 
-                        'tags.yaml'
-                    ]
-                )
-            ]
         ),
     ])

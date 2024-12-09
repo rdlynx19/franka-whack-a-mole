@@ -1,0 +1,646 @@
+[INFO] [launch]: All log files can be found below /home/david/.ros/log/2024-12-09-09-29-29-856716-laptop-163748
+[INFO] [launch]: Default logging verbosity is set to INFO
+[WARNING] [launch_ros.actions.node]: Parameter file path is not a file: /home/david/cls/_ME495/src/whack_mole/install/whack_a_mole/share/whack_a_mole/cfg/tags.yaml
+[INFO] [realsense2_camera_node-1]: process started with pid [163757]
+[INFO] [robot_state_publisher-2]: process started with pid [163758]
+[INFO] [move_group-3]: process started with pid [163759]
+[INFO] [ros2_control_node-4]: process started with pid [163760]
+[INFO] [spawner-5]: process started with pid [163761]
+[INFO] [spawner-6]: process started with pid [163762]
+[INFO] [spawner-7]: process started with pid [163763]
+[INFO] [franka_mock_gripper_node-8]: process started with pid [163764]
+[INFO] [joint_state_publisher-9]: process started with pid [163765]
+[INFO] [apriltag_node-10]: process started with pid [163766]
+[INFO] [rviz2-11]: process started with pid [163767]
+[ros2_control_node-4] [INFO] [1733758170.796259243] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[robot_state_publisher-2] [INFO] [1733758170.805293721] [robot_state_publisher]: Robot initialized
+[franka_mock_gripper_node-8] [INFO] [1733758170.806768988] [fer_gripper]: Trying to establish a connection with the gripper
+[franka_mock_gripper_node-8] [INFO] [1733758170.806827958] [fer_gripper]: Connected to gripper
+[ros2_control_node-4] [INFO] [1733758170.826322207] [controller_manager]: update rate is 1000 Hz
+[ros2_control_node-4] [INFO] [1733758170.826361154] [controller_manager]: Spawning controller_manager RT thread with scheduler priority: 50
+[ros2_control_node-4] [WARN] [1733758170.829760739] [controller_manager]: Could not enable FIFO RT scheduling policy: with error number <1>(Operation not permitted). See [https://control.ros.org/master/doc/ros2_control/controller_manager/doc/userdoc.html] for details on how to enable realtime scheduling.
+[move_group-3] [INFO] [1733758170.863012486] [move_group.moveit.moveit.ros.rdf_loader]: Loaded robot model in 0.0196367 seconds
+[move_group-3] [INFO] [1733758170.863105699] [move_group.moveit.moveit.core.robot_model]: Loading robot model 'fer'...
+[move_group-3] [INFO] [1733758170.873088192] [move_group.moveit.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'fer_manipulator': 1 1 1 1 1 1 1
+[move_group-3] [INFO] [1733758170.873888698] [move_group.moveit.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'fer_arm': 1 1 1 1 1 1 1
+[ros2_control_node-4] [INFO] [1733758170.922378045] [controller_manager]: Received robot description from topic.
+[ros2_control_node-4] [INFO] [1733758170.925605427] [controller_manager.resource_manager]: Loading hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [INFO] [1733758170.932996851] [controller_manager.resource_manager]: Loaded hardware 'FrankaHardwareInterface' from plugin 'franka_hardware/FrankaHardwareInterface'
+[ros2_control_node-4] [INFO] [1733758170.933040357] [controller_manager.resource_manager]: Initialize hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [ERROR] [1733758170.933060636] [controller_manager.resource_manager]: Exception of type : St13runtime_error occurred while initializing hardware 'FrankaHardwareInterface': Error in state! Internal state_handle is NULL.
+[ros2_control_node-4] [WARN] [1733758170.933085778] [controller_manager.resource_manager]: System hardware component 'FrankaHardwareInterface' from plugin 'franka_hardware/FrankaHardwareInterface' failed to initialize.
+[ros2_control_node-4] [WARN] [1733758170.933103876] [controller_manager]: Could not load and initialize hardware. Please check previous output for more details. After you have corrected your URDF, try to publish robot description again.
+[move_group-3] [INFO] [1733758170.958180612] [move_group.moveit.moveit.ros.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-3] [INFO] [1733758170.958323774] [move_group.moveit.moveit.ros.moveit_cpp]: Listening to 'joint_states' for joint states
+[ros2_control_node-4] [INFO] [1733758170.959531549] [controller_manager]: Received robot description from topic.
+[ros2_control_node-4] [INFO] [1733758170.962794755] [controller_manager.resource_manager]: Loading hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [INFO] [1733758170.963088955] [controller_manager.resource_manager]: Loaded hardware 'FrankaHardwareInterface' from plugin 'mock_components/GenericSystem'
+[ros2_control_node-4] [INFO] [1733758170.963101570] [controller_manager.resource_manager]: Initialize hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [INFO] [1733758170.963171829] [controller_manager.resource_manager]: Successful initialization of hardware 'FrankaHardwareInterface'
+[ros2_control_node-4] [WARN] [1733758170.963192375] [controller_manager.resource_manager]: Importing state interfaces for the hardware 'FrankaHardwareInterface' returned no state interfaces.
+[ros2_control_node-4] [INFO] [1733758170.963232735] [resource_manager]: 'configure' hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [INFO] [1733758170.963235020] [resource_manager]: Successful 'configure' of hardware 'FrankaHardwareInterface'
+[ros2_control_node-4] [INFO] [1733758170.963241060] [resource_manager]: 'activate' hardware 'FrankaHardwareInterface' 
+[ros2_control_node-4] [INFO] [1733758170.963242978] [resource_manager]: Successful 'activate' of hardware 'FrankaHardwareInterface'
+[ros2_control_node-4] [INFO] [1733758170.963248587] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[move_group-3] [INFO] [1733758170.964223664] [move_group.moveit.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-3] [INFO] [1733758170.964852813] [move_group.moveit.moveit.ros.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[move_group-3] [INFO] [1733758170.964869536] [move_group.moveit.moveit.ros.planning_scene_monitor]: Stopping existing planning scene publisher.
+[move_group-3] [INFO] [1733758170.965068674] [move_group.moveit.moveit.ros.planning_scene_monitor]: Stopped publishing maintained planning scene.
+[move_group-3] [INFO] [1733758170.972619477] [move_group.moveit.moveit.ros.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-3] [INFO] [1733758170.972730234] [move_group.moveit.moveit.ros.planning_scene_monitor]: Starting planning scene monitor
+[move_group-3] [INFO] [1733758170.976177465] [move_group.moveit.moveit.ros.planning_scene_monitor]: Listening to '/planning_scene'
+[move_group-3] [INFO] [1733758170.976204423] [move_group.moveit.moveit.ros.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-3] [INFO] [1733758170.978918006] [move_group.moveit.moveit.ros.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-3] [INFO] [1733758170.979230582] [move_group.moveit.moveit.ros.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-3] [WARN] [1733758170.979362301] [move_group.moveit.moveit.ros.occupancy_map_monitor]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-3] [ERROR] [1733758170.979371550] [move_group.moveit.moveit.ros.occupancy_map_monitor]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-3] [INFO] [1733758170.993260668] [move_group.moveit.moveit.ros.planning_pipeline]: Successfully loaded planner 'OMPL'
+[move_group-3] [INFO] [1733758170.993937500] [move_group]: Try loading adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758170.994532950] [move_group]: Loaded adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758170.994541706] [move_group]: Try loading adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758170.994703466] [move_group]: Loaded adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758170.994708473] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758170.994724403] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758170.994727390] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758170.994737048] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758170.995352950] [move_group]: Try loading adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758170.996636942] [move_group]: Loaded adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758170.996644990] [move_group]: Try loading adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758170.997967447] [move_group]: Loaded adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758170.997977637] [move_group]: Try loading adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758170.998361895] [move_group]: Loaded adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.001825500] [move_group.moveit.moveit.planners.pilz.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-3] [INFO] [1733758171.013923419] [move_group.moveit.moveit.planners.pilz.command_planner]: Available plugins: pilz_industrial_motion_planner/PlanningContextLoaderCIRC pilz_industrial_motion_planner/PlanningContextLoaderLIN pilz_industrial_motion_planner/PlanningContextLoaderPTP 
+[move_group-3] [INFO] [1733758171.013953448] [move_group.moveit.moveit.planners.pilz.command_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderCIRC
+[move_group-3] [INFO] [1733758171.015599690] [move_group.moveit.moveit.planners.pilz.command_planner]: Registered Algorithm [CIRC]
+[move_group-3] [INFO] [1733758171.015625722] [move_group.moveit.moveit.planners.pilz.command_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderLIN
+[move_group-3] [INFO] [1733758171.016936221] [move_group.moveit.moveit.planners.pilz.command_planner]: Registered Algorithm [LIN]
+[move_group-3] [INFO] [1733758171.016961368] [move_group.moveit.moveit.planners.pilz.command_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderPTP
+[move_group-3] [INFO] [1733758171.018179388] [move_group.moveit.moveit.planners.pilz.command_planner]: Registered Algorithm [PTP]
+[move_group-3] [INFO] [1733758171.018202882] [move_group.moveit.moveit.ros.planning_pipeline]: Successfully loaded planner 'Pilz Industrial Motion Planner'
+[move_group-3] [INFO] [1733758171.019567521] [move_group]: Try loading adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.019679403] [move_group]: Loaded adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.019693200] [move_group]: Try loading adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.021114842] [move_group]: Loaded adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.021132258] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.021158033] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.021165396] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.021179335] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.022985005] [move_group]: Try loading adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.025455761] [move_group]: Loaded adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.025474559] [move_group]: Try loading adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.026420881] [move_group]: Loaded adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.031968292] [move_group.moveit.moveit.ros.planning_pipeline]: Successfully loaded planner 'STOMP'
+[move_group-3] [INFO] [1733758171.033457819] [move_group]: Try loading adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.033781242] [move_group]: Loaded adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.034036731] [move_group]: Try loading adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.034847921] [move_group]: Loaded adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.034864846] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.034891200] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.034898922] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.034913777] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.036424982] [move_group]: Try loading adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758171.037899030] [move_group]: Loaded adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758171.037915029] [move_group]: Try loading adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.039227564] [move_group]: Loaded adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.039244834] [move_group]: Try loading adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.041915115] [move_group]: Loaded adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.046641648] [move_group.moveit.moveit.ros.planning_pipeline]: Successfully loaded planner 'CHOMP'
+[move_group-3] [INFO] [1733758171.047705122] [move_group]: Try loading adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.047812437] [move_group]: Loaded adapter 'default_planning_request_adapters/ResolveConstraintFrames'
+[move_group-3] [INFO] [1733758171.047821660] [move_group]: Try loading adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.048527231] [move_group]: Loaded adapter 'default_planning_request_adapters/ValidateWorkspaceBounds'
+[move_group-3] [INFO] [1733758171.048546333] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.048577599] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateBounds'
+[move_group-3] [INFO] [1733758171.048585204] [move_group]: Try loading adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.048600514] [move_group]: Loaded adapter 'default_planning_request_adapters/CheckStartStateCollision'
+[move_group-3] [INFO] [1733758171.052331852] [move_group]: Try loading adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758171.056430017] [move_group]: Loaded adapter 'default_planning_response_adapters/AddTimeOptimalParameterization'
+[move_group-3] [INFO] [1733758171.056449148] [move_group]: Try loading adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.057041826] [move_group]: Loaded adapter 'default_planning_response_adapters/ValidateSolution'
+[move_group-3] [INFO] [1733758171.057055110] [move_group]: Try loading adapter 'default_planning_response_adapters/DisplayMotionPath'
+[move_group-3] [INFO] [1733758171.057482456] [move_group]: Loaded adapter 'default_planning_response_adapters/DisplayMotionPath'
+[realsense2_camera_node-1] [0m[INFO] [1733758171.138931210] [camera.camera]: RealSense ROS v4.55.1[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.139013656] [camera.camera]: Built with LibRealSense v2.55.1[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.139135299] [camera.camera]: Running with LibRealSense v2.55.1[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175053529] [camera.camera]: Device with serial number 938422073154 was found.
+[realsense2_camera_node-1] [0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175097665] [camera.camera]: Device with physical ID /sys/devices/pci0000:00/0000:00:14.0/usb2/2-4/2-4:1.0/video4linux/video0 was found.[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175112778] [camera.camera]: Device with name Intel RealSense D435I was found.[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175273972] [camera.camera]: Device with port number 2-4 was found.[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175287021] [camera.camera]: Device USB type: 3.2[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.175361319] [camera.camera]: getParameters...[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176531279] [camera.camera]: JSON file is not provided[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176555663] [camera.camera]: Device Name: Intel RealSense D435I[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176568797] [camera.camera]: Device Serial No: 938422073154[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176578883] [camera.camera]: Device physical port: /sys/devices/pci0000:00/0000:00:14.0/usb2/2-4/2-4:1.0/video4linux/video0[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176590059] [camera.camera]: Device FW version: 5.15.1[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176599633] [camera.camera]: Device Product ID: 0x0B3A[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.176608292] [camera.camera]: Sync Mode: On[0m
+[rviz2-11] [INFO] [1733758171.198660277] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-11] [INFO] [1733758171.198750370] [rviz2]: OpenGl version: 4.6 (GLSL 4.6)
+[joint_state_publisher-9] [INFO] [1733758171.210860393] [joint_state_publisher]: Waiting for robot_description to be published on the robot_description topic...
+[rviz2-11] [INFO] [1733758171.213595711] [rviz2]: Stereo is NOT SUPPORTED
+[ros2_control_node-4] [INFO] [1733758171.241573512] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[ros2_control_node-4] [INFO] [1733758171.241602431] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[ros2_control_node-4] [INFO] [1733758171.243181831] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /home/david/ws/franka/install/share/franka_fer_moveit_config/config/ros2_controllers.yaml -r /controller_manager/robot_description:=/robot_description 
+[spawner-6] [INFO] [1733758171.243811690] [spawner_fer_gripper]: waiting for service /controller_manager/list_controllers to become available...
+[spawner-5] [INFO] [1733758171.253553843] [spawner_fer_arm_controller]: waiting for service /controller_manager/list_controllers to become available...
+[move_group-3] [INFO] [1733758171.262635604] [move_group.moveit.moveit.plugins.simple_controller_manager]: Added FollowJointTrajectory controller for fer_arm_controller
+[move_group-3] [INFO] [1733758171.262663105] [move_group.moveit.moveit.plugins.simple_controller_manager]: Max effort set to 0.0
+[move_group-3] [INFO] [1733758171.267143028] [move_group.moveit.moveit.plugins.simple_controller_manager]: Added GripperCommand controller for fer_gripper
+[move_group-3] [INFO] [1733758171.267250689] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 2 controllers in list
+[move_group-3] [INFO] [1733758171.267269902] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 2 controllers in list
+[move_group-3] [INFO] [1733758171.267550919] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-3] [INFO] [1733758171.267562578] [move_group]: MoveGroup debug mode is ON
+[spawner-7] [INFO] [1733758171.272361618] [spawner_joint_state_broadcaster]: [94mLoaded [1mjoint_state_broadcaster[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.272835342] [camera.camera]: Set ROS param depth_module.depth_profile to default: 848x480x30[0m
+[ros2_control_node-4] [INFO] [1733758171.273202341] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[realsense2_camera_node-1] [0m[INFO] [1733758171.273352561] [camera.camera]: Set ROS param depth_module.infra_profile to default: 848x480x30[0m
+[ros2_control_node-4] [INFO] [1733758171.273260593] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-7] [ERROR] [1733758171.273829235] [spawner_joint_state_broadcaster]: [91mFailed to configure controller[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.280046179] [camera.camera]: Set ROS param rgb_camera.color_profile to default: 1280x720x30[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.280887388] [camera.camera]: Set ROS param gyro_fps to default: 200[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.281023403] [camera.camera]: Set ROS param accel_fps to default: 63[0m
+[move_group-3] [INFO] [1733758171.287445075] [move_group.moveit.moveit.planners.pilz.move_group_sequence_action]: initialize move group sequence action
+[realsense2_camera_node-1] [0m[INFO] [1733758171.289528032] [camera.camera]: Stopping Sensor: Depth Module[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.289604962] [camera.camera]: Stopping Sensor: RGB Camera[0m
+[move_group-3] [INFO] [1733758171.289633034] [move_group.moveit.moveit.planners.pilz.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-3] [INFO] [1733758171.289779078] [move_group.moveit.moveit.planners.pilz.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-3] [INFO] [1733758171.290375647] [move_group.moveit.moveit.ros.move_group.executable]: 
+[move_group-3] 
+[move_group-3] ********************************************************
+[move_group-3] * MoveGroup using: 
+[move_group-3] *     - apply_planning_scene_service
+[move_group-3] *     - clear_octomap_service
+[move_group-3] *     - get_group_urdf
+[move_group-3] *     - CartesianPathService
+[move_group-3] *     - execute_trajectory_action
+[move_group-3] *     - get_planning_scene_service
+[move_group-3] *     - kinematics_service
+[move_group-3] *     - move_action
+[move_group-3] *     - motion_plan_service
+[move_group-3] *     - query_planners_service
+[move_group-3] *     - state_validation_service
+[move_group-3] *     - SequenceAction
+[move_group-3] *     - SequenceService
+[move_group-3] ********************************************************
+[move_group-3] 
+[move_group-3] [INFO] [1733758171.290401707] [move_group.moveit.moveit.ros.move_group.context]: MoveGroup context using pipeline ompl
+[move_group-3] [INFO] [1733758171.290407631] [move_group.moveit.moveit.ros.move_group.context]: MoveGroup context initialization complete
+[move_group-3] [96mLoading 'move_group/ApplyPlanningSceneService'...[0m
+[move_group-3] [96mLoading 'move_group/ClearOctomapService'...[0m
+[move_group-3] [96mLoading 'move_group/GetUrdfService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupCartesianPathService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupGetPlanningSceneService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupKinematicsService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupMoveAction'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupPlanService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupQueryPlannersService'...[0m
+[move_group-3] [96mLoading 'move_group/MoveGroupStateValidationService'...[0m
+[move_group-3] [96mLoading 'pilz_industrial_motion_planner/MoveGroupSequenceAction'...[0m
+[move_group-3] [96mLoading 'pilz_industrial_motion_planner/MoveGroupSequenceService'...[0m
+[move_group-3] 
+[move_group-3] [92mYou can start planning now![0m
+[move_group-3] 
+[rviz2-11] Warning: class_loader.impl: SEVERE WARNING!!! A namespace collision has occurred with plugin factory for class rviz_default_plugins::displays::InteractiveMarkerDisplay. New factory will OVERWRITE existing one. This situation occurs when libraries containing plugins are directly linked against an executable (the one running right now generating this message). Please separate plugins out into their own library or just don't link against the library and use either class_loader::ClassLoader/MultiLibraryClassLoader to open.
+[rviz2-11]          at line 321 in /opt/ros/jazzy/include/class_loader/class_loader/class_loader_core.hpp
+[realsense2_camera_node-1] [0m[INFO] [1733758171.306439981] [camera.camera]: Starting Sensor: Depth Module[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.308299329] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 848, Height: 480, FPS: 30[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.321726328] [camera.camera]: Starting Sensor: RGB Camera[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.328082396] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 1280, Height: 720, FPS: 30[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758171.329637710] [camera.camera]: RealSense Node Is Up![0m
+[ERROR] [spawner-7]: process has died [pid 163763, exit code 1, cmd '/opt/ros/jazzy/lib/controller_manager/spawner joint_state_broadcaster --ros-args'].
+[apriltag_node-10] [WARN] [1733758171.957494172] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 5
+[apriltag_node-10] 	Synchronized pairs:           0
+[ros2_control_node-4] [ERROR] [1733758171.998312461] [controller_manager]: The 'type' param was not defined for 'fer_gripper'.
+[spawner-6] [FATAL] [1733758171.999450811] [spawner_fer_gripper]: [91mFailed loading controller [1mfer_gripper[0m
+[ros2_control_node-4] [INFO] [1733758172.006755096] [controller_manager]: Loading controller : 'fer_arm_controller' of type 'joint_trajectory_controller/JointTrajectoryController'
+[ros2_control_node-4] [INFO] [1733758172.006794901] [controller_manager]: Loading controller 'fer_arm_controller'
+[spawner-5] [FATAL] [1733758172.007725526] [spawner_fer_arm_controller]: [91mFailed loading controller [1mfer_arm_controller[0m
+[ros2_control_node-4] [INFO] [1733758172.009239170] [controller_manager]: Controller 'fer_arm_controller' node arguments: --ros-args --params-file /home/david/ws/franka/install/share/franka_fer_moveit_config/config/ros2_controllers.yaml -r /controller_manager/robot_description:=/robot_description 
+[ERROR] [spawner-6]: process has died [pid 163762, exit code 1, cmd '/opt/ros/jazzy/lib/controller_manager/spawner fer_gripper --ros-args'].
+[ERROR] [spawner-5]: process has died [pid 163761, exit code 1, cmd '/opt/ros/jazzy/lib/controller_manager/spawner fer_arm_controller --ros-args'].
+[apriltag_node-10] [WARN] [1733758172.957479692] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[rviz2-11] [ERROR] [1733758174.333183511] [moveit_2152751117.moveit.ros.motion_planning_frame]: Action server: /recognize_objects not available
+[rviz2-11] [INFO] [1733758174.347517583] [moveit_2152751117.moveit.ros.motion_planning_frame]: MoveGroup namespace changed: / -> . Reloading params.
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] [INFO] [1733758174.378708342] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] [INFO] [1733758174.381734116] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[rviz2-11] failed to create drawable
+[ERROR] [rviz2-11]: process has died [pid 163767, exit code -11, cmd '/opt/ros/jazzy/lib/rviz2/rviz2 -d /home/david/cls/_ME495/src/whack_mole/install/whack_a_mole/share/whack_a_mole/moveit.rviz --ros-args'].
+[apriltag_node-10] [WARN] [1733758174.957408524] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758175.957418908] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758195.957335668] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758196.957355207] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758198.957370899] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758199.957353444] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      2
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           2
+[apriltag_node-10] [WARN] [1733758203.957370237] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758204.957383972] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758205.957455789] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758211.957468218] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758216.957446834] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758217.957434326] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758219.957352982] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 31
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758220.963020184] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758225.957445760] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758227.957405146] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758228.962066172] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758230.957445983] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 31
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758231.957484492] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 29
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758232.957397792] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      10
+[apriltag_node-10] 	CameraInfo messages received: 31
+[apriltag_node-10] 	Synchronized pairs:           10
+[apriltag_node-10] [WARN] [1733758236.957381450] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 29
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758237.957407832] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758247.957340521] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758248.957385923] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758250.957441692] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758251.957361294] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758252.957358640] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758262.957344885] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758263.957442435] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758264.957439173] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758277.957582592] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758278.957450989] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758282.957363573] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758283.966494817] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      2
+[apriltag_node-10] 	CameraInfo messages received: 31
+[apriltag_node-10] 	Synchronized pairs:           2
+[apriltag_node-10] [WARN] [1733758289.957442667] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758291.957448722] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758292.957484955] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      7
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           7
+[apriltag_node-10] [WARN] [1733758295.957368666] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758298.957456152] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758300.957335401] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758301.957375905] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758305.957379225] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758306.957447726] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758308.957355115] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758311.957372128] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758313.957357064] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758314.957378278] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758315.957392887] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758316.957363002] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      2
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           2
+[apriltag_node-10] [WARN] [1733758317.957356261] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758318.957359769] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758321.957378867] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      2
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           2
+[apriltag_node-10] [WARN] [1733758323.957332875] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758326.957328200] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758327.964237754] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758332.957337816] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758334.957337152] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758335.957344633] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      7
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           7
+[apriltag_node-10] [WARN] [1733758336.957408649] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758337.957382497] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      7
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           7
+[apriltag_node-10] [WARN] [1733758339.957357037] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758343.957354257] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758346.957374359] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758348.957465383] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758349.957365860] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758353.957448443] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      3
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           3
+[apriltag_node-10] [WARN] [1733758354.957500715] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 29
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758358.957419260] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758359.957368839] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758362.957366236] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758364.957423930] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[apriltag_node-10] [WARN] [1733758365.957369001] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758370.957378359] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758371.957437098] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      9
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           9
+[apriltag_node-10] [WARN] [1733758373.957381413] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 29
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758376.965659786] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 31
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758377.957478355] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      7
+[apriltag_node-10] 	CameraInfo messages received: 29
+[apriltag_node-10] 	Synchronized pairs:           7
+[apriltag_node-10] [WARN] [1733758378.957334566] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      7
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           7
+[apriltag_node-10] [WARN] [1733758381.957455597] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758382.957378059] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      6
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           6
+[apriltag_node-10] [WARN] [1733758385.957331983] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      1
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           1
+[apriltag_node-10] [WARN] [1733758389.957332207] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      5
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           5
+[apriltag_node-10] [WARN] [1733758390.957466296] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      8
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           8
+[apriltag_node-10] [WARN] [1733758391.957348747] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      2
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           2
+[apriltag_node-10] [WARN] [1733758393.957372549] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      4
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           4
+[apriltag_node-10] [WARN] [1733758395.957421210] [apriltag_node]: [image_transport] Topics '/camera/camera/color/image_raw' and '/camera/camera/color/camera_info' do not appear to be synchronized. In the last 10s:
+[apriltag_node-10] 	Image messages received:      0
+[apriltag_node-10] 	CameraInfo messages received: 30
+[apriltag_node-10] 	Synchronized pairs:           0
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[realsense2_camera_node-1] [0m[INFO] [1733758396.375621090] [rclcpp]: signal_handler(signum=2)[0m
+[move_group-3] [INFO] [1733758396.375463156] [rclcpp]: signal_handler(signum=2)
+[ros2_control_node-4] [INFO] [1733758396.375465586] [rclcpp]: signal_handler(signum=2)
+[apriltag_node-10] [INFO] [1733758396.375590134] [rclcpp]: signal_handler(signum=2)
+[franka_mock_gripper_node-8] [INFO] [1733758396.375601123] [rclcpp]: signal_handler(signum=2)
+[robot_state_publisher-2] [INFO] [1733758396.375605484] [rclcpp]: signal_handler(signum=2)
+[realsense2_camera_node-1] [0m[INFO] [1733758396.376080416] [camera.camera]: Stop Sensor: Depth Module[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758396.376095452] [camera.camera]: Close Sensor. [0m
+[realsense2_camera_node-1] [0m[INFO] [1733758396.377497227] [camera.camera]: Close Sensor - Done. [0m
+[realsense2_camera_node-1] [0m[INFO] [1733758396.377513158] [camera.camera]: Stop Sensor: RGB Camera[0m
+[realsense2_camera_node-1] [0m[INFO] [1733758396.377519029] [camera.camera]: Close Sensor. [0m
+[ERROR] [apriltag_node-10]: process has died [pid 163766, exit code -11, cmd '/opt/ros/jazzy/lib/apriltag_ros/apriltag_node --ros-args -r __node:=apriltag_node -r image_rect:=/camera/camera/color/image_raw -r camera_info:=/camera/camera/color/camera_info'].
+[move_group-3] Stack trace (most recent call last):
+[move_group-3] #6    Object "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2", at 0xffffffffffffffff, in 
+[move_group-3] #5    Object "/opt/ros/jazzy/lib/moveit_ros_move_group/move_group", at 0x59c176d63b64, in _start
+[move_group-3] #4    Source "../csu/libc-start.c", line 360, in __libc_start_main_impl [0x7e7e1402a28a]
+[move_group-3] #3    Source "../sysdeps/nptl/libc_start_call_main.h", line 58, in __libc_start_call_main [0x7e7e1402a1c9]
+[move_group-3] #2    Object "/opt/ros/jazzy/lib/moveit_ros_move_group/move_group", at 0x59c176d6268f, in main
+[move_group-3] #1    Object "/opt/ros/jazzy/lib/librclcpp.so", at 0x7e7e14906c89, in rclcpp::Executor::~Executor()
+[move_group-3] #0    Object "/opt/ros/jazzy/lib/librclcpp.so", at 0x7e7e148ff4fe, in 
+[move_group-3] Segmentation fault (Address not mapped to object [0x7e7e0568d170])
+[ERROR] [move_group-3]: process has died [pid 163759, exit code -11, cmd '/opt/ros/jazzy/lib/moveit_ros_move_group/move_group --ros-args --params-file /tmp/launch_params_bhg0asi3 --params-file /tmp/launch_params_ykukmg05'].
+[INFO] [robot_state_publisher-2]: process has finished cleanly [pid 163758]
+[INFO] [franka_mock_gripper_node-8]: process has finished cleanly [pid 163764]
+[INFO] [joint_state_publisher-9]: process has finished cleanly [pid 163765]
+[INFO] [ros2_control_node-4]: process has finished cleanly [pid 163760]
+[realsense2_camera_node-1] [0m[INFO] [1733758396.890121961] [camera.camera]: Close Sensor - Done. [0m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[realsense2_camera_node-1] [0m[INFO] [1733758397.192234654] [rclcpp]: signal_handler(signum=2)[0m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[realsense2_camera_node-1] [0m[INFO] [1733758397.372633110] [rclcpp]: signal_handler(signum=2)[0m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[INFO] [realsense2_camera_node-1]: process has finished cleanly [pid 163757]

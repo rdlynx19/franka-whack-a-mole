@@ -59,74 +59,37 @@ class Game(Node):
 
 
     async def play_game(self, request, response):
-        try:
-            self.base_to_cam = self.buffer.lookup_transform('base', 'camera_color_frame', rclpy.time.Time())
-            self.base_to_tag1 = self.buffer.lookup_transform('base', 'board', rclpy.time.Time())
-            self.base_to_tag2 = self.buffer.lookup_transform('base', 'mole', rclpy.time.Time())
+        #    self.base_to_tag1 = self.buffer.lookup_transform('base', 'board', rclpy.time.Time())
+        #    self.base_to_tag2 = self.buffer.lookup_transform('base', 'mole', rclpy.time.Time())
+        #    self.base_to_blue = self.buffer.lookup_transform('base', 'BLUE_frame', rclpy.time.Time())
+        #    self.base_to_red = self.buffer.lookup_transform('base', 'RED_frame', rclpy.time.Time())
+        #    self.base_to_green = self.buffer.lookup_transform('base', 'GREEN_frame', rclpy.time.Time())
+        await self.move_to_tag('BLUE_frame')
+        await self.move_to_tag('RED_frame')
+        await self.move_to_tag('GREEN_frame')
+        return response
 
+    async def move_to_tag(self, tag_frame):
+        try:
+            self.base_to_tag = self.buffer.lookup_transform('base', tag_frame, rclpy.time.Time())
             goal_pose = Pose()
-            goal_pose.position.x = self.base_to_tag1.transform.translation.x - 0.17
-            goal_pose.position.y = self.base_to_tag1.transform.translation.y 
+            goal_pose.position.x = self.base_to_tag.transform.translation.x - 0.17
+            goal_pose.position.y = self.base_to_tag.transform.translation.y
             goal_pose.position.z = 0.15
             rotation = [3.14, 3.14, 0.0, 0.0]
             goal_pose.orientation.x = rotation[0]
             goal_pose.orientation.y = rotation[1]
             goal_pose.orientation.z = rotation[2]
             goal_pose.orientation.w = rotation[3]
-
-            self.get_logger().info(f'Goal pose: {goal_pose}')
-
-            # Wait for the service to be ready
-            self.get_logger().info("Waiting for 'pick' service...")
-            if not self.pick_client.wait_for_service(timeout_sec=5.0):
-                self.get_logger().error("'pick' service not available")
-                return response
-            self.get_logger().info("'pick' service is available")
-
-            # Create and send request
-            request = PickPose.Request()
-            request.pick_point.position.x = goal_pose.position.x
-            request.pick_point.position.y = goal_pose.position.y
-            request.pick_point.position.z = goal_pose.position.z
-            request.pick_point.orientation.x = goal_pose.orientation.x
-            request.pick_point.orientation.y = goal_pose.orientation.y
-            request.pick_point.orientation.z = goal_pose.orientation.z
-            request.pick_point.orientation.w = goal_pose.orientation.w
-
-            self.get_logger().info(f'Sending pick point: {request}')
-            _ = await self.pick_client.call_async(request)
-            self.get_logger().info(f'Pick service responded: {response}')
             
-            new_goal_pose = Pose()
-            new_goal_pose.position.x = self.base_to_tag2.transform.translation.x - 0.17
-            new_goal_pose.position.y = self.base_to_tag2.transform.translation.y
-            new_goal_pose.position.z = 0.15
-            new_goal_pose.orientation.x = rotation[0]
-            new_goal_pose.orientation.y = rotation[1]
-            new_goal_pose.orientation.z = rotation[2]
-            new_goal_pose.orientation.w = rotation[3]
-            
-            self.get_logger().info(f'Goal pose: {new_goal_pose}')
-            
-            # Create and send request
-            new_request = PickPose.Request()
-            new_request.pick_point.position.x = new_goal_pose.position.x
-            new_request.pick_point.position.y = new_goal_pose.position.y
-            new_request.pick_point.position.z = new_goal_pose.position.z
-            new_request.pick_point.orientation.x = new_goal_pose.orientation.x
-            new_request.pick_point.orientation.y = new_goal_pose.orientation.y
-            new_request.pick_point.orientation.z = new_goal_pose.orientation.z
-            new_request.pick_point.orientation.w = new_goal_pose.orientation.w
-            
-            self.get_logger().info(f'Sending pick point: {new_request}')
-            _ = await self.pick_client.call_async(new_request)
-            self.get_logger().info(f'Pick service responded: {response}')
-            
-            
+            # call the pick stuff
+            pick_req = PickPose.Request()
+            pick_req.pick_point = goal_pose
+            _ = await self.pick_client.call_async(pick_req)
+            self.get_logger().info(f'Moved to {tag_frame}')
         except Exception as e:
-            self.get_logger().error(f'Error in play_game: {e}')
-        return response
-            
+            self.get_logger().error(f'Error in move_to_tag: {e}')
+
     async def go_home_callback(self, request, response):
         try:
             await self.mpi.go_home_callback()

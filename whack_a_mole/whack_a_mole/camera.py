@@ -23,7 +23,7 @@ COLORS_HSV = {
     "RED": [np.array((2, 201, 85)), np.array((90, 255, 89))],
 }
 
-CROP = [(100, 350), (1280, 720)]
+CROP = [(100, 400), (1280, 720)]
 
 
 class Camera(Node):

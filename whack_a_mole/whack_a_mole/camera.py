@@ -25,12 +25,15 @@ COLORS_HSV = {
     "BLUE":
     [np.array((103, 104, 83)),np.array((130, 255, 179))],
     "RED": [
-        np.array((2, 201, 85)),np.array((90, 255, 89))],
+        np.array((0, 118, 145)),np.array((16, 255, 225))],
 }
 
 COLORS_HSV = {
+    
+    "RED": [
+    np.array((2, 201, 85)),np.array((90, 255, 89))],
     "GREEN":
-    [np.array([63, 79, 26]), np.array([84, 163, 129])],
+    [np.array([25, 62, 43]), np.array([96, 146, 125])],
 }
 
 CROP = [(400,200),(1280,720)]
@@ -99,9 +102,11 @@ class Camera(Node):
 
         self.rgb_running_avg = np.zeros((len(COLORS.keys()),int(self.freq*5),3),dtype=int) #*8 for 8 sec on on time
 
-        self.clipping_distance = 1999
+        self.clipping_distance = 1100
         
         self.illumination_threshold = 150 # Define a brightness threshold for illumination
+
+        self.color_on = ""
 
 
     def log(self,*message):
@@ -118,6 +123,9 @@ class Camera(Node):
             self.broadcast_color(lower_HSV=COLORS_HSV[color][0],higher_HSV=COLORS_HSV[color][1],color=color)
         
             self.detect_illumination(color)
+        
+        if (self.color_on != ""):
+            self.log(self.color_on)
 
     def broadcast_color(self,lower_HSV,higher_HSV, color : str):
 
@@ -149,12 +157,11 @@ class Camera(Node):
         curr_average = np.mean(self.rgb_running_avg[color_index][:,0]),np.mean(self.rgb_running_avg[color_index][:,1]),np.mean(self.rgb_running_avg[color_index][:,2])
         curr_average = np.array(curr_average,dtype=int)
         if (np.linalg.norm(rgb_value - curr_average) >= self.illumination_threshold):
-            self.log(color,"ILUMINATED!!!!")
+            self.color_on = color
         # Do the running average
         else:
             self.rgb_running_avg[color_index,:-1] = self.rgb_running_avg[color_index,1:]  # Shift all elements down by 1
             self.rgb_running_avg[color_index,-1] = np.array(rgb_value)
-            self.log(color,"OFF!!!!")
 
         
 

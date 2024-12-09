@@ -92,7 +92,7 @@ class Camera(Node):
 
         self.clipping_distance = 1999
         
-        self.illumination_threshold - 150 # Define a brightness threshold for illumination
+        self.illumination_threshold = 150 # Define a brightness threshold for illumination
 
 
     def timer_callback(self):

@@ -320,8 +320,8 @@ class Camera(Node):
         transform.child_frame_id = child_frame
 
         transform.transform.translation.x = x
-        transform.transform.translation.y = y
-        transform.transform.translation.z = -1.0 * z
+        transform.transform.translation.y = -y
+        transform.transform.translation.z = -z
 
         transform.transform.rotation.x = 0.0
         transform.transform.rotation.y = 0.0

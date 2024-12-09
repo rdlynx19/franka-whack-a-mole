@@ -30,6 +30,14 @@ class Game(Node):
             ActuateServo,
             'swing_hammer'
         )
+        
+        self.go_home = self.create_service(
+            Empty,
+            'go_home',
+            self.go_home_callback,
+            callback_group=MutuallyExclusiveCallbackGroup(),
+        )
+
         self.pick_client = self.create_client(PickPose, 'pick')
         self.static = StaticTransformBroadcaster(self)
         self.tag0_to_base = TransformStamped()
@@ -54,15 +62,17 @@ class Game(Node):
         try:
             self.base_to_cam = self.buffer.lookup_transform('base', 'camera_color_frame', rclpy.time.Time())
             self.base_to_tag1 = self.buffer.lookup_transform('base', 'board', rclpy.time.Time())
+            self.base_to_tag2 = self.buffer.lookup_transform('base', 'mole', rclpy.time.Time())
 
             goal_pose = Pose()
-            goal_pose.position.x = self.base_to_tag1.transform.translation.x
-            goal_pose.position.y = self.base_to_tag1.transform.translation.y
-            goal_pose.position.z = 0.2
-            goal_pose.orientation.x = 1.0
-            goal_pose.orientation.y = 0.0
-            goal_pose.orientation.z = 0.0
-            goal_pose.orientation.w = 0.0
+            goal_pose.position.x = self.base_to_tag1.transform.translation.x - 0.17
+            goal_pose.position.y = self.base_to_tag1.transform.translation.y 
+            goal_pose.position.z = 0.15
+            rotation = [3.14, 3.14, 0.0, 0.0]
+            goal_pose.orientation.x = rotation[0]
+            goal_pose.orientation.y = rotation[1]
+            goal_pose.orientation.z = rotation[2]
+            goal_pose.orientation.w = rotation[3]
 
             self.get_logger().info(f'Goal pose: {goal_pose}')
 
@@ -84,13 +94,45 @@ class Game(Node):
             request.pick_point.orientation.w = goal_pose.orientation.w
 
             self.get_logger().info(f'Sending pick point: {request}')
-            future = self.pick_client.call_async(request)
-            response = await future
+            _ = await self.pick_client.call_async(request)
             self.get_logger().info(f'Pick service responded: {response}')
+            
+            new_goal_pose = Pose()
+            new_goal_pose.position.x = self.base_to_tag2.transform.translation.x - 0.17
+            new_goal_pose.position.y = self.base_to_tag2.transform.translation.y
+            new_goal_pose.position.z = 0.15
+            new_goal_pose.orientation.x = rotation[0]
+            new_goal_pose.orientation.y = rotation[1]
+            new_goal_pose.orientation.z = rotation[2]
+            new_goal_pose.orientation.w = rotation[3]
+            
+            self.get_logger().info(f'Goal pose: {new_goal_pose}')
+            
+            # Create and send request
+            new_request = PickPose.Request()
+            new_request.pick_point.position.x = new_goal_pose.position.x
+            new_request.pick_point.position.y = new_goal_pose.position.y
+            new_request.pick_point.position.z = new_goal_pose.position.z
+            new_request.pick_point.orientation.x = new_goal_pose.orientation.x
+            new_request.pick_point.orientation.y = new_goal_pose.orientation.y
+            new_request.pick_point.orientation.z = new_goal_pose.orientation.z
+            new_request.pick_point.orientation.w = new_goal_pose.orientation.w
+            
+            self.get_logger().info(f'Sending pick point: {new_request}')
+            _ = await self.pick_client.call_async(new_request)
+            self.get_logger().info(f'Pick service responded: {response}')
+            
+            
         except Exception as e:
             self.get_logger().error(f'Error in play_game: {e}')
         return response
             
+    async def go_home_callback(self, request, response):
+        try:
+            await self.mpi.go_home_callback()
+        except Exception as e:
+            self.get_logger().error(f'Error in go_home_callback: {e}')
+        return response
 
 def main(args=None):
     rclpy.init(args=args)

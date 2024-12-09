@@ -89,12 +89,12 @@ class Swing(Node):
         # self.get_logger().info('Step 5: Finished attaching box to arm')
 
         # Step 6: Move arm up
-        self.get_logger().info('Start Moving Arm Up')
-        pose3 = object_pose
-        pose3.position.z = object_pose.position.z + 0.3
-        traj6 = await self.mpi.plan_path(goal_pose = pose3)
-        _ = await self.mpi.exec_path(traj6)
-        self.get_logger().info('Step 6: Finished moving arm up')
+        # self.get_logger().info('Start Moving Arm Up')
+        # pose3 = object_pose
+        # pose3.position.z = object_pose.position.z + 0.3
+        # traj6 = await self.mpi.plan_path(goal_pose = pose3)
+        # _ = await self.mpi.exec_path(traj6)
+        # self.get_logger().info('Step 6: Finished moving arm up')
 
         
         # msg.data = 'raise'

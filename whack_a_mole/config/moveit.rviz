@@ -1,13 +1,15 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 78
+    Help Height: 70
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Image1
+        - /Image1/Topic1
       Splitter Ratio: 0.5
-    Tree Height: 337
+    Tree Height: 70
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -54,6 +56,14 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        BLUE_frame:
+          Value: true
+        GREEN_frame:
+          Value: true
+        RED_frame:
+          Value: true
+        YELLOW_frame:
+          Value: true
         base:
           Value: true
         base_tag:
@@ -102,30 +112,38 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
+        base_tag:
+          base:
+            fer_link0:
+              fer_link1:
+                fer_link2:
+                  fer_link3:
+                    fer_link4:
+                      fer_link5:
+                        fer_link6:
+                          fer_link7:
+                            fer_link8:
+                              fer_hand:
+                                fer_hand_tcp:
+                                  {}
+                                fer_leftfinger:
+                                  {}
+                                fer_rightfinger:
+                                  {}
         camera_link:
           camera_color_frame:
             camera_color_optical_frame:
-              base_tag:
-                base:
-                  fer_link0:
-                    fer_link1:
-                      fer_link2:
-                        fer_link3:
-                          fer_link4:
-                            fer_link5:
-                              fer_link6:
-                                fer_link7:
-                                  fer_link8:
-                                    fer_hand:
-                                      fer_hand_tcp:
-                                        {}
-                                      fer_leftfinger:
-                                        {}
-                                      fer_rightfinger:
-                                        {}
               board:
                 {}
           camera_depth_frame:
+            BLUE_frame:
+              {}
+            GREEN_frame:
+              {}
+            RED_frame:
+              {}
+            YELLOW_frame:
+              {}
             camera_depth_optical_frame:
               {}
       Update Interval: 0
@@ -145,6 +163,7 @@ Visualization Manager:
       Value: true
       Visibility:
         Grid: true
+        Image: true
         MotionPlanning: true
         TF: true
         Value: true
@@ -365,6 +384,20 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /filtered_image
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -432,18 +465,20 @@ Visualization Manager:
       Yaw: 0.5522225499153137
     Saved: ~
 Window Geometry:
-  "":
-    collapsed: false
-  " - Trajectory Slider":
-    collapsed: false
   Camera:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 1371
+  Height: 1043
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000026c000004b9fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f000001df000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000224000001390000001700fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffbffffffff0100000363000001950000019500ffffff000000010000010f000004b9fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003f000004b9000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009be0000003efc0100000002fb0000000800540069006d00650100000000000009be0000026f00fffffffb0000000800540069006d0065010000000000000450000000000000000000000637000004b900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Image:
+    collapsed: false
+  MotionPlanning:
+    collapsed: false
+  MotionPlanning - Trajectory Slider:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd00000004000000000000026c00000371fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f000000cc000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000111000000660000001700fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000017d000001960000019600fffffffb0000000a0049006d0061006700650100000319000000970000001700ffffff000000010000010f00000371fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003f00000371000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d00650100000000000007800000026f00fffffffb0000000800540069006d00650100000000000004500000000000000000000003f90000037100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -452,6 +487,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 2494
-  X: 66
-  Y: 32
+  Width: 1920
+  X: 2560
+  Y: 0

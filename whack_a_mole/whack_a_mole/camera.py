@@ -6,6 +6,7 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile
 import cv2
 from cv_bridge import CvBridge
+from std_srvs.srv import Empty
 
 from sensor_msgs.msg import Image, CameraInfo
 
@@ -17,13 +18,13 @@ global COLORS, COLORS_HSV, CROP
 COLORS = {"GREEN": 0, "YELLOW": 1, "BLUE": 2, "RED": 3}
 
 COLORS_HSV = {
-    "GREEN": [np.array([25, 62, 43]), np.array([96, 146, 255])],
-    "YELLOW": [np.array([24, 100, 101]), np.array([24, 184, 173])],
-    "BLUE": [np.array((103, 104, 83)), np.array((130, 255, 179))],
-    "RED": [np.array((2, 201, 85)), np.array((90, 255, 89))],
+    "GREEN": [np.array([47, 90, 132]), np.array([94, 255, 191])],
+    "YELLOW": [np.array([24, 100, 101]), np.array([52, 255, 230])],
+    "BLUE": [np.array((95, 157, 85)), np.array((161, 255, 189))],
+    "RED": [np.array((0, 132, 4)), np.array((9, 241, 221))],
 }
 
-CROP = [(100, 400), (1280, 720)]
+CROP = [(300, 400), (700, 720)]
 
 
 class Camera(Node):
@@ -56,6 +57,8 @@ class Camera(Node):
             self.camera_info_callback,
             10,
         )
+        
+        self.create_service(Empty, 'toggle_tf_publish', self.toggle_tf_publish)
 
         self.tf_broadcaster = TransformBroadcaster(self, qos=QoSProfile(depth=10))
 
@@ -70,11 +73,13 @@ class Camera(Node):
         self.create_timer(1 / self.freq, self.timer_callback)
 
         self.running_avg = (
-            np.zeros((len(COLORS.keys()), int(self.freq), 2))
+            np.zeros((len(COLORS.keys()), int(self.freq * 10), 2))
             + (np.array(CROP[0]) + np.array(CROP[1])) / 2
         )
 
-        self.clipping_distance = 1999
+        self.clipping_distance = 1180
+        
+        self.update_colors = True
 
     def timer_callback(self):
 
@@ -96,6 +101,11 @@ class Camera(Node):
                 color=color,
             )
 
+    def toggle_tf_publish(self, request, response):
+        
+        self.update_colors = not self.update_colors
+        return response
+
     def broadcast_color(self, lower_HSV, higher_HSV, color: str):
 
         color_index = COLORS[color]
@@ -106,14 +116,14 @@ class Camera(Node):
 
         x_c, y_c = self.find_color_centroid(lower_HSV, higher_HSV)
 
-        if x_c != 0 and y_c != 0:
+        if x_c != 0 and y_c != 0 and self.update_colors:
 
             self.running_avg[color_index, :-1] = self.running_avg[
                 color_index, 1:
             ]  # Shift all elements down by 1
             self.running_avg[color_index, -1] = np.array([x_c, y_c])
 
-        avg_centroid = np.mean(self.running_avg[color_index], axis=0)
+        avg_centroid = np.median(self.running_avg[color_index], axis=0)
         avg_centroid = np.array(avg_centroid, dtype=int)
 
         self.broadcast_color_frame(
@@ -177,7 +187,7 @@ class Camera(Node):
         for color in COLORS:
             color_index = COLORS[color]
 
-            avg_centroid = np.mean(self.running_avg[color_index], axis=0)
+            avg_centroid = np.median(self.running_avg[color_index], axis=0)
             avg_centroid = np.array(avg_centroid, dtype=int)
 
             cv2.circle(

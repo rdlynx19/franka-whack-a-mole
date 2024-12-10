@@ -18,25 +18,23 @@ global COLORS , COLORS_HSV, CROP
 COLORS = {"GREEN": 0 , "YELLOW" : 1, "BLUE": 2 , "RED" : 3}
 
 COLORS_HSV = {
-    "GREEN":
-    [np.array([63, 79, 26]), np.array([84, 163, 129])],
-    "YELLOW":
-    [np.array([24, 100, 101]),np.array([24, 184, 173])],
-    "BLUE":
-    [np.array((103, 104, 83)),np.array((130, 255, 179))],
     "RED": [
-        np.array((0, 118, 145)),np.array((16, 255, 225))],
+    np.array((0, 200, 0)),np.array((6, 255, 255))],
+    # "GREEN":
+    # [np.array([25, 62, 43]), np.array([96, 146, 125])],
+    # # "YELLOW":   
+    # # [np.array([24, 100, 101]),np.array([24, 184, 173])],
+    # "BLUE":
+    # [np.array((103, 104, 83)),np.array((130, 255, 179))],
+
 }
 
-COLORS_HSV = {
-    
-    "RED": [
-    np.array((2, 201, 85)),np.array((90, 255, 89))],
-    "GREEN":
-    [np.array([25, 62, 43]), np.array([96, 146, 125])],
+COLORS_RGB = {
+    "RED":
+    [np.array((189,33,10)), np.array((255,0,1))]
 }
 
-CROP = [(400,200),(1280,720)]
+CROP = [(650,200),(1280,720)]
 
 
 
@@ -104,7 +102,7 @@ class Camera(Node):
 
         self.clipping_distance = 1100
         
-        self.illumination_threshold = 150 # Define a brightness threshold for illumination
+        self.illumination_threshold = {"GREEN": 40 , "RED": 100 , "BLUE": 200}
 
         self.color_on = ""
 
@@ -156,12 +154,20 @@ class Camera(Node):
         
         curr_average = np.mean(self.rgb_running_avg[color_index][:,0]),np.mean(self.rgb_running_avg[color_index][:,1]),np.mean(self.rgb_running_avg[color_index][:,2])
         curr_average = np.array(curr_average,dtype=int)
-        if (np.linalg.norm(rgb_value - curr_average) >= self.illumination_threshold):
+        if (color == "RED"):
+            rgb_color = COLORS_RGB[color][1]
+
+            # Reorder to BGR format
+            bgr_color = (rgb_color[2], rgb_color[1], rgb_color[0])
+            self.log(curr_average)
+            if(np.linalg.norm(bgr_color - curr_average) <= 50):
+                self.color_on = color
+        elif (np.linalg.norm(rgb_value - curr_average) >= self.illumination_threshold[color] and self.color_on != color):
             self.color_on = color
         # Do the running average
-        else:
-            self.rgb_running_avg[color_index,:-1] = self.rgb_running_avg[color_index,1:]  # Shift all elements down by 1
-            self.rgb_running_avg[color_index,-1] = np.array(rgb_value)
+        
+        self.rgb_running_avg[color_index,:-1] = self.rgb_running_avg[color_index,1:]  # Shift all elements down by 1
+        self.rgb_running_avg[color_index,-1] = np.array(rgb_value)
 
         
 
@@ -207,10 +213,10 @@ class Camera(Node):
             avg_centroid = np.array(avg_centroid, dtype=int)
 
             cv2.circle(bg_removed,(avg_centroid[0],avg_centroid[1]),5,(0, 0, 255),thickness = 10)
+
+            cv2.rectangle(bg_removed, CROP[0], CROP[1], (0, 0, 255), thickness =5)
             
             cv2.putText(bg_removed, f'{color}', (avg_centroid[0],avg_centroid[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
-        cv2.rectangle(bg_removed, CROP[0], CROP[1], (0, 0, 255), thickness =5)
 
         msg = CvBridge().cv2_to_imgmsg(bg_removed,encoding="bgr8")
 

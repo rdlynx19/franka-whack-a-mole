@@ -15,7 +15,7 @@ from geometry_msgs.msg import TransformStamped
 
 global COLORS, COLORS_HSV, CROP
 
-COLORS = {"GREEN": 0, "BLUE": 2, "RED": 3}
+COLORS = {"GREEN": 0, "YELLOW": 1, "BLUE": 2, "RED": 3}
 
 COLORS_HSV = {
     "GREEN": [np.array([47, 90, 132]), np.array([94, 255, 191])],
@@ -24,7 +24,7 @@ COLORS_HSV = {
     "RED": [np.array((0, 132, 4)), np.array((9, 241, 221))],
 }
 
-CROP = [(300, 400), (700, 720)]
+CROP = [(300, 400), (1200, 720)]
 
 
 class Camera(Node):

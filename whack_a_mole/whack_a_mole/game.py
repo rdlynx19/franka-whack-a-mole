@@ -72,7 +72,7 @@ class Game(Node):
             goal_pose = Pose()
             goal_pose.position.x = self.base_to_tag.transform.translation.x - 0.135
             goal_pose.position.y = self.base_to_tag.transform.translation.y - 0.075
-            goal_pose.position.z = 0.28
+            goal_pose.position.z = 0.18
             rotation = [3.14, 3.14, 0.0, 0.0]
             goal_pose.orientation.x = rotation[0]
             goal_pose.orientation.y = rotation[1]

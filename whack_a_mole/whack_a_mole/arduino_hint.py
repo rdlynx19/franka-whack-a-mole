@@ -18,6 +18,8 @@ class Hint(Node):
 
         self.play_client = self.create_client(TargetFrame, 'play')
 
+        self.toggle_client = self.create_client(Empty, 'toggle_tf_publish')
+
         ARDUINO_SERIAL = "34336313537351203262"
 
         # ports discovery
@@ -35,25 +37,30 @@ class Hint(Node):
             self.get_logger().error("error finding arduino")
 
 
-        self.connect_serial_port(serial_port=arduino_port, baud_rate = 9600)
+        self.connect_serial_port(serial_port=arduino_port, baud_rate = 115200)
 
  
         self.call_play = self.create_service(Empty, 'call_play', self.call_play_callback, callback_group=MutuallyExclusiveCallbackGroup())
 
 
     async def call_play_callback(self, request, response):
+        empty_req = Empty.Request()
+        await self.toggle_client.call_async(empty_req)
         while True:
             msg = String()
             msg = await self.read_serial_data()
             self.get_logger().info(f'{msg}')
             if(msg.data == '0'):
-                msg.data = 'BLUE_frame'
+                msg.data = 'YELLOW_frame'
             elif(msg.data == '1'):
-                msg.data = 'GREEN_frame'
+                msg.data = 'BLUE_frame'
             elif(msg.data == '2'):
+                msg.data = 'GREEN_frame'
+            elif(msg.data == '3'):
                 msg.data = 'RED_frame'
             frame_req = TargetFrame.Request()
             frame_req.color = msg
+            self.get_logger().info(f'Passed the msg {msg}')
             await self.play_client.call_async(frame_req)
             self.get_logger().info("Returned from play client")
         return response
@@ -64,9 +71,9 @@ class Hint(Node):
             msg = String()
             msg.data = mole_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
             self.get_logger().info(f'{type(msg.data)}')
-            while msg.data != '0' and msg.data != '1' and msg.data != '2':
+            while msg.data != '0' and msg.data != '1' and msg.data != '2' and msg.data != '3':
                 msg.data = mole_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
-                self.get_logger().info(f'{msg.data}')
+                self.get_logger().info(f'Received data from: {msg.data}')
             return msg 
         except Exception as e:
             self.get_logger().error(f'Exception{e}')

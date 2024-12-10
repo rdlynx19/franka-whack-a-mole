@@ -17,7 +17,7 @@ global COLORS, COLORS_HSV, CROP
 COLORS = {"GREEN": 0, "YELLOW": 1, "BLUE": 2, "RED": 3}
 
 COLORS_HSV = {
-    "GREEN": [np.array([79, 55, 37]), np.array([84, 163, 129])],
+    "GREEN": [np.array([25, 62, 43]), np.array([96, 146, 255])],
     "YELLOW": [np.array([24, 100, 101]), np.array([24, 184, 173])],
     "BLUE": [np.array((103, 104, 83)), np.array((130, 255, 179))],
     "RED": [np.array((2, 201, 85)), np.array((90, 255, 89))],

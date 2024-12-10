@@ -32,7 +32,7 @@ class Hint(Node):
 
         # check Arduino has been found
         if arduino_port is None:
-            self.get_logger.error("error finding arduino")
+            self.get_logger().error("error finding arduino")
 
 
         self.connect_serial_port(serial_port=arduino_port, baud_rate = 9600)

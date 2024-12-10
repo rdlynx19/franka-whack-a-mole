@@ -47,23 +47,23 @@ class Swing(Node):
         object_pose = request.pick_point
         pose1 = copy.deepcopy(object_pose)
 
-        # Step 1: Move arm right above object
-        pose1.position.z = object_pose.position.z + 0.2
-        traj1 = await self.mpi.plan_path(goal_pose = pose1)
-        _ = await self.mpi.exec_path(traj1)
-        self.get_logger().info('Step 1: Finished moving arm above object')
+        # # Step 1: Move arm right above object
+        # pose1.position.z = object_pose.position.z + 0.2
+        # traj1 = await self.mpi.plan_path(goal_pose = pose1)
+        # _ = await self.mpi.exec_path(traj1)
+        # self.get_logger().info('Step 1: Finished moving arm above object')
 
         # Step 2: Open Grippers
         # await self.mpi.motion_planner.toggle_gripper('open')
         # self.get_logger().info('Step 2: Finished opening grippers')
          # Step: Actuating the hammer to raise!
-        msg = String()
-        msg.data = 'raise'
-        actuate_msg = ActuateServo.Goal()
-        actuate_msg.position = msg
-        self.get_logger().info(f'{actuate_msg}')
-        # _ = await self.hammer_client.send_goal_async(actuate_msg)
-        self.get_logger().info(f'Actuating hammer to {msg.data}!')
+        # msg = String()
+        # msg.data = 'raise'
+        # actuate_msg = ActuateServo.Goal()
+        # actuate_msg.position = msg
+        # self.get_logger().info(f'{actuate_msg}')
+        # # _ = await self.hammer_client.send_goal_async(actuate_msg)
+        # self.get_logger().info(f'Actuating hammer to {msg.data}!')
 
 
         # Step 3: Move arm to object
@@ -73,6 +73,8 @@ class Swing(Node):
         self.get_logger().info('Step 3: Finished moving arm to object')
 
        # Step: Actuating the hammer to hit!
+        msg = String()
+        actuate_msg = ActuateServo.Goal()
         msg.data = 'hit'
         actuate_msg.position = msg
         goal_handle = await self.hammer_client.send_goal_async(actuate_msg)
@@ -89,12 +91,12 @@ class Swing(Node):
         # self.get_logger().info('Step 5: Finished attaching box to arm')
 
         # Step 6: Move arm up
-        self.get_logger().info('Start Moving Arm Up')
-        pose3 = object_pose
-        pose3.position.z = object_pose.position.z + 0.3
-        traj6 = await self.mpi.plan_path(goal_pose = pose3)
-        _ = await self.mpi.exec_path(traj6)
-        self.get_logger().info('Step 6: Finished moving arm up')
+        # self.get_logger().info('Start Moving Arm Up')
+        # pose3 = object_pose
+        # pose3.position.z = object_pose.position.z + 0.3
+        # traj6 = await self.mpi.plan_path(goal_pose = pose3)
+        # _ = await self.mpi.exec_path(traj6)
+        # self.get_logger().info('Step 6: Finished moving arm up')
 
         
         # msg.data = 'raise'

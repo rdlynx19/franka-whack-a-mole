@@ -75,6 +75,9 @@ def generate_launch_description():
                 "depth_module.profile": "1280x720x30",
                 "rgb_camera.profile": "1280x720x30",
                 "enable_sync": "true",
+                'align_depth.enable': "true",
+                'enable_color': "true",
+                'enable_depth': "true"
             }.items()
         ),
 
@@ -83,7 +86,8 @@ def generate_launch_description():
             package="rviz2",
             executable="rviz2",
             arguments=[
-                '-d', move_it_rviz
+                '-d', move_it_rviz,
+                '--ros-args', '--log-level', 'fatal'
             ],
             output="screen",
         ),
@@ -97,22 +101,9 @@ def generate_launch_description():
             output="screen",
         ),
         Node(
-            package='apriltag_ros',
-            executable='apriltag_node',
-            name='apriltag_node',
-            output='screen',
-            remappings=[
-                ('image_rect', '/camera/camera/color/image_raw'),
-                ('camera_info', '/camera/camera/color/camera_info')
-            ],
-            parameters=[
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare('whack_a_mole'),
-                        'config', 
-                        'tags.yaml'
-                    ]
-                )
-            ]
+            package='whack_a_mole',
+            executable="camera_node",
+            name = "color_camera",
+            output = "screen",
         ),
     ])

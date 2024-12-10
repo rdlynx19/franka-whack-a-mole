@@ -1,21 +1,33 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 0
+    Help Height: 70
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /MotionPlanning1
-        - /TF1
-        - /TF1/Frames1
+        - /Global Options1
+        - /Status1
+        - /Image1
+        - /Image1/Topic1
       Splitter Ratio: 0.5
-    Tree Height: 191
-  - Class: rviz_common/Help
-    Name: Help
+    Tree Height: 70
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded:
+      - /2D Goal Pose1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
   - Class: rviz_common/Views
     Expanded:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -37,6 +49,125 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        BLUE_frame:
+          Value: true
+        GREEN_frame:
+          Value: true
+        RED_frame:
+          Value: true
+        YELLOW_frame:
+          Value: true
+        base:
+          Value: true
+        base_tag:
+          Value: true
+        board:
+          Value: true
+        camera_color_frame:
+          Value: true
+        camera_color_optical_frame:
+          Value: true
+        camera_depth_frame:
+          Value: true
+        camera_depth_optical_frame:
+          Value: true
+        camera_link:
+          Value: true
+        fer_hand:
+          Value: true
+        fer_hand_tcp:
+          Value: true
+        fer_leftfinger:
+          Value: true
+        fer_link0:
+          Value: true
+        fer_link1:
+          Value: true
+        fer_link2:
+          Value: true
+        fer_link3:
+          Value: true
+        fer_link4:
+          Value: true
+        fer_link5:
+          Value: true
+        fer_link6:
+          Value: true
+        fer_link7:
+          Value: true
+        fer_link8:
+          Value: true
+        fer_rightfinger:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        base_tag:
+          base:
+            fer_link0:
+              fer_link1:
+                fer_link2:
+                  fer_link3:
+                    fer_link4:
+                      fer_link5:
+                        fer_link6:
+                          fer_link7:
+                            fer_link8:
+                              fer_hand:
+                                fer_hand_tcp:
+                                  {}
+                                fer_leftfinger:
+                                  {}
+                                fer_rightfinger:
+                                  {}
+        camera_link:
+          camera_color_frame:
+            camera_color_optical_frame:
+              board:
+                {}
+          camera_depth_frame:
+            BLUE_frame:
+              {}
+            GREEN_frame:
+              {}
+            RED_frame:
+              {}
+            YELLOW_frame:
+              {}
+            camera_depth_optical_frame:
+              {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/Camera
+      Enabled: true
+      Far Plane Distance: 100
+      Image Rendering: background and overlay
+      Name: Camera
+      Overlay Alpha: 0.5
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /camera/camera/color/image_raw
+      Value: true
+      Visibility:
+        Grid: true
+        Image: true
+        MotionPlanning: true
+        TF: true
+        Value: true
+      Zoom Factor: 1
     - Acceleration_Scaling_Factor: 0.1
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
@@ -141,9 +272,9 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: true
         Show Trail: false
-        State Display Time: 0.05 s
+        State Display Time: 3x
         Trail Step Size: 1
-        Trajectory Topic: display_planned_path
+        Trajectory Topic: /display_planned_path
         Use Sim Time: false
       Planning Metrics:
         Payload: 1
@@ -164,10 +295,10 @@ Visualization Manager:
         Show Workspace: false
         Start State Alpha: 1
         Start State Color: 0; 255; 0
-      Planning Scene Topic: monitored_planning_scene
+      Planning Scene Topic: /monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
-        Scene Alpha: 1
+        Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
         Show Scene Geometry: true
@@ -248,121 +379,25 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-        Robot Alpha: 0.5
+        Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
-    - Class: rviz_default_plugins/TF
+    - Class: rviz_default_plugins/Image
       Enabled: true
-      Filter (blacklist): ""
-      Filter (whitelist): ""
-      Frame Timeout: 15
-      Frames:
-        All Enabled: true
-        base:
-          Value: true
-        base_tag:
-          Value: true
-        board:
-          Value: true
-        camera_color_frame:
-          Value: true
-        camera_color_optical_frame:
-          Value: true
-        camera_depth_frame:
-          Value: true
-        camera_depth_optical_frame:
-          Value: true
-        camera_link:
-          Value: true
-        fer_hand:
-          Value: true
-        fer_hand_tcp:
-          Value: true
-        fer_leftfinger:
-          Value: true
-        fer_link0:
-          Value: true
-        fer_link1:
-          Value: true
-        fer_link2:
-          Value: true
-        fer_link3:
-          Value: true
-        fer_link4:
-          Value: true
-        fer_link5:
-          Value: true
-        fer_link6:
-          Value: true
-        fer_link7:
-          Value: true
-        fer_link8:
-          Value: true
-        fer_rightfinger:
-          Value: true
-        tag36h11:0:
-          Value: true
-        tag36h11:1:
-          Value: true
-      Marker Scale: 1
-      Name: TF
-      Show Arrows: true
-      Show Axes: true
-      Show Names: false
-      Tree:
-        base_tag:
-          base:
-            fer_link0:
-              fer_link1:
-                fer_link2:
-                  fer_link3:
-                    fer_link4:
-                      fer_link5:
-                        fer_link6:
-                          fer_link7:
-                            fer_link8:
-                              fer_hand:
-                                fer_hand_tcp:
-                                  {}
-                                fer_leftfinger:
-                                  {}
-                                fer_rightfinger:
-                                  {}
-        camera_link:
-          camera_color_frame:
-            camera_color_optical_frame:
-              board:
-                {}
-              tag36h11:0:
-                {}
-              tag36h11:1:
-                {}
-          camera_depth_frame:
-            camera_depth_optical_frame:
-              {}
-      Update Interval: 0
-      Value: true
-    - Class: rviz_default_plugins/Camera
-      Enabled: true
-      Far Plane Distance: 100
-      Image Rendering: background and overlay
-      Name: Camera
-      Overlay Alpha: 0.5
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /camera/camera/color/image_raw
+        Value: /filtered_image
       Value: true
-      Visibility:
-        Grid: true
-        MotionPlanning: true
-        TF: true
-        Value: true
-      Zoom Factor: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -374,6 +409,34 @@ Visualization Manager:
       Hide Inactive Objects: true
     - Class: rviz_default_plugins/MoveCamera
     - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Covariance x: 0.25
+      Covariance y: 0.25
+      Covariance yaw: 0.06853891909122467
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Single click: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /clicked_point
   Transformation:
     Current:
       Class: rviz_default_plugins/TF
@@ -381,43 +444,49 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 6.233943462371826
+      Distance: 4.156919956207275
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.10000000149011612
-        Y: 0.25
-        Z: 0.30000001192092896
+        X: 0
+        Y: 0
+        Z: 0
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4699999988079071
-      Target Frame: base
-      Value: Orbit (rviz_default_plugins)
-      Yaw: 0.03699507564306259
+      Pitch: 0.6303977370262146
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 0.5522225499153137
     Saved: ~
 Window Geometry:
   Camera:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 1403
-  Help:
-    collapsed: false
+  Height: 1043
   Hide Left Dock: false
   Hide Right Dock: false
+  Image:
+    collapsed: false
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002b40000051dfc0200000006fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb000000100044006900730070006c006100790073010000003f000000ff000000cc00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000144000001a10000019600fffffffb0000000800480065006c0070000000029a0000006e0000006f00fffffffb0000000a0056006900650077007301000002eb000000a9000000a900fffffffb0000000c00430061006d006500720061010000039a000001c20000001700ffffff000007460000051d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000026c00000371fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f000000cc000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000111000000660000001700fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000017d000001960000019600fffffffb0000000a0049006d0061006700650100000319000000970000001700ffffff000000010000010f00000371fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003f00000371000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d00650100000000000007800000026f00fffffffb0000000800540069006d00650100000000000004500000000000000000000003f90000037100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
   Views:
     collapsed: false
-  Width: 2560
-  X: 1920
+  Width: 1920
+  X: 2560
   Y: 0

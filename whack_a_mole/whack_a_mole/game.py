@@ -19,11 +19,11 @@ class Game(Node):
     def __init__(self):
         super().__init__('game')
         self.mpi = MotionPlanningInterface(self)
-        self.serv = self.create_service(
-            Empty,
+        self.sub = self.create_subscription(
+            String,
             'play',
             self.play_game, #Callback for play service
-            callback_group=MutuallyExclusiveCallbackGroup(),
+            10
         )
         self.hammer_client = ActionClient(
             self,
@@ -58,16 +58,14 @@ class Game(Node):
         self.listener = TransformListener(self.buffer, self)
 
 
-    async def play_game(self, request, response):
+    async def play_game(self, msg: String):
         #    self.base_to_tag1 = self.buffer.lookup_transform('base', 'board', rclpy.time.Time())
         #    self.base_to_tag2 = self.buffer.lookup_transform('base', 'mole', rclpy.time.Time())
         #    self.base_to_blue = self.buffer.lookup_transform('base', 'BLUE_frame', rclpy.time.Time())
         #    self.base_to_red = self.buffer.lookup_transform('base', 'RED_frame', rclpy.time.Time())
         #    self.base_to_green = self.buffer.lookup_transform('base', 'GREEN_frame', rclpy.time.Time())
-        await self.move_to_tag('BLUE_frame')
-        await self.move_to_tag('RED_frame')
-        await self.move_to_tag('GREEN_frame')
-        return response
+        color = msg.data
+        await self.move_to_tag(f'{color}_frame')
 
     async def move_to_tag(self, tag_frame):
         try:
@@ -89,6 +87,8 @@ class Game(Node):
             self.get_logger().info(f'Moved to {tag_frame}')
         except Exception as e:
             self.get_logger().error(f'Error in move_to_tag: {e}')
+
+
 
     async def go_home_callback(self, request, response):
         try:

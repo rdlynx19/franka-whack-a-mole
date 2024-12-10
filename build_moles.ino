@@ -1,6 +1,6 @@
 // Define pin ranges and matching logic
-const int outputPins[] = {6, 7, 8};  // Pins 7-11
-const int inputPins[] = {2, 3, 4};     // Pins 1-5
+const int outputPins[] = {8, 9, 10, 11, 12};  // Pins 7-11
+const int inputPins[] = {3, 4, 5, 6, 7};     // Pins 1-5
 int count = 0;
 int currentIndex = 0; 
 int val;
@@ -8,14 +8,14 @@ unsigned long previous_time;
 
 void setup() {
   // Initialize output pins
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 5; i++) {
     pinMode(outputPins[i], OUTPUT);
     digitalWrite(outputPins[i], LOW); 
     randomSeed(analogRead(0));  // A0 is typically used for random seeding
   }
 
   // Initialize input pins
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 5; i++) {
     pinMode(inputPins[i], INPUT);  // Set input pins as INPUT
   }
 
@@ -32,7 +32,7 @@ void loop() {
   if(millis() - previous_time >= 8000 || val==0){
     previous_time = millis();
     digitalWrite(outputPins[currentIndex], LOW);
-    currentIndex = random(0,3);
+    currentIndex = random(0,5);
     digitalWrite(outputPins[currentIndex], HIGH);
     }
 }

@@ -86,7 +86,8 @@ def generate_launch_description():
             package="rviz2",
             executable="rviz2",
             arguments=[
-                '-d', move_it_rviz
+                '-d', move_it_rviz,
+                '--ros-args', '--log-level', 'fatal'
             ],
             output="screen",
         ),

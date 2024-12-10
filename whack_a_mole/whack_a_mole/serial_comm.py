@@ -6,6 +6,7 @@ from std_msgs.msg import String
 from whack_a_mole_interfaces.action import ActuateServo
 
 import serial
+import serial.tools.list_ports as list_ports
 import time
 
 ser_comm = serial.Serial()
@@ -20,12 +21,26 @@ class CommunicationNode(Node):
             'swing_hammer',
             self.swing_callback
         )
+        ARDUINO_SERIAL = "F412FA6FA49C"
+
+        # ports discovery
+        ports = list(list_ports.comports(True))  # get list of ports
+        arduino_port = None
+
+        # grab the port that's connected to the Arduino
+        for p in ports:
+            if p.serial_number == ARDUINO_SERIAL:
+                arduino_port = p.device
+                break
+
+        # check Arduino has been found
+        if arduino_port is None:
+            self.get_logger.error("error finding arduino")
 
         # self.servo_pub = self.create_publisher(String, 'test_writing', 1)
 
         # self.test_sub = self.create_subscription(String, 'test_writing', self.write_serial_data, 1)
-
-        self.connect_serial_port(serial_port="/dev/ttyACM0", baud_rate=115200)
+        self.connect_serial_port(serial_port=arduino_port, baud_rate=115200)
 
     async def swing_callback(self, goal_handle):
         if not isinstance(goal_handle.request.position, String):

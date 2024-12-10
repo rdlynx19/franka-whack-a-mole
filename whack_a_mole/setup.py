@@ -31,6 +31,7 @@ setup(
             'comm_node = whack_a_mole.serial_comm:node_main',
             'camera_node = whack_a_mole.camera:entry',
             'game_node = whack_a_mole.game:main',
+            'hint = whack_a_mole.arduino_hint:hint_main'
         ],
     },
 )

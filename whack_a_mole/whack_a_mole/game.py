@@ -14,13 +14,14 @@ import tf2_ros
 from tf2_ros.transform_listener import TransformListener
 from tf2_ros.buffer import Buffer
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
+from whack_a_mole_interfaces.srv import TargetFrame
 
 class Game(Node):
     def __init__(self):
         super().__init__('game')
         self.mpi = MotionPlanningInterface(self)
         self.serv = self.create_service(
-            Empty,
+            TargetFrame,
             'play',
             self.play_game, #Callback for play service
             callback_group=MutuallyExclusiveCallbackGroup(),
@@ -64,12 +65,8 @@ class Game(Node):
         #    self.base_to_blue = self.buffer.lookup_transform('base', 'BLUE_frame', rclpy.time.Time())
         #    self.base_to_red = self.buffer.lookup_transform('base', 'RED_frame', rclpy.time.Time())
         #    self.base_to_green = self.buffer.lookup_transform('base', 'GREEN_frame', rclpy.time.Time())
-        await self.move_to_tag('BLUE_frame')
-        await self.move_to_tag('RED_frame')
-        await self.move_to_tag('GREEN_frame')
-        return response
-
-    async def move_to_tag(self, tag_frame):
+        received_frame = request.color
+        tag_frame = received_frame.data
         try:
             self.base_to_tag = self.buffer.lookup_transform('base', tag_frame, rclpy.time.Time())
             goal_pose = Pose()
@@ -89,7 +86,13 @@ class Game(Node):
             self.get_logger().info(f'Moved to {tag_frame}')
         except Exception as e:
             self.get_logger().error(f'Error in move_to_tag: {e}')
+        
 
+        # await self.move_to_tag('RED_frame')
+        # await self.move_to_tag('GREEN_frame')
+        return response
+
+        
     async def go_home_callback(self, request, response):
         try:
             await self.mpi.go_home_callback()

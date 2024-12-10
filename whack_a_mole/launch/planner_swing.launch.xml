@@ -12,12 +12,15 @@
         pkg="apriltag_ros"
         exec="apriltag_node"
         name="apriltag_node"
-        output="screen">
+        output="screen"
+        args="--ros-args --log-level fatal">
 
         <param from="$(find-pkg-share whack_a_mole)/tags.yaml"/>
 
         <remap from="image_rect" to="/camera/camera/color/image_raw"/>
         <remap from="camera_info" to="/camera/camera/color/camera_info"/>
-
+        
     </node>
+
+    <node pkg="whack_a_mole" exec="hint"/>
 </launch>

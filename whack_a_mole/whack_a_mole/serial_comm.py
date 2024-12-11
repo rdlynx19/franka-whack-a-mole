@@ -2,12 +2,9 @@ import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
 from std_msgs.msg import String
-
 from whack_a_mole_interfaces.action import ActuateServo
-
 import serial
 import serial.tools.list_ports as list_ports
-import time
 
 ser_comm = serial.Serial()
 
@@ -37,9 +34,6 @@ class CommunicationNode(Node):
         if arduino_port is None:
             self.get_logger.error("error finding arduino")
 
-        # self.servo_pub = self.create_publisher(String, 'test_writing', 1)
-
-        # self.test_sub = self.create_subscription(String, 'test_writing', self.write_serial_data, 1)
         self.connect_serial_port(serial_port=arduino_port, baud_rate=115200)
 
     async def swing_callback(self, goal_handle):
@@ -55,22 +49,17 @@ class CommunicationNode(Node):
             msg.data = 'r'
             self.write_serial_data(msg)
             self.get_logger().info('Raising the hammer')
-            # val = await self.read_serial_data()
         elif(goal_handle.request.position.data == 'hit'):
             msg = String()
             msg.data = 'h'
             self.write_serial_data(msg)
-            self.get_logger().info('Hitting the hammer')
-            # val = await self.read_serial_data()
-            
+            self.get_logger().info('Hitting the hammer') 
         else:
-            self.get_logger().info("Something is going wrong!")
+            self.get_logger().error("No valid string option sent, Send raise or hit!")
 
-        val = await self.read_serial_data()
-        self.get_logger().info('Awaited for d')
+        serial_val = await self.read_serial_data()
+        self.get_logger().info('Arduino finished moving hammer, moving on to next step')
         
-        # wait_for_result = await goal_handle.get_result_async()
-
         result = ActuateServo.Result()
         result.res = True
         goal_handle.succeed()
@@ -78,13 +67,12 @@ class CommunicationNode(Node):
         return result
         
 
-
     def write_serial_data(self, msg: String):
         try:
             msg = str(msg.data)
             ser_comm.write(msg.encode("utf-8"))
         except Exception as e:
-            self.get_logger().warn('Serial Communication error!')
+            self.get_logger().error('Cannot write serial data!: {e}')
 
     async def read_serial_data(self):
         try:
@@ -95,7 +83,7 @@ class CommunicationNode(Node):
                 self.get_logger().info(f'{msg.data}')
             return True 
         except Exception as e:
-            self.get_logger().error("Can't read serial data!")
+            self.get_logger().error(f'Cannot read serial data!: {e}')
             return False
 
 

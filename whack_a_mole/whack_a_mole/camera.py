@@ -1,10 +1,8 @@
-import pyrealsense2 as rs
 import numpy as np
 
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
-import cv2
 from cv_bridge import CvBridge
 from std_srvs.srv import Empty
 
@@ -61,11 +59,9 @@ class Camera(Node):
         )
         
         self.create_service(Empty, 'toggle_tf_publish', self.toggle_tf_publish)
+
         self.clipping_distance = self.get_parameter("clipping_distance").value
-        self.cv2_client = OpenCVClient(
-            clipping_distance=self.clipping_distance,
-            crop=self.crop
-        )
+
         self.tf_broadcaster = TransformBroadcaster(self, qos=QoSProfile(depth=10))
 
         self.prev_xyz = np.array([0, 0, 0], dtype=float)
@@ -74,11 +70,13 @@ class Camera(Node):
 
         self.create_timer(1 / self.freq, self.timer_callback)
 
-        self.running_avg = (
-            np.zeros((len(COLORS.keys()), int(self.freq * 10), 2))
-            + (np.array(self.crop[0]) + np.array(self.crop[1])) / 2
+        self.cv2_client = OpenCVClient(
+            freq=self.freq,
+            clipping_distance=self.clipping_distance,
+            crop=self.crop
         )
 
+        # If set to true update color tf frames
         self.update_colors = True
 
     def timer_callback(self):
@@ -94,23 +92,22 @@ class Camera(Node):
                 color=color,
             )
 
-            self.detect_illumination(color)
+            self.cv2_client.detect_illumination(color)
 
     def toggle_tf_publish(self, request, response):
+        """
+        Toggles the update_colors variable.
+
+        Args:
+            request (Empty.Request): Empty request
+            response (Empty.Response): Empty response
+
+        Returns:
+            Empty.Response: Empty response
+
+        """
         self.update_colors = not self.update_colors
         return response
-
-    def detect_illumination(self, color: str):
-        """
-        Detects the illumination of the color and broadcasts.
-        
-        Args:
-            color (str): The color of the object
-        
-        """
-        color_index = COLORS[color]
-        median_centroid = np.median(self.running_avg[color_index], axis=0)
-        median_centroid = np.array(median_centroid, dtype=int)
 
     def broadcast_color(self, lower_HSV, higher_HSV, color: str):
         """
@@ -129,12 +126,12 @@ class Camera(Node):
 
         if x_c != 0 and y_c != 0 and self.update_colors:
 
-            self.running_avg[color_index, :-1] = self.running_avg[
+            self.cv2_client.running_avg[color_index, :-1] = self.cv2_client.running_avg[
                 color_index, 1:
             ]  # Shift all elements down by 1
-            self.running_avg[color_index, -1] = np.array([x_c, y_c])
+            self.cv2_client.running_avg[color_index, -1] = np.array([x_c, y_c])
 
-        median_centroid = np.median(self.running_avg[color_index], axis=0)
+        median_centroid = np.median(self.cv2_client.running_avg[color_index], axis=0)
         median_centroid = np.array(median_centroid, dtype=int)
 
         self.broadcast_color_frame(
@@ -179,8 +176,6 @@ class Camera(Node):
             x, y, z = self.prev_xyz[0], self.prev_xyz[1], self.prev_xyz[2]
         else:
             self.prev_xyz[0], self.prev_xyz[1], self.prev_xyz[2] = x, y, z
-
-        # self.log(child_frame,x,y,z)
 
         transform = TransformStamped()
 

@@ -21,16 +21,22 @@ class OpenCVClient:
     - get_3d_coordinates_at_pixel(x, y, frame_name): Convert the pixel coordinates (x, y) to 3D camera coordinates in meters.
 
     """
-    def __init__(self, clipping_distance=1400, crop=[(1, 1), (1, 1)]):
+    def __init__(self, freq=30.0, clipping_distance=1400, crop=[(1, 1), (1, 1)]):
         """Initialize the OpenCV client."""
         self.clipping_distance = clipping_distance
         self.crop = crop
+        self.freq = freq
         self._running_avg = {
             "GREEN": [],
             "YELLOW": [],
             "BLUE": [],
             "RED": [],
         }
+        self.running_avg = (
+            np.zeros((len(COLORS.keys()), int(self.freq * 10), 2))
+            + (np.array(self.crop[0]) + np.array(self.crop[1])) / 2
+        )
+
         self._camera_intrinsics = np.array([])
         self._color_image = np.array([])
         self._depth_image = np.array([])
@@ -59,6 +65,33 @@ class OpenCVClient:
     def depth_image(self):
         """Getter for the depth image."""
         return self._depth_image
+
+    @depth_image.setter
+    def depth_image(self, value):
+        """Setter for the depth image."""
+        self._depth_image = value
+
+    @property
+    def running_avg(self):
+        """Getter for the running average."""
+        return self._running_avg
+    
+    @running_avg.setter
+    def running_avg(self, value):
+        """Setter for the running average."""
+        self._running_avg = value
+
+    def detect_illumination(self, color: str):
+        """
+        Detects the illumination of the color and broadcasts.
+
+        Args:
+            color (str): The color of the object
+
+        """
+        color_index = COLORS[color]
+        median_centroid = np.median(self.running_avg[color_index], axis=0)
+        median_centroid = np.array(median_centroid, dtype=int)
 
     def find_centroid_cropped(self, masked_image, crop_indices):
         """

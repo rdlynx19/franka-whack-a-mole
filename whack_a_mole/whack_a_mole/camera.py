@@ -37,11 +37,11 @@ class Camera(Node):
             self.get_depth_info,
             qos_profile=QoSProfile(depth=10),
         )
-        self.declare_parameter("clipping_distance")
-        self.declare_parameter("box_start_x")
-        self.declare_parameter("box_end_x")
-        self.declare_parameter("box_start_y")
-        self.declare_parameter("box_end_y")
+        self.declare_parameter("clipping_distance", 1400)
+        self.declare_parameter("box_start_x", 1)
+        self.declare_parameter("box_end_x", 1)
+        self.declare_parameter("box_start_y", 1)
+        self.declare_parameter("box_end_y", 1)
 
         self.crop = [
             [self.get_parameter("box_start_x").value,

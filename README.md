@@ -16,7 +16,7 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 ## QuickStart
 1. Set up a `workspace` on your computer with the `src` directory.
 2. Go to your `workspace/src` and clone this repository.
-3. In the same `workspace/src`, clone our MoveItAPI (https://github.com/ME495-EmbeddedSystems/homework-3-group-4) and `colcon build` both repositories
+3. In the same `workspace/src`, clone our MoveItAPI (https://github.com/ME495-EmbeddedSystems/homework-3-group-4) and `colcon build` all repositories
 4. [OPTIONAL] Create servo/hammer end-effector attachment and upload `servo_serial_communication.ino` to it via an Arduino microcontroller
 5. [OPTIONAL] Create DIY whack-a-mole set and `build_moles.ino`to it via an Arduino microcontroller 
 6. Set up April Tag 36h11:0 with base attachment found here (https://github.com/wengmister/Apex-Putter/issues/2)
@@ -40,15 +40,15 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 
 ## System Architecture 
 
-[rqt_graph](https://drive.google.com/file/d/1nqVfBRIJsIxR-ow70zWqqq8uYWLoPkIF/view?usp=drive_link)
+![rqt_graph](https://drive.google.com/file/d/1nqVfBRIJsIxR-ow70zWqqq8uYWLoPkIF/view?usp=drive_link)
 
-[tf2_frames](https://drive.google.com/file/d/1uJ5dy5MbE7cBNwUiDOAhvmLxZTJy_jKo/view?usp=drive_link)
+![tf2_frames](https://drive.google.com/file/d/1uJ5dy5MbE7cBNwUiDOAhvmLxZTJy_jKo/view?usp=drive_link)
 
 ## Video Demonstrations
 ### Rviz 
 
-[whack-a-mole_rvizz.webm](https://drive.google.com/file/d/1lD6DpPvCtie84op-Ura1ZQyOK-rc1Tc6/view?usp=sharing)
+![whack-a-mole_rvizz.webm](https://drive.google.com/file/d/1lD6DpPvCtie84op-Ura1ZQyOK-rc1Tc6/view?usp=sharing)
 
 ### Physical Demo
 
-[whack-a-mole_live.webm](https://drive.google.com/file/d/19mdgvS2EuuI-zHf7KM9rPcOu6m58NArn/view?usp=drive_link)
+![whack-a-mole_live.webm](https://drive.google.com/file/d/19mdgvS2EuuI-zHf7KM9rPcOu6m58NArn/view?usp=drive_link)

@@ -40,15 +40,15 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 
 ## System Architecture 
 
-![rqt_graph](https://drive.google.com/file/d/1nqVfBRIJsIxR-ow70zWqqq8uYWLoPkIF/view?usp=drive_link)
+![rqt_graph](https://github.com/user-attachments/assets/d69f05cb-da2e-4601-9f59-a3a448614af6)
 
-![tf2_frames](https://drive.google.com/file/d/1uJ5dy5MbE7cBNwUiDOAhvmLxZTJy_jKo/view?usp=drive_link)
+![tf2_view_frames](https://github.com/user-attachments/assets/47dc3262-8e01-40a6-a1b8-ad64a84bdee5)
 
 ## Video Demonstrations
 ### Rviz 
 
-![whack-a-mole_rvizz.webm](https://drive.google.com/file/d/1lD6DpPvCtie84op-Ura1ZQyOK-rc1Tc6/view?usp=sharing)
+[whack-a-mole_live.webm](https://github.com/user-attachments/assets/87ae88f5-a53d-4895-9542-463258fc8a94)
 
 ### Physical Demo
 
-![whack-a-mole_live.webm](https://drive.google.com/file/d/19mdgvS2EuuI-zHf7KM9rPcOu6m58NArn/view?usp=drive_link)
+[whack-a-mole_live.webm](https://drive.google.com/file/d/19mdgvS2EuuI-zHf7KM9rPcOu6m58NArn/view?usp=drive_link)

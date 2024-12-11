@@ -39,10 +39,19 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 - `planner_swing.launch.xml`: launches rest of nodes created in package, `apriltag_node` required for april tag detection, and includes `camra.launch.py` and `object_mover.launch.py` in `object_mover`, the MoveIt API package
 
 ## System Architecture 
+## Architecture Description:
+
+The `camera_node` subcsribes topics published by the realsense camera and detects colors and broadcasting the frames of the colors to the TF tree, thus making the camera and color frames visible on Rvizz. To bring in the robot, the MoveIt API is launched along with the `apriltag_node` and `game`. The `apriltag_node` detects the april tag attached to the base of the robot. In the `game` node, a static transform between the base of the robot and the base april tag and the transform is computed using real world values once the april tag is attached to the base of the robot. Now the tf tree has all the info it needs for rviz to map the entire physical setup. Once the `/call_play` service is called, it causes a loop of `/play` service calls within the `hint` node. This `hint` node also receives a stream of data from the arduino on which button is lit up. Within the `/play` service callback in the `game` node, the transforms for the illuminated color is looked up from the tf tree and the `\pick_pose` custom service type is called, for which the service is located within the `comm_node`. Within the `pick_pose` callback, it interacts with MoveIt API to plan a path to the request goal pose and completes the action of swinging the hammer by calling custom action type called `swing_hammer`. The `swing_hammer` action sends a request to the servo controlled by an Arduino microcontroller to actuate the servo and swing the hammer, thus completing the hit action. This process is looped in `hint` node until the user kills the node on the terminal. The associated RQT graph and TF tree are shown below.
+
+### RQT Graph:
 
 ![rqt_graph](https://github.com/user-attachments/assets/d69f05cb-da2e-4601-9f59-a3a448614af6)
 
+### TF Tree:
+
 ![tf2_view_frames](https://github.com/user-attachments/assets/47dc3262-8e01-40a6-a1b8-ad64a84bdee5)
+
+
 
 ## Video Demonstrations
 ### Rviz 

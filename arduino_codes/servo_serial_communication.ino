@@ -21,10 +21,10 @@ void loop() {
     }
 
     else if (command.equals("h")) {
-      myservo.write(50);
-      delay(500);
+      //myservo.write(50);
+      //delay(500);
       myservo.write(100);
-      delay(500);
+      delay(200);
       myservo.write(50);
       Serial.println("d");
     }

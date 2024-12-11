@@ -1,6 +1,0 @@
-#!/bin/bash
-
-python3 -m venv venv
-source venv/bin/activate
-pip install pyfirmata
-cp -r venv/lib/python3.*/site-packages/pyfirmata /usr/lib/python3/dist-packages/

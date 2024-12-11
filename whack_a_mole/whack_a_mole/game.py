@@ -3,14 +3,11 @@ from geometry_msgs.msg import Pose, TransformStamped
 from object_mover.MotionPlanningInterface import MotionPlanningInterface
 from object_mover_interfaces.srv import PickPose
 import rclpy
-import math
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from std_srvs.srv import Empty
-from std_msgs.msg import String
 from whack_a_mole_interfaces.action import ActuateServo
-import tf2_ros
 from tf2_ros.transform_listener import TransformListener
 from tf2_ros.buffer import Buffer
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
@@ -60,11 +57,6 @@ class Game(Node):
 
 
     async def play_game(self, request, response):
-        #    self.base_to_tag1 = self.buffer.lookup_transform('base', 'board', rclpy.time.Time())
-        #    self.base_to_tag2 = self.buffer.lookup_transform('base', 'mole', rclpy.time.Time())
-        #    self.base_to_blue = self.buffer.lookup_transform('base', 'BLUE_frame', rclpy.time.Time())
-        #    self.base_to_red = self.buffer.lookup_transform('base', 'RED_frame', rclpy.time.Time())
-        #    self.base_to_green = self.buffer.lookup_transform('base', 'GREEN_frame', rclpy.time.Time())
         received_frame = request.color
         tag_frame = received_frame.data
         try:
@@ -87,11 +79,7 @@ class Game(Node):
         except Exception as e:
             self.get_logger().error(f'Error in move_to_tag: {e}')
         
-
-        # await self.move_to_tag('RED_frame')
-        # await self.move_to_tag('GREEN_frame')
         return response
-
         
     async def go_home_callback(self, request, response):
         try:
@@ -99,6 +87,7 @@ class Game(Node):
         except Exception as e:
             self.get_logger().error(f'Error in go_home_callback: {e}')
         return response
+    
 
 def main(args=None):
     rclpy.init(args=args)
@@ -109,4 +98,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     import sys
-    main(sys.argv)
+    

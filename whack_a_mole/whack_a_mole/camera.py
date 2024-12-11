@@ -1,5 +1,5 @@
 import numpy as np
-
+import cv2
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
@@ -120,9 +120,7 @@ class Camera(Node):
         """
         color_index = COLORS[color]
 
-        x_c, y_c, bg_removed = self.cv2_client.find_color_centroid(lower_HSV, higher_HSV)
-        msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding="bgr8")
-        self.image_pub.publish(msg)
+        x_c, y_c = self.find_color_centroid(lower_HSV, higher_HSV)
 
         if x_c != 0 and y_c != 0 and self.update_colors:
 
@@ -137,6 +135,62 @@ class Camera(Node):
         self.broadcast_color_frame(
             "camera_depth_frame", color + "_frame", median_centroid[0], median_centroid[1]
         )
+
+    def find_color_centroid(self, lower_HSV: np.array, higher_HSV: np.array):
+        """
+        Returns the pixel indecies of the centroid of a color defined in lower_HSV , higher_HSV range
+        """
+        depth_image_3d = np.dstack(
+            (self.cv2_client.depth_image, self.cv2_client.depth_image, self.cv2_client.depth_image)
+        )  # depth image is 1 channel, color is 3 channels
+        bg_removed = np.where(
+            (depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0),
+            0,
+            self.cv2_client.color_image,
+        )
+        if lower_HSV.shape[0] == 2:
+            mask1 = cv2.inRange(
+                cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV), lower_HSV[0], higher_HSV[0]
+            )
+            mask2 = cv2.inRange(
+                cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV), lower_HSV[1], higher_HSV[1]
+            )
+            mask = mask1 + mask2
+        else:
+            mask = cv2.inRange(
+                cv2.cvtColor(bg_removed, cv2.COLOR_BGR2HSV), lower_HSV, higher_HSV
+            )
+        if not np.any(mask):
+            return np.array([-1, -1])
+
+        # Find Centroid
+        x_c, y_c = self.cv2_client.find_centroid_cropped(mask, (*self.crop[0], *self.crop[1]))
+        x_c = int(x_c)
+        y_c = int(y_c)
+        for color in COLORS:
+            color_index = COLORS[color]
+            avg_centroid = np.median(self.cv2_client.running_avg[color_index], axis=0)
+            avg_centroid = np.array(avg_centroid, dtype=int)
+            cv2.circle(
+                bg_removed,
+                (avg_centroid[0], avg_centroid[1]),
+                5,
+                (0, 0, 255),
+                thickness=10,
+            )
+            cv2.putText(
+                bg_removed,
+                f"{color}",
+                (avg_centroid[0], avg_centroid[1]),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (255, 255, 255),
+                2,
+            )
+        cv2.rectangle(bg_removed, self.crop[0], self.crop[1], (0, 0, 255), thickness=5)
+        msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding="bgr8")
+        self.image_pub.publish(msg)
+        return x_c, y_c
 
     def log(self, *message):
         """Custom logger function."""

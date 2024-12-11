@@ -94,14 +94,7 @@ class Camera(Node):
 
     def timer_callback(self):
 
-        if self.color_image.shape[0] == 0:
-            self.log("Image shape color")
-            self.log("Waiting for image data...")
-            return
-        
-        if self.depth_image.shape[0] == 0:
-            self.log("Image shape depth")
-            self.log("Waiting for depth data...")
+        if self.color_image.shape[0] == 0 or self.depth_image.shape[0] == 0:
             return
 
         for color in COLORS_HSV.keys():
@@ -112,10 +105,15 @@ class Camera(Node):
                 color=color,
             )
 
+            self.detect_illumination(color)
+
     def toggle_tf_publish(self, request, response):
         
         self.update_colors = not self.update_colors
         return response
+
+    def detect_illumination(self, color: str):
+        self.log("Detecting illumination for ", color)
 
     def broadcast_color(self, lower_HSV, higher_HSV, color: str):
 
@@ -227,46 +225,6 @@ class Camera(Node):
 
         return x_c, y_c
 
-    def find_centroid(self, masked_image):
-
-        # Get all countours
-        # https://docs.opencv.org/4.6.0/d4/d73/tutorial_py_contours_begin.html
-
-        image = np.array(masked_image, dtype=np.uint8)
-        contours, _ = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
-        # Find the centroid
-        # https://pyimagesearch.com/2016/02/01/opencv-center-of-contour/
-
-        # Find the largest area in the stream
-
-        largest_area = -1
-        largest_index = -1
-
-        for i in range(len(contours)):
-            area = cv2.contourArea(contours[i])
-
-            # Check if the current contour has the largest area so far
-            if area > largest_area:
-                largest_area = area
-                largest_index = i
-
-        # If no valid contour was found (largest_area remains 0)
-        if largest_area == 0:
-            return 0, 0
-
-        # Calculate the centroid
-
-        try:
-            moments = cv2.moments(contours[largest_index])
-        except:
-            print(len(contours))
-
-        x_c = (moments["m10"]) / (largest_area)
-        y_c = (moments["m01"]) / (largest_area)
-
-        return x_c, y_c
-
     def find_centroid_cropped(self, masked_image, crop_indices):
         """
         Find the centroid of the largest contour within a specified crop region.
@@ -362,7 +320,6 @@ class Camera(Node):
         depth_in_meters = self.depth_image[y, x] / 1000
 
         if depth_in_meters == 0:  # No depth data at this pixel
-            self.log(f"[{frame_name}] No valid depth data at pixel ({x}, {y}).")
             return -1, -1, -1
 
         # Extract intrinsic parameters from the camera info (in a 3x3 matrix form)

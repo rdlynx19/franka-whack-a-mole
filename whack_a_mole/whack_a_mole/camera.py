@@ -77,7 +77,7 @@ class Camera(Node):
             + (np.array(CROP[0]) + np.array(CROP[1])) / 2
         )
 
-        self.clipping_distance = 1180
+        self.clipping_distance = 1400
         
         self.update_colors = True
 

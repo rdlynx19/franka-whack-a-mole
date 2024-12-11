@@ -51,4 +51,4 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 
 ### Physical Demo
 
-[whack-a-mole_live.webm](https://drive.google.com/file/d/19mdgvS2EuuI-zHf7KM9rPcOu6m58NArn/view?usp=drive_link)
+[whack-a-mole_live.webm](https://github.com/user-attachments/assets/87ae88f5-a53d-4895-9542-463258fc8a94)

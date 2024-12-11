@@ -35,6 +35,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, EqualsSubstitution
 from launch.conditions import UnlessCondition, IfCondition
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterFile
 
 
 def generate_launch_description():
@@ -105,5 +106,8 @@ def generate_launch_description():
             executable="camera_node",
             name = "color_camera",
             output = "screen",
+            parameters=[ParameterFile(
+                PathJoinSubstitution([pkg_share, 'params.yaml'])
+            )]
         ),
     ])

@@ -14,6 +14,7 @@ setup(
         ('share/' + package_name, ['config/tags.yaml']),
         ('share/' + package_name, ['config/tags_tf.rviz']),
         ('share/' + package_name, ['config/moveit.rviz']),
+        ('share/' + package_name, ['config/params.yaml']),
         ('share/' + package_name, ['package.xml', 
                                    'launch/planner_swing.launch.xml',
                                    'launch/github_camera.launch.py']),

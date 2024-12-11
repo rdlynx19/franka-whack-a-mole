@@ -120,7 +120,7 @@ class Camera(Node):
         """
         color_index = COLORS[color]
 
-        x_c, y_c, bg_removed = self.find_color_centroid(lower_HSV, higher_HSV)
+        x_c, y_c, bg_removed = self.cv2_client.find_color_centroid(lower_HSV, higher_HSV)
         msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding="bgr8")
         self.image_pub.publish(msg)
 
@@ -171,7 +171,7 @@ class Camera(Node):
 
     def broadcast_color_frame(self, base_frame, child_frame, x_c, y_c):
 
-        x, y, z = self.get_3d_coordinates_at_pixel(x_c, y_c, frame_name=child_frame)
+        x, y, z = self.cv2_client.get_3d_coordinates_at_pixel(x_c, y_c, frame_name=child_frame)
         if x == -1:
             x, y, z = self.prev_xyz[0], self.prev_xyz[1], self.prev_xyz[2]
         else:

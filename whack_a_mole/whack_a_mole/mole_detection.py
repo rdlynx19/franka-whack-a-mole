@@ -170,7 +170,7 @@ class OpenCVClient:
             )
 
         if not np.any(mask):
-            return np.array([-1, -1])
+            return np.array([-1, -1]), np.array([-1, -1]), bg_removed
 
         # Find Centroid
         x_c, y_c = self.find_centroid_cropped(mask, (*self.crop[0], *self.crop[1]))

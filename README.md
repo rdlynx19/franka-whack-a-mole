@@ -47,7 +47,7 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 ## Video Demonstrations
 ### Rviz 
 
-[whack-a-mole_live.webm](https://github.com/user-attachments/assets/87ae88f5-a53d-4895-9542-463258fc8a94)
+[whack-a-mole_rvizz.webm](https://github.com/user-attachments/assets/669d5b71-3139-480c-ba2a-61dcc3d9fc77)
 
 ### Physical Demo
 

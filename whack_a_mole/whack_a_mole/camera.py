@@ -114,14 +114,11 @@ class Camera(Node):
 
     def detect_illumination(self, color: str):
         self.log("Detecting illumination for ", color)
+        self.log(f"{self.running_avg}")
 
     def broadcast_color(self, lower_HSV, higher_HSV, color: str):
 
         color_index = COLORS[color]
-
-        # if (color == "RED"):
-
-        #     self.log(COLORS_HSV["RED"][0].shape)
 
         x_c, y_c = self.find_color_centroid(lower_HSV, higher_HSV)
 
@@ -132,11 +129,11 @@ class Camera(Node):
             ]  # Shift all elements down by 1
             self.running_avg[color_index, -1] = np.array([x_c, y_c])
 
-        avg_centroid = np.median(self.running_avg[color_index], axis=0)
-        avg_centroid = np.array(avg_centroid, dtype=int)
+        median_centroid = np.median(self.running_avg[color_index], axis=0)
+        median_centroid = np.array(median_centroid, dtype=int)
 
         self.broadcast_color_frame(
-            "camera_depth_frame", color + "_frame", avg_centroid[0], avg_centroid[1]
+            "camera_depth_frame", color + "_frame", median_centroid[0], median_centroid[1]
         )
 
     def log(self, *message):

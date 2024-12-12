@@ -44,7 +44,7 @@ void loop() {
       int newIndex;
       do {
         newIndex = random(0,4);
-      } while (newIndex == currentIndex);
+      } while (newIndex == currentIndex || (newIndex==0 && currentIndex==1));
       currentIndex = newIndex;
       Serial.println(currentIndex);
       delay(100);

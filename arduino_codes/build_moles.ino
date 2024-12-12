@@ -7,7 +7,8 @@ int currentIndex = 0;
 int val;
 unsigned long previous_time;
 bool hasPrinted = false;
-
+String start_command;
+bool start_game = false;
 void setup() {
   // Initialize output pins
   for (int i = 0; i < 4; i++) {
@@ -23,25 +24,34 @@ void setup() {
 
   Serial.begin(115200);  // Initialize serial communication for debugging
   previous_time = millis();
-  digitalWrite(outputPins[currentIndex],HIGH);
+  // digitalWrite(outputPins[currentIndex],HIGH);
 }
 
 
 
 void loop() {
-  val = digitalRead(inputPins[currentIndex]);   // read the input pin
-  if(millis() - previous_time >= 200000000 || val==0){
-    previous_time = millis();
-    digitalWrite(outputPins[currentIndex], LOW);
-    int newIndex;
-    do {
-      newIndex = random(0,4);
-    } while (newIndex == currentIndex);
-    currentIndex = newIndex;
-    Serial.println(currentIndex);
-    digitalWrite(outputPins[currentIndex], HIGH);
+    if(start_game == false){
+    start_command = Serial.readStringUntil('\n');
+    start_command.trim();
+    if(start_command.equals("s")){
+      start_game = true;
+    }} 
+    if(start_game == true){
+    val = digitalRead(inputPins[currentIndex]);   // read the input pin
+      if(millis() - previous_time >= 200000000 || val==0){
+      previous_time = millis();
+      digitalWrite(outputPins[currentIndex], LOW);
+      int newIndex;
+      do {
+        newIndex = random(0,4);
+      } while (newIndex == currentIndex);
+      currentIndex = newIndex;
+      Serial.println(currentIndex);
+      digitalWrite(outputPins[currentIndex], HIGH); 
+    }
     }
   }
+  
 
 
     

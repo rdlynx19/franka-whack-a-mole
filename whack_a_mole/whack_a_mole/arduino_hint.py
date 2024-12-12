@@ -44,6 +44,11 @@ class Hint(Node):
 
 
     async def call_play_callback(self, request, response):
+        try:
+            start = str('s')
+            mole_comm.write(start.encode("utf-8"))
+        except Exception as e:
+            self.get_logger().error(f'Could not start the game: {e}')
         empty_req = Empty.Request()
         await self.toggle_client.call_async(empty_req)
         while True:

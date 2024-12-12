@@ -145,7 +145,6 @@ class OpenCVClient:
     def get_3d_coordinates_at_pixel(self, x, y, frame_name=""):
         """Convert the pixel coordinates (x, y) to 3D camera coordinates in meters."""
         if self.camera_intrinsics.shape[0] == 0:
-            self.log("Camera intrinsics not yet received.")
             return -1, -1, -1
 
         # Get the depth value at the specified pixel (x, y)

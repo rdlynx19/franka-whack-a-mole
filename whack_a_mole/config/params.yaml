@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
     clipping_distance: 1400
-    box_start_x: 300
+    box_start_x: 600
     box_end_x: 1200
-    box_start_y: 400
+    box_start_y: 350
     box_end_y: 720

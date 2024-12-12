@@ -3,6 +3,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+datasets/
+images/
+runs/
+yolo*
+test.py
+best.pt
+venv_ws/
+install/
+log/
+inference.py
+test.py
+images/
 # C extensions
 *.so
 

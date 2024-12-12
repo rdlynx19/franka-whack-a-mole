@@ -47,6 +47,7 @@ void loop() {
       } while (newIndex == currentIndex);
       currentIndex = newIndex;
       Serial.println(currentIndex);
+      delay(100);
       digitalWrite(outputPins[currentIndex], HIGH); 
     }
     }

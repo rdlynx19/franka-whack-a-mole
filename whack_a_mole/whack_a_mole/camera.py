@@ -13,7 +13,7 @@ from sensor_msgs.msg import Image, CameraInfo
 from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import TransformStamped
 
-global COLORS, COLORS_HSV, CROP
+global COLORS, COLORS_HSV
 
 COLORS = {"GREEN": 0, "YELLOW": 1, "BLUE": 2, "RED": 3}
 
@@ -21,10 +21,8 @@ COLORS_HSV = {
     "GREEN": [np.array([47, 90, 132]), np.array([94, 255, 191])],
     "YELLOW": [np.array([24, 100, 101]), np.array([52, 255, 230])],
     "BLUE": [np.array((95, 157, 85)), np.array((161, 255, 189))],
-    "RED": [np.array((0, 132, 4)), np.array((9, 241, 221))],
+    "RED": [np.array((0, 132, 4)), np.array((2, 241, 221))],
 }
-
-CROP = [(300, 400), (1200, 720)]
 
 
 class Camera(Node):
@@ -32,6 +30,19 @@ class Camera(Node):
     def __init__(self):
 
         super().__init__("color_camera")
+
+        self.declare_parameter("clipping_distance", 1400)
+        self.declare_parameter("box_start_x", 1)
+        self.declare_parameter("box_end_x", 1)
+        self.declare_parameter("box_start_y", 1)
+        self.declare_parameter("box_end_y", 1)
+
+        self.crop = [
+            [self.get_parameter("box_start_x").value,
+            self.get_parameter("box_start_y").value],
+            [self.get_parameter("box_end_x").value,
+            self.get_parameter("box_end_y").value]
+        ]
 
         self.create_subscription(
             Image,
@@ -74,7 +85,7 @@ class Camera(Node):
 
         self.running_avg = (
             np.zeros((len(COLORS.keys()), int(self.freq * 10), 2))
-            + (np.array(CROP[0]) + np.array(CROP[1])) / 2
+            + (np.array(self.crop[0]) + np.array(self.crop[1])) / 2
         )
 
         self.clipping_distance = 1400
@@ -179,7 +190,7 @@ class Camera(Node):
             return np.array([-1, -1])
 
         # Find Centroid
-        x_c, y_c = self.find_centroid_cropped(mask, (*CROP[0], *CROP[1]))
+        x_c, y_c = self.find_centroid_cropped(mask, (*self.crop[0], *self.crop[1]))
 
         x_c = int(x_c)
         y_c = int(y_c)
@@ -208,7 +219,7 @@ class Camera(Node):
                 2,
             )
 
-        cv2.rectangle(bg_removed, CROP[0], CROP[1], (0, 0, 255), thickness=5)
+        cv2.rectangle(bg_removed, self.crop[0], self.crop[1], (0, 0, 255), thickness=5)
 
         msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding="bgr8")
 

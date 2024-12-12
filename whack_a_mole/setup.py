@@ -12,6 +12,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name, ['launch/camera.launch.py']),
         ('share/' + package_name, ['config/tags.yaml']),
+        ('share/' + package_name, ['config/params.yaml']),
         ('share/' + package_name, ['config/tags_tf.rviz']),
         ('share/' + package_name, ['config/moveit.rviz']),
         ('share/' + package_name, ['package.xml', 

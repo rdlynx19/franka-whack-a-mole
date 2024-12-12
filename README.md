@@ -2,7 +2,7 @@
 Authors: Ben Benyamin, David Khachatryan, Haodong Wang, Pushkar Dave, Sairam Umakanth
 
 ## Description
-This package contains Python API for making a Franka Emika Panda robot play whack-a-mole. The 
+This package enables the Franka Emika Panda robot play whack-a-mole on a custom whack-a-mole game. The 
 physical setup requires a RealSense2 camera, a singular April tag attached to the base of the 
 robot, a servo/hammer end-effector attachment connected to an Arduino microcontroller, and 
 optionally a DIY whack-a-mole set attached to its own Arduino microcontroller. The game is played
@@ -41,7 +41,7 @@ package also contains Arduino IDE code to program a DIY whack-a-mole.
 ## System Architecture 
 ### Architecture Description:
 
-The `camera_node` subcsribes topics published by the realsense camera and detects colors and broadcasting the frames of the colors to the TF tree, thus making the camera and color frames visible on Rvizz. To bring in the robot, the MoveIt API is launched along with the `apriltag_node` and `game`. The `apriltag_node` detects the april tag attached to the base of the robot. In the `game` node, a static transform between the base of the robot and the base april tag and the transform is computed using real world values once the april tag is attached to the base of the robot. Now the tf tree has all the info it needs for rviz to map the entire physical setup. Once the `/call_play` service is called, it causes a loop of `/play` service calls within the `hint` node. This `hint` node also receives a stream of data from the arduino on which button is lit up. Within the `/play` service callback in the `game` node, the transforms for the illuminated color is looked up from the tf tree and the `\pick_pose` custom service type is called, for which the service is located within the `comm_node`. Within the `pick_pose` callback, it interacts with MoveIt API to plan a path to the request goal pose and completes the action of swinging the hammer by calling custom action type called `swing_hammer`. The `swing_hammer` action sends a request to the servo controlled by an Arduino microcontroller to actuate the servo and swing the hammer, thus completing the hit action. This process is looped in `hint` node until the user kills the node on the terminal. The associated RQT graph and TF tree are shown below.
+The `camera_node` subcsribes topics published by the realsense camera and detects colors and broadcasting the frames of the colors to the TF tree, thus making the camera and color frames visible on Rvizz. To bring in the robot, the MoveIt API is launched along with the `apriltag_node` and `game`. The `apriltag_node` detects the april tag attached to the base of the robot. In the `game` node, a static transform between the base of the robot and the base april tag and the transform is computed using real world values once the april tag is attached to the base of the robot. Now the tf tree has all the info it needs for rviz to map the entire physical setup. Once the `/call_play` service is called, it causes a loop of `/play` service calls within the `hint` node. This `hint` node also receives a stream of data from the arduino on which button is lit up. Within the `/play` service callback in the `game` node, the transforms for the illuminated color is looked up from the tf tree and the `/pick_pose` custom service type is called, for which the service is located within the `comm_node`. Within the `pick_pose` callback, it interacts with MoveIt API to plan a path to the request goal pose and completes the action of swinging the hammer by calling custom action type called `swing_hammer`. The `swing_hammer` action sends a request to the servo controlled by an Arduino microcontroller to actuate the servo and swing the hammer, thus completing the hit action. This process is looped in `hint` node until the user kills the node on the terminal. The associated RQT graph and TF tree are shown below.
 
 ### RQT Graph:
 
@@ -49,8 +49,7 @@ The `camera_node` subcsribes topics published by the realsense camera and detect
 
 ### TF Tree:
 
-![tf2_view_frames](https://github.com/user-attachments/assets/47dc3262-8e01-40a6-a1b8-ad64a84bdee5)
-
+![tf2_view_frames](https://github.com/user-attachments/assets/de01adff-58a2-418e-9448-719bc31216c0)
 
 
 ## Video Demonstrations

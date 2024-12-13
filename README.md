@@ -2,6 +2,9 @@
 Authors: Ben Benyamin, David Khachatryan, Haodong Wang, Pushkar Dave, Sairam Umakanth
 
 ## Demo
+
+Note: This video is lengthy and could not be embedded directly into the README. Please click on the image below to view the video.
+
 [![Video Title](https://img.youtube.com/vi/GG81r0z8W5s/0.jpg)](https://youtu.be/GG81r0z8W5s?si=jnvBzOhuwIO57tmf)
 
 ## Description
@@ -17,6 +20,7 @@ the Moveit wrapper API must be cloned in the same workspace as the whack-a-mole 
 package also contains Arduino IDE code to program a DIY whack-a-mole. 
 
 ## QuickStart
+1. Install dependencies: `rosdep install --from-paths src --ignore-src -r -y`
 1. Set up a `workspace` on your computer with the `src` directory.
 2. Go to your `workspace/src` and clone this repository.
 3. In the same `workspace/src`, clone our MoveItAPI (https://github.com/ME495-EmbeddedSystems/homework-3-group-4) and `colcon build` all repositories

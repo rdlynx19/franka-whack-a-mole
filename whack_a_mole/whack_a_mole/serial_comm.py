@@ -1,104 +1,79 @@
+"""Integrate the hammer actuation with the MotionPlanner."""
+
+from geometry_msgs.msg import Pose
+
+from object_mover.MotionPlanningInterface import MotionPlanningInterface
+
+from object_mover_interfaces.srv import PickPose
+
 import rclpy
-from rclpy.action import ActionServer
+from rclpy.action import ActionClient
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node
+
 from std_msgs.msg import String
+
 from whack_a_mole_interfaces.action import ActuateServo
-import serial
-import serial.tools.list_ports as list_ports
 
-ser_comm = serial.Serial()
 
-class CommunicationNode(Node):
+class Swing(Node):
+    """Node for swinging the hammer."""
+
     def __init__(self):
-        super().__init__('comm_node')
-
-        self.hammer_action_server = ActionServer(
-            self, 
-            ActuateServo,
-            'swing_hammer',
-            self.swing_callback
+        """Initialize the node."""
+        super().__init__('swing')
+        self.mpi = MotionPlanningInterface(self)
+        self.serv = self.create_service(
+            PickPose,
+            'pick',
+            self.pick_callback,
+            callback_group=MutuallyExclusiveCallbackGroup(),
         )
-        ARDUINO_SERIAL = "F412FA6FA49C"
 
-        # ports discovery
-        ports = list(list_ports.comports(True))  # get list of ports
-        arduino_port = None
+        self.hammer_client = ActionClient(
+            self,
+            ActuateServo,
+            'swing_hammer'
+        )
 
-        # grab the port that's connected to the Arduino
-        for p in ports:
-            if p.serial_number == ARDUINO_SERIAL:
-                arduino_port = p.device
-                break
+    async def pick_callback(self, request: PickPose, response):
+        """
+        Trigger to pick object.
 
-        # check Arduino has been found
-        if arduino_port is None:
-            self.get_logger.error("error finding arduino")
+        :param request: service request object
+        :type request: object_mover_interfaces.srv.PickPose
+        :returns: response to service call
+        :rtype: bool
+        """
+        object_pose = Pose()
+        object_pose = request.pick_point
 
-        self.connect_serial_port(serial_port=arduino_port, baud_rate=115200)
+        # Step 1: Move arm to button
+        pose1 = object_pose
+        traj1 = await self.mpi.plan_path(goal_pose=pose1)
+        _ = await self.mpi.exec_path(traj1)
+        self.get_logger().info('Step 3: Finished moving arm to button')
 
-    async def swing_callback(self, goal_handle):
-        if not isinstance(goal_handle.request.position, String):
-            self.get_logger().error(f"Expected string for position, got: {type(goal_handle.request.position)}")
-            result = ActuateServo.Result()
-            result.res = False  # Signal an error in the result
-            goal_handle.abort()  # Abort the goal
-            return result
+        # Step 2: Actuating the hammer to hit!
+        msg = String()
+        actuate_msg = ActuateServo.Goal()
+        msg.data = 'hit'
+        actuate_msg.position = msg
+        goal_handle = await self.hammer_client.send_goal_async(actuate_msg)
+        self.get_logger().info(f'Actuating hammer to {msg.data}!')
+        await goal_handle.get_result_async()
 
-        if(goal_handle.request.position.data == 'raise'):
-            msg = String()
-            msg.data = 'r'
-            self.write_serial_data(msg)
-            self.get_logger().info('Raising the hammer')
-        elif(goal_handle.request.position.data == 'hit'):
-            msg = String()
-            msg.data = 'h'
-            self.write_serial_data(msg)
-            self.get_logger().info('Hitting the hammer') 
-        else:
-            self.get_logger().error("No valid string option sent, Send raise or hit!")
-
-        serial_val = await self.read_serial_data()
-        self.get_logger().info('Arduino finished moving hammer, moving on to next step')
-        
-        result = ActuateServo.Result()
-        result.res = True
-        goal_handle.succeed()
-
-        return result
-        
-
-    def write_serial_data(self, msg: String):
-        try:
-            msg = str(msg.data)
-            ser_comm.write(msg.encode("utf-8"))
-        except Exception as e:
-            self.get_logger().error('Cannot write serial data!: {e}')
-
-    async def read_serial_data(self):
-        try:
-            msg = String()
-            msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
-            while msg.data != 'd':
-                msg.data = ser_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
-                self.get_logger().info(f'{msg.data}')
-            return True 
-        except Exception as e:
-            self.get_logger().error(f'Cannot read serial data!: {e}')
-            return False
+        return response
 
 
-    def connect_serial_port(self, serial_port, baud_rate):
-        ser_comm.port = serial_port
-        ser_comm.baudrate = baud_rate
-        ser_comm.timeout = 1
-        ser_comm.open()
-
-def node_main(args=None):
+def main(args=None):
+    """Run the Swing node."""
     rclpy.init(args=args)
-    node = CommunicationNode()
+    node = Swing()
     rclpy.spin(node)
     rclpy.shutdown()
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     import sys
-    node_main(args=sys.argv)
+    main(args=sys.argv)

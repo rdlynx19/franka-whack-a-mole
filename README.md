@@ -58,8 +58,10 @@ The `camera_node` subcsribes topics published by the realsense camera and detect
 
 ![tf2_view_frames](https://github.com/user-attachments/assets/de01adff-58a2-418e-9448-719bc31216c0)
 
-
 ## Video Demonstrations
 ### Rviz 
 [whack-a-mole_rvizz.webm](https://github.com/user-attachments/assets/669d5b71-3139-480c-ba2a-61dcc3d9fc77)
 
+## The Group
+
+![WhatsApp Image 2024-12-12 at 1 35 27 PM](https://github.com/user-attachments/assets/6c896237-3076-4070-919c-2b9ef3b154d4)

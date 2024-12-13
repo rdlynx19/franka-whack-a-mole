@@ -1,17 +1,26 @@
 """Integrate the hammer actuation with the MotionPlanner."""
+
 from geometry_msgs.msg import Pose
+
 from object_mover.MotionPlanningInterface import MotionPlanningInterface
+
 from object_mover_interfaces.srv import PickPose
+
 import rclpy
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.action import ActionClient
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node
+
 from std_msgs.msg import String
+
 from whack_a_mole_interfaces.action import ActuateServo
 
 
 class Swing(Node):
+    """Node for swinging the hammer."""
+
     def __init__(self):
+        """Initialize the node."""
         super().__init__('swing')
         self.mpi = MotionPlanningInterface(self)
         self.serv = self.create_service(
@@ -41,11 +50,11 @@ class Swing(Node):
 
         # Step 1: Move arm to button
         pose1 = object_pose
-        traj1 = await self.mpi.plan_path(goal_pose = pose1)
+        traj1 = await self.mpi.plan_path(goal_pose=pose1)
         _ = await self.mpi.exec_path(traj1)
         self.get_logger().info('Step 3: Finished moving arm to button')
 
-       # Step 2: Actuating the hammer to hit!
+        # Step 2: Actuating the hammer to hit!
         msg = String()
         actuate_msg = ActuateServo.Goal()
         msg.data = 'hit'
@@ -53,16 +62,18 @@ class Swing(Node):
         goal_handle = await self.hammer_client.send_goal_async(actuate_msg)
         self.get_logger().info(f'Actuating hammer to {msg.data}!')
         await goal_handle.get_result_async()
-        
+
         return response
 
 
 def main(args=None):
+    """Run the Swing node."""
     rclpy.init(args=args)
     node = Swing()
     rclpy.spin(node)
     rclpy.shutdown()
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     import sys
     main(args=sys.argv)

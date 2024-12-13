@@ -1,18 +1,25 @@
+"""Test the communication node."""
+
 import unittest
 from unittest.mock import MagicMock, patch
-import pytest
-import rclpy
-from rclpy.node import Node
-from rclpy.action import ActionClient
-from whack_a_mole_interfaces.action import ActuateServo
+
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess
+
 from launch_ros.actions import Node as LaunchNode
+
 from launch_testing.actions import ReadyToTest
-from launch_testing.legacy import WaitForTopics
+
+import pytest
+
+import rclpy
+from rclpy.action import ActionClient
+
+from whack_a_mole_interfaces.action import ActuateServo
+
 
 @pytest.mark.rostest
 def generate_test_description():
+    """Generate a LaunchDescription for the test."""
     comm_node = LaunchNode(
         package='whack_a_mole',
         executable='comm_node',
@@ -28,7 +35,10 @@ def generate_test_description():
         {'comm_node': comm_node},
     )
 
+
 class TestCommunicationNode(unittest.TestCase):
+    """Test the communication node."""
+
     @classmethod
     def setUpClass(cls):
         """Initialize ROS 2 before running any tests."""
@@ -42,7 +52,10 @@ class TestCommunicationNode(unittest.TestCase):
     def setUp(self):
         """Set up the test node and action client."""
         self.node = rclpy.create_node('test_comm_node')
-        self.action_client = ActionClient(self.node, ActuateServo, 'swing_hammer')
+        self.action_client = ActionClient(
+            self.node,
+            ActuateServo,
+            'swing_hammer')
 
     def tearDown(self):
         """Destroy the test node."""
@@ -51,7 +64,7 @@ class TestCommunicationNode(unittest.TestCase):
     # --------------- Begin Citation [1] -------------------#
     @patch('serial.Serial')
     def test_serial_data_transmission(self, mock_serial):
-        """Test that the node sends the correct serial data when handling goals."""
+        """Test that the correct serial data is sent when handling goals."""
         # Mock the serial communication
         mock_serial_instance = mock_serial.return_value
         mock_serial_instance.write = MagicMock()
@@ -108,5 +121,4 @@ class TestCommunicationNode(unittest.TestCase):
 
         # Verify the logger processed the received data
         self.assertEqual(mock_serial_instance.readline.call_count, 3)
-    # --------------- End Citation [1] -------------------#    
-
+    # --------------- End Citation [1] -------------------#

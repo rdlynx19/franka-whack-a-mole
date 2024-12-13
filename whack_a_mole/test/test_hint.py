@@ -1,19 +1,25 @@
+"""Test the Hint node."""
+
 import unittest
-import pytest
+from unittest.mock import MagicMock, patch
+
 from launch import LaunchDescription
+
 from launch_ros.actions import Node
+
 from launch_testing.actions import ReadyToTest
-from rclpy.executors import SingleThreadedExecutor
-from rclpy.task import Future
+
+import pytest
+
 import rclpy
-from std_srvs.srv import Empty
-from whack_a_mole_interfaces.srv import TargetFrame
+from rclpy.executors import SingleThreadedExecutor
+
 from whack_a_mole.arduino_hint import Hint
-from unittest.mock import patch, MagicMock
+
 
 @pytest.mark.rostest
 def generate_test_description():
-    # Launch the Hint node
+    """Generate a LaunchDescription for the test."""
     hint_node = Node(
         package='whack_a_mole',
         executable='hint',
@@ -29,20 +35,26 @@ def generate_test_description():
         {'hint_node': hint_node}
     )
 
+
 class TestHintNode(unittest.TestCase):
+    """Test the Hint node."""
 
     @classmethod
     def setUpClass(cls):
+        """Initialize ROS 2 before running any tests."""
         rclpy.init()
 
     @classmethod
     def tearDownClass(cls):
+        """Shutdown ROS 2 after tests."""
         rclpy.shutdown()
 
     def setUp(self):
+        """Set up the test node."""
         self.node = rclpy.create_node('test_node')
 
     def tearDown(self):
+        """Destroy the test node."""
         self.node.destroy_node()
 
     # --------------- Begin Citation [1] -------------------#

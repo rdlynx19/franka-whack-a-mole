@@ -1,43 +1,26 @@
-"""
-Game Node
-=========
-
-This module implements the workflow for Franka to play the game by integrating motion control, action handling, and service calls.
-
-Classes
--------
-Game
-    A ROS2 node that facilitates the game workflow by controlling the robot's motion, interacting with TF transformations, and handling actions.
-
-Functions
----------
-main(args=None)
-    Entry point to run the Game node.
-"""
-
 from geometry_msgs.msg import Pose, TransformStamped
 from object_mover.MotionPlanningInterface import MotionPlanningInterface
 from object_mover_interfaces.srv import PickPose
 import rclpy
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.action import ActionClient
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node
 from std_srvs.srv import Empty
-from whack_a_mole_interfaces.action import ActuateServo
-from tf2_ros.transform_listener import TransformListener
 from tf2_ros.buffer import Buffer
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
+from tf2_ros.transform_listener import TransformListener
+from whack_a_mole_interfaces.action import ActuateServo
 from whack_a_mole_interfaces.srv import TargetFrame
 
 
 class Game(Node):
     """
-    ROS2 Game Node for controlling the Franka robot to interact with a target in a game environment.
+    ROS2 Game Node for controlling Franka to interact with a target in a game.
 
     The node:
     - Calculates poses for the robotic arm based on TF transforms.
     - Interacts with various ROS2 services and actions for robot motion control.
-    - Handles game-specific functionality like moving to specific color targets and returning to a home position.
+    - Handles game-specific functionality like moving to specific color targets.
 
     **Services**:
     - `play` (`TargetFrame`): Starts the game and moves the robot to the target frame.
@@ -49,11 +32,15 @@ class Game(Node):
 
     **TF Transformations**:
     - Sets up a static transformation from `base_tag` to `base`.
+
+    **Constants**:
+    - READ! This node uses specific offsets for hammer and tag positions.
+    - Make sure to change these values based on your setup.
     """
 
     def __init__(self):
         """
-        Initializes the Game node.
+        Initialize the Game node.
 
         Sets up:
         - Motion planning interface.
@@ -94,6 +81,8 @@ class Game(Node):
         self.tag0_to_base.header.frame_id = 'base_tag'
         self.tag0_to_base.child_frame_id = 'base'
         self.get_logger().info('Setting up the tag0 transform')
+
+        # Base to base tag offsets
         self.tag0_to_base.transform.translation.x = 0.155
         self.tag0_to_base.transform.translation.y = -0.085
         self.tag0_to_base.transform.translation.z = 0.0
@@ -108,9 +97,12 @@ class Game(Node):
 
     async def play_game(self, request, response):
         """
-        Service callback to play the game.
+        Move the hammer to the target frame.
 
-        This service is called with a target frame. The robot moves to the target, calculates the appropriate pose based on TF transformations, and executes the required motion.
+        This service is called with a target frame.
+        The robot moves to the target,
+        calculates the appropriate pose based on TF transformations,
+        and executes the required motion.
 
         :arg request: The service request containing the target color frame.
         :type request: `TargetFrame.Request`
@@ -120,13 +112,15 @@ class Game(Node):
         :return: The response to the service caller.
         :rtype: `TargetFrame.Response`
 
-        :raises Exception: If there is an error in TF transformation lookup or robot motion execution.
+        :raises Exception: If there is an error in TF  lookup or motion execution.
         """
         received_frame = request.color
         tag_frame = received_frame.data
         try:
             self.base_to_tag = self.buffer.lookup_transform('base', tag_frame, rclpy.time.Time())
             goal_pose = Pose()
+
+            # Hammer offsets
             goal_pose.position.x = self.base_to_tag.transform.translation.x - 0.135
             goal_pose.position.y = self.base_to_tag.transform.translation.y - 0.084
             goal_pose.position.z = 0.32
@@ -135,7 +129,7 @@ class Game(Node):
             goal_pose.orientation.y = rotation[1]
             goal_pose.orientation.z = rotation[2]
             goal_pose.orientation.w = rotation[3]
-            
+
             # Call the pick client
             pick_req = PickPose.Request()
             pick_req.pick_point = goal_pose
@@ -143,7 +137,7 @@ class Game(Node):
             self.get_logger().info(f'Moved to {tag_frame}')
         except Exception as e:
             self.get_logger().error(f'Error in move_to_tag: {e}')
-        
+
         return response
 
     async def go_home_callback(self, request, response):

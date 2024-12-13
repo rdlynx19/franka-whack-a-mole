@@ -1,28 +1,17 @@
-"""
-Camera Node
-===========
-
-This module contains the Camera node that detects the color of objects in a ROS2 environment, processes camera feeds, and broadcasts relevant transforms.
-
-Classes
--------
-Camera
-    A ROS2 node that processes depth and color images, detects colors, and publishes transforms.
-"""
-import numpy as np
 import cv2
+from cv_bridge import CvBridge
+from geometry_msgs.msg import TransformStamped
+import numpy as np
+
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
-from cv_bridge import CvBridge
+from sensor_msgs.msg import CameraInfo, Image
 from std_srvs.srv import Empty
-
-from sensor_msgs.msg import Image, CameraInfo
-
 from tf2_ros import TransformBroadcaster
-from geometry_msgs.msg import TransformStamped
-from whack_a_mole.mole_detection import OpenCVClient
+
 from whack_a_mole.constants import COLORS, COLORS_HSV
+from whack_a_mole.mole_detection import OpenCVClient
 
 
 class Camera(Node):
@@ -35,63 +24,68 @@ class Camera(Node):
         box_end_x (int): The ending x coordinate for the bounding box
         box_start_y (int): The starting y coordinate for the bounding box
         box_end_y (int): The ending y coordinate for the bounding box
-    
+
     **Publisher**:
         filtered_image (Image): The filtered image
-    
+
     **Subscriber**:
         /camera/camera/aligned_depth_to_color/image_raw (Image): The depth image
         /camera/camera/color/image_raw (Image): The color image
         /camera/camera/color/camera_info (CameraInfo): The camera info
-    
+
     **Service**:
         toggle_tf_publish (Empty): Toggles the update_colors variable
     """
+
     def __init__(self):
         """Initialize the Camera node."""
-        super().__init__("color_camera")
+        super().__init__('color_camera')
 
-        self.declare_parameter("clipping_distance", 1400)
-        self.declare_parameter("box_start_x", 1)
-        self.declare_parameter("box_end_x", 1)
-        self.declare_parameter("box_start_y", 1)
-        self.declare_parameter("box_end_y", 1)
+        self.declare_parameter('clipping_distance', 1400)
+        self.declare_parameter('box_start_x', 1)
+        self.declare_parameter('box_end_x', 1)
+        self.declare_parameter('box_start_y', 1)
+        self.declare_parameter('box_end_y', 1)
 
         self.crop = [
-            [self.get_parameter("box_start_x").value,
-            self.get_parameter("box_start_y").value],
-            [self.get_parameter("box_end_x").value,
-            self.get_parameter("box_end_y").value]
+            [
+                self.get_parameter('box_start_x').value,
+                self.get_parameter('box_start_y').value
+            ],
+            [
+                self.get_parameter('box_end_x').value,
+                self.get_parameter('box_end_y').value
+            ]
         ]
 
         self.create_subscription(
             Image,
-            "/camera/camera/aligned_depth_to_color/image_raw",
+            '/camera/camera/aligned_depth_to_color/image_raw',
             self.get_depth_info,
             qos_profile=QoSProfile(depth=10),
         )
 
         self.create_subscription(
             Image,
-            "/camera/camera/color/image_raw",
+            '/camera/camera/color/image_raw',
             self.get_color_info,
             qos_profile=QoSProfile(depth=10),
         )
 
         self.image_pub = self.create_publisher(
-            Image, "filtered_image", qos_profile=QoSProfile(depth=10)
+            Image, 'filtered_image', qos_profile=QoSProfile(depth=10)
         )
 
         self.camera_info_subscription = self.create_subscription(
             CameraInfo,
-            "/camera/camera/color/camera_info",
+            '/camera/camera/color/camera_info',
             self.camera_info_callback,
             10,
         )
 
         self.create_service(Empty, 'toggle_tf_publish', self.toggle_tf_publish)
 
-        self.clipping_distance = self.get_parameter("clipping_distance").value
+        self.clipping_distance = self.get_parameter('clipping_distance').value
 
         self.tf_broadcaster = TransformBroadcaster(self, qos=QoSProfile(depth=10))
 
@@ -171,12 +165,12 @@ class Camera(Node):
         median_centroid = np.array(median_centroid, dtype=int)
 
         self.broadcast_color_frame(
-            "camera_depth_frame", color + "_frame", median_centroid[0], median_centroid[1]
+            'camera_depth_frame', color + '_frame', median_centroid[0], median_centroid[1]
         )
 
     def find_color_centroid(self, lower_HSV: np.array, higher_HSV: np.array):
         """
-        Finds the pixel indices of the centroid of a color defined in the given HSV range.
+        Find the pixel indices of the centroid of a color defined in the given HSV range.
 
         :arg lower_HSV: The lower HSV range for the color.
         :type lower_HSV: numpy.array
@@ -226,7 +220,7 @@ class Camera(Node):
             )
             cv2.putText(
                 bg_removed,
-                f"{color}",
+                f'{color}',
                 (avg_centroid[0], avg_centroid[1]),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1,
@@ -234,22 +228,22 @@ class Camera(Node):
                 2,
             )
         cv2.rectangle(bg_removed, self.crop[0], self.crop[1], (0, 0, 255), thickness=5)
-        msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding="bgr8")
+        msg = CvBridge().cv2_to_imgmsg(bg_removed, encoding='bgr8')
         self.image_pub.publish(msg)
         return x_c, y_c
 
     def log(self, *message):
         """
-        Logs custom messages.
+        Log custom messages.
 
         :arg message: The message(s) to log.
         :type message: str
         """
-        self.get_logger().info(f"[CAMERA NODE]: {", ".join(str(i) for i in message)}")
+        self.get_logger().info(f'[CAMERA NODE]: {", ".join(str(i) for i in message)}')
 
     def camera_info_callback(self, msg):
         """
-        Callback for the camera info subscriber.
+        Publish new camera hardware info.
 
         :arg msg: The `CameraInfo` message containing intrinsic parameters.
         :type msg: `CameraInfo`
@@ -258,7 +252,7 @@ class Camera(Node):
 
     def get_depth_info(self, msg: Image):
         """
-        Callback for the depth image subscriber.
+        Publish new camera depth info.
 
         :arg msg: The depth image message.
         :type msg: `Image`
@@ -267,12 +261,12 @@ class Camera(Node):
 
     def get_color_info(self, msg: Image):
         """
-        Callback for the color image subscriber.
+        Publish new camera color info.
 
         :arg msg: The color image message.
         :type msg: `Image`
         """
-        self.cv2_client.color_image = CvBridge().imgmsg_to_cv2(msg, desired_encoding="bgr8")
+        self.cv2_client.color_image = CvBridge().imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
     def broadcast_color_frame(self, base_frame, child_frame, x_c, y_c):
         """

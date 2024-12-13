@@ -1,28 +1,12 @@
-"""
-Hint Node
-=========
-
-This module contains the Hint node, which facilitates communication with an Arduino device via serial port and integrates with ROS2 services and clients.
-
-Classes
--------
-Hint
-    A ROS2 node that communicates with an Arduino and interacts with other ROS2 services.
-
-Functions
----------
-hint_main(args=None)
-    Entry point for starting the Hint node.
-"""
 import rclpy
-from rclpy.node import Node
-from std_msgs.msg import String
-from whack_a_mole_interfaces.srv import TargetFrame
-from std_srvs.srv import Empty
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-
+from rclpy.node import Node
 import serial
 import serial.tools.list_ports as list_ports
+from std_msgs.msg import String
+from std_srvs.srv import Empty
+from whack_a_mole_interfaces.srv import TargetFrame
+
 
 mole_comm = serial.Serial()
 
@@ -37,16 +21,17 @@ class Hint(Node):
     - Interfaces with the `play` and `toggle_tf_publish` services.
 
     **Services**:
-    - `call_play` (`Empty`): Initiates the game and reads serial input from the Arduino. 
+    - `call_play` (`Empty`): Initiates the game and reads serial input from the Arduino.
 
     **Clients**:
     - `play` (`TargetFrame`): Sends color data for target frames to a service.
     - `toggle_tf_publish` (`Empty`): Toggles the transform publisher.
 
     """
+
     def __init__(self):
         """
-        Initializes the Hint node, sets up serial communication, and creates ROS2 service and clients.
+        Initialize the Hint node, sets up serial comm, and creates ROS2 service and clients.
 
         :arg None: No arguments are passed during initialization.
         :type None: NoneType
@@ -59,7 +44,7 @@ class Hint(Node):
 
         self.toggle_client = self.create_client(Empty, 'toggle_tf_publish')
 
-        ARDUINO_SERIAL = "34336313537351203262"
+        ARDUINO_SERIAL = '34336313537351203262'
 
         # ports discovery
         ports = list(list_ports.comports(True))  # get list of ports
@@ -73,18 +58,20 @@ class Hint(Node):
 
         # check Arduino has been found
         if arduino_port is None:
-            self.get_logger().error("error finding arduino")
+            self.get_logger().error('error finding arduino')
 
+        self.connect_serial_port(serial_port=arduino_port, baud_rate=115200)
 
-        self.connect_serial_port(serial_port=arduino_port, baud_rate = 115200)
-
- 
-        self.call_play = self.create_service(Empty, 'call_play', self.call_play_callback, callback_group=MutuallyExclusiveCallbackGroup())
-
+        self.call_play = self.create_service(
+            Empty,
+            'call_play',
+            self.call_play_callback,
+            callback_group=MutuallyExclusiveCallbackGroup()
+        )
 
     async def call_play_callback(self, request, response):
         """
-        Callback function for the `call_play` service.
+        Start playing. Callback function for the `call_play` service.
 
         This function starts the game by:
         - Sending a start signal (`'s'`) to the Arduino over the serial port.
@@ -103,7 +90,7 @@ class Hint(Node):
         """
         try:
             start = str('s')
-            mole_comm.write(start.encode("utf-8"))
+            mole_comm.write(start.encode('utf-8'))
         except Exception as e:
             self.get_logger().error(f'Could not start the game: {e}')
         empty_req = Empty.Request()
@@ -112,26 +99,26 @@ class Hint(Node):
             msg = String()
             msg = await self.read_serial_data()
             self.get_logger().info(f'{msg}')
-            if(msg.data == '0'):
+            if msg.data == '0':
                 msg.data = 'YELLOW_frame'
-            elif(msg.data == '1'):
+            elif msg.data == '1':
                 msg.data = 'BLUE_frame'
-            elif(msg.data == '2'):
+            elif msg.data == '2':
                 msg.data = 'GREEN_frame'
-            elif(msg.data == '3'):
+            elif msg.data == '3':
                 msg.data = 'RED_frame'
             frame_req = TargetFrame.Request()
             frame_req.color = msg
             self.get_logger().info(f'Passed the msg {msg}')
             await self.play_client.call_async(frame_req)
-            self.get_logger().info("Returned from play client")
-
+            self.get_logger().info('Returned from play client')
 
     async def read_serial_data(self):
         """
-        Reads serial data from the Arduino device.
+        Read serial data from the Arduino device.
 
-        This function continuously reads from the serial port until valid data (`0`, `1`, `2`, or `3`) is received.
+        This function continuously reads from the serial port
+        until valid data (`0`, `1`, `2`, or `3`) is received.
 
         :return: A message containing the valid serial data read from the device.
         :rtype: `String`
@@ -140,20 +127,20 @@ class Hint(Node):
         """
         try:
             msg = String()
-            msg.data = mole_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
+            msg.data = mole_comm.readline().decode('utf-8').rstrip('\n').rstrip('\r')
             self.get_logger().info(f'{type(msg.data)}')
             while msg.data != '0' and msg.data != '1' and msg.data != '2' and msg.data != '3':
-                msg.data = mole_comm.readline().decode("utf-8").rstrip("\n").rstrip("\r")
+                msg.data = mole_comm.readline().decode('utf-8').rstrip('\n').rstrip('\r')
                 self.get_logger().info(f'Received data from: {msg.data}')
-            return msg 
+            return msg
         except Exception as e:
             self.get_logger().error(f'Exception{e}')
-            self.get_logger().error("Can't read serial data!")
+            self.get_logger().error('Cannot read serial data!')
             return
 
     def connect_serial_port(self, serial_port, baud_rate):
         """
-        Configures and opens the serial port for communication with the Arduino device.
+        Configure and opens the serial port for communication with the Arduino device.
 
         :arg serial_port: The name of the serial port to connect to.
         :type serial_port: str
@@ -164,6 +151,7 @@ class Hint(Node):
         mole_comm.baudrate = baud_rate
         mole_comm.timeout = 1
         mole_comm.open()
+
 
 def hint_main(args=None):
     """
@@ -177,6 +165,7 @@ def hint_main(args=None):
     rclpy.spin(node)
     rclpy.shutdown()
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     import sys
     hint_main(args=sys.argv)

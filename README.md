@@ -1,6 +1,9 @@
 # Franka Whack-a-mole ME 495 Final Project
 Authors: Ben Benyamin, David Khachatryan, Haodong Wang, Pushkar Dave, Sairam Umakanth
 
+## Demo
+[![Video Title](https://img.youtube.com/vi/GG81r0z8W5s/0.jpg)](https://youtu.be/GG81r0z8W5s?si=jnvBzOhuwIO57tmf)
+
 ## Description
 This package enables the Franka Emika Panda robot play whack-a-mole on a custom whack-a-mole game. The 
 physical setup requires a RealSense2 camera, a singular April tag attached to the base of the 
@@ -54,9 +57,5 @@ The `camera_node` subcsribes topics published by the realsense camera and detect
 
 ## Video Demonstrations
 ### Rviz 
-
 [whack-a-mole_rvizz.webm](https://github.com/user-attachments/assets/669d5b71-3139-480c-ba2a-61dcc3d9fc77)
 
-### Physical Demo
-
-[whack-a-mole_live.webm](https://github.com/user-attachments/assets/87ae88f5-a53d-4895-9542-463258fc8a94)

@@ -1,3 +1,5 @@
+"""Hint node that receives feedback from the Arduino on which button is lit."""
+
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node

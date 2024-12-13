@@ -11,7 +11,8 @@ class OpenCVClient:
     """
     A class to handle the OpenCV operations for the mole detection.
 
-    Attributes:
+    Attributes
+    ----------
     - clipping_distance (int): The clipping distance for the depth image.
     - crop (list): The crop region for the image.
     - _running_avg (dict): A dictionary to store the running average of the
@@ -20,7 +21,8 @@ class OpenCVClient:
     - _color_image (np.array): The color image.
     - _depth_image (np.array): The depth image.
 
-    Methods:
+    Functions:
+    ----------
     - find_centroid_cropped(masked_image, crop_indices):
         Find the centroid of the largest contour within a specified crop
         region.
@@ -97,13 +99,7 @@ class OpenCVClient:
         self._running_avg = value
 
     def detect_illumination(self, color: str):
-        """
-        Detect the illumination of the color and broadcasts.
-
-        Args:
-            color (str): The color of the object
-
-        """
+        """Detect the illumination of the mole."""
         color_index = COLORS[color]
         median_centroid = np.median(self.running_avg[color_index], axis=0)
         median_centroid = np.array(median_centroid, dtype=int)
@@ -113,12 +109,16 @@ class OpenCVClient:
         Find the centroid of the largest contour in specified crop region.
 
         Args:
+        ----
         - masked_image (np.array): The masked image to process.
         - crop_indices (tuple): A tuple (x1, y1, x2, y2) specifying the crop
             region.
-        Returns:
+
+        Returns
+        -------
         - (int, int): The (x, y) coordinates of the centroid in the original
             image.
+
         """
         # Unpack the crop region indices
         x1, y1, x2, y2 = crop_indices

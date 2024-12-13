@@ -33,7 +33,7 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, EqualsSubstitution
-from launch.conditions import UnlessCondition, IfCondition
+from launch.conditions import IfCondition
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterFile
 
@@ -41,7 +41,6 @@ from launch_ros.parameter_descriptions import ParameterFile
 def generate_launch_description():
     # Get the package share directory
     pkg_share = FindPackageShare(package='whack_a_mole').find('whack_a_mole')
-    tags_yaml = os.path.join(pkg_share, 'tags.yaml')
     tags_tf_rviz = os.path.join(pkg_share, 'tags_tf.rviz')
     move_it_rviz = os.path.join(pkg_share, 'moveit.rviz')
 

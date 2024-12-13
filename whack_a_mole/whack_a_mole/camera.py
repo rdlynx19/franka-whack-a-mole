@@ -1,3 +1,14 @@
+"""
+Camera Node
+===========
+
+This module contains the Camera node that detects the color of objects in a ROS2 environment, processes camera feeds, and broadcasts relevant transforms.
+
+Classes
+-------
+Camera
+    A ROS2 node that processes depth and color images, detects colors, and publishes transforms.
+"""
 import numpy as np
 import cv2
 import rclpy
@@ -15,9 +26,29 @@ from whack_a_mole.constants import COLORS, COLORS_HSV
 
 
 class Camera(Node):
+    """
+    Camera node that detects the color of the object and broadcasts the frame.
 
+    **Parameters**:
+        clipping_distance (int): The clipping distance for the depth image
+        box_start_x (int): The starting x coordinate for the bounding box
+        box_end_x (int): The ending x coordinate for the bounding box
+        box_start_y (int): The starting y coordinate for the bounding box
+        box_end_y (int): The ending y coordinate for the bounding box
+    
+    **Publisher**:
+        filtered_image (Image): The filtered image
+    
+    **Subscriber**:
+        /camera/camera/aligned_depth_to_color/image_raw (Image): The depth image
+        /camera/camera/color/image_raw (Image): The color image
+        /camera/camera/color/camera_info (CameraInfo): The camera info
+    
+    **Service**:
+        toggle_tf_publish (Empty): Toggles the update_colors variable
+    """
     def __init__(self):
-
+        """Initialize the Camera node."""
         super().__init__("color_camera")
 
         self.declare_parameter("clipping_distance", 1400)
@@ -57,7 +88,7 @@ class Camera(Node):
             self.camera_info_callback,
             10,
         )
-        
+
         self.create_service(Empty, 'toggle_tf_publish', self.toggle_tf_publish)
 
         self.clipping_distance = self.get_parameter("clipping_distance").value
@@ -80,7 +111,12 @@ class Camera(Node):
         self.update_colors = True
 
     def timer_callback(self):
-        """Timer callback to detect the color of the object and broadcast the frame."""
+        """
+        Timer callback that detects the color of the object and broadcasts the frame.
+
+        :arg None: No arguments required for this function.
+        :type None: NoneType
+        """
         if self.cv2_client.color_image.shape[0] == 0 or self.cv2_client.depth_image.shape[0] == 0:
             return
 
@@ -96,27 +132,29 @@ class Camera(Node):
 
     def toggle_tf_publish(self, request, response):
         """
-        Toggles the update_colors variable.
+        Toggles the `update_colors` variable to start/stop publishing the color frames.
 
-        Args:
-            request (Empty.Request): Empty request
-            response (Empty.Response): Empty response
+        :arg request: Empty request.
+        :type request: `Empty.Request`
+        :arg response: Empty response.
+        :type response: `Empty.Response`
 
-        Returns:
-            Empty.Response: Empty response
-
+        :return: Returns the response.
+        :rtype: `Empty.Response`
         """
         self.update_colors = not self.update_colors
         return response
 
     def broadcast_color(self, lower_HSV, higher_HSV, color: str):
         """
-        Broadcasts the color frame.
-        
-        Args:
-            lower_HSV (np.array): The lower HSV range
-            higher_HSV (np.array): The higher HSV range
-            color (str): The color of the object
+        Broadcasts the color frame based on HSV range.
+
+        :arg lower_HSV: The lower HSV range.
+        :type lower_HSV: numpy.array
+        :arg higher_HSV: The higher HSV range.
+        :type higher_HSV: numpy.array
+        :arg color: The name of the color of the object.
+        :type color: str
         """
         color_index = COLORS[color]
 
@@ -138,7 +176,15 @@ class Camera(Node):
 
     def find_color_centroid(self, lower_HSV: np.array, higher_HSV: np.array):
         """
-        Returns the pixel indecies of the centroid of a color defined in lower_HSV , higher_HSV range
+        Finds the pixel indices of the centroid of a color defined in the given HSV range.
+
+        :arg lower_HSV: The lower HSV range for the color.
+        :type lower_HSV: numpy.array
+        :arg higher_HSV: The higher HSV range for the color.
+        :type higher_HSV: numpy.array
+
+        :return: The (x, y) centroid of the color.
+        :rtype: tuple(int, int)
         """
         depth_image_3d = np.dstack(
             (self.cv2_client.depth_image, self.cv2_client.depth_image, self.cv2_client.depth_image)
@@ -193,38 +239,54 @@ class Camera(Node):
         return x_c, y_c
 
     def log(self, *message):
-        """Custom logger function."""
+        """
+        Logs custom messages.
+
+        :arg message: The message(s) to log.
+        :type message: str
+        """
         self.get_logger().info(f"[CAMERA NODE]: {", ".join(str(i) for i in message)}")
 
     def camera_info_callback(self, msg):
         """
-        Callback for camera info subscriber
+        Callback for the camera info subscriber.
 
-        Args:
-            msg (CameraInfo): Camera Info message
+        :arg msg: The `CameraInfo` message containing intrinsic parameters.
+        :type msg: `CameraInfo`
         """
         self.cv2_client.camera_intrinsics = msg.k
 
     def get_depth_info(self, msg: Image):
         """
-        Callback for depth image subscriber
-        
-        Args:
-            msg (Image): Depth image message
+        Callback for the depth image subscriber.
+
+        :arg msg: The depth image message.
+        :type msg: `Image`
         """
         self.cv2_client.depth_image = CvBridge().imgmsg_to_cv2(msg)
 
     def get_color_info(self, msg: Image):
         """
-        Callback for color image subscriber
-        
-        Args:
-            msg (Image): Color image message
+        Callback for the color image subscriber.
+
+        :arg msg: The color image message.
+        :type msg: `Image`
         """
         self.cv2_client.color_image = CvBridge().imgmsg_to_cv2(msg, desired_encoding="bgr8")
 
     def broadcast_color_frame(self, base_frame, child_frame, x_c, y_c):
+        """
+        Broadcasts the transform for a detected color frame.
 
+        :arg base_frame: The base frame's name.
+        :type base_frame: str
+        :arg child_frame: The child frame's name.
+        :type child_frame: str
+        :arg x_c: The x-coordinate of the detected color's centroid in the image.
+        :type x_c: int
+        :arg y_c: The y-coordinate of the detected color's centroid in the image.
+        :type y_c: int
+        """
         x, y, z = self.cv2_client.get_3d_coordinates_at_pixel(x_c, y_c, frame_name=child_frame)
         if x == -1:
             x, y, z = self.prev_xyz[0], self.prev_xyz[1], self.prev_xyz[2]
@@ -250,7 +312,12 @@ class Camera(Node):
 
 
 def entry(args=None):
+    """
+    Entry point for starting the ROS2 Camera node.
 
+    :arg args: The arguments passed for initialization.
+    :type args: list or NoneType
+    """
     rclpy.init(args=args)
 
     camera_node = Camera()

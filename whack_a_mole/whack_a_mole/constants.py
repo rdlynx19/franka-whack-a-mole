@@ -1,3 +1,17 @@
+"""
+Constants for Color Detection
+=============================
+
+This module contains constants and HSV color ranges for identifying specific colors in images.
+
+Constants
+---------
+COLORS : dict
+    A dictionary mapping color names to their respective integer indices.
+
+COLORS_HSV : dict
+    A dictionary mapping color names to their HSV value ranges for color detection.
+"""
 import numpy as np
 COLORS = {"GREEN": 0, "YELLOW": 1, "BLUE": 2, "RED": 3}
 

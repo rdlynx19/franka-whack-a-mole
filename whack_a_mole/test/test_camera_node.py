@@ -7,7 +7,7 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 from launch_testing.actions import ReadyToTest
-from launch_testing.util import WaitForTopics
+from launch_testing_ros import WaitForTopics
 
 import pytest
 

@@ -7,6 +7,10 @@ Note: This video is lengthy and could not be embedded directly into the README. 
 
 [![Video Title](https://img.youtube.com/vi/GG81r0z8W5s/0.jpg)](https://youtu.be/GG81r0z8W5s?si=jnvBzOhuwIO57tmf)
 
+## ROS2 Documentation
+
+The documentation for the `whack_a_mole` package can be found [online here](https://davidk.tech/whack-a-mole-robot-docs/).
+
 ## Description
 This package enables the Franka Emika Panda robot play whack-a-mole on a custom whack-a-mole game. The 
 physical setup requires a RealSense2 camera, a singular April tag attached to the base of the 

@@ -1,4 +1,6 @@
 # Franka Whack-a-mole ME 495 Final Project
+The repository has been shifted, for the most updated code, refer to: https://github.com/ME495-EmbeddedSystems/finalproject-whack-a-mole
+
 Authors: Ben Benyamin, David Khachatryan, Haodong Wang, Pushkar Dave, Sairam Umakanth
 
 ## Demo
